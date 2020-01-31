@@ -1,0 +1,7 @@
+Click==7.0
+-e git+https://github.com/gwolf0719/python_ufs.git@1b9146bee522a13f91017344b08207b1930782ee#egg=Flask
+gunicorn==20.0.4
+itsdangerous==1.1.0
+Jinja2==2.11.1
+MarkupSafe==1.1.1
+Werkzeug==0.16.1
