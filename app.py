@@ -28,7 +28,7 @@ def webhook(channel_id):
         jsondata = request.get_json()
         jsondata["channel_id"] = channel_id
 
-        replyToken = jsondata["events"]["replyToken"]
+        replyToken = jsondata["events"]
         # replyToken = "41efe2333b5049559a7400d855483e5f"
         # line_bot_api = LineBotApi(
         #     'EeW1IZR3U3fYS9rVH1njiVkTlaRUFEvkyXS2xl1swT+p+McTNzdZwZphg1BrjvjTXXcQAlSHK/I2bx2s3Fu8GfUS5tljY2ZO8krNSKgpU6O7GRgwMcxKHfQvp7w4m8PHZZmsGy9C3pf4ifaXws7/+wdB04t89/1O/w1cDnyilFU=')
