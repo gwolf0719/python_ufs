@@ -25,4 +25,4 @@ def webhook():
     mycol.insert_many(df.to_dict('records'))
 
 
-    return "webhook"
+    return "200"
