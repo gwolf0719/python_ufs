@@ -22,7 +22,6 @@ def webhook():
     except:
         jsondata = {'data': 'nodata'}
     
-    
     mycol = client.ufs.webhook
     
     df = pd.DataFrame(jsondata, index=[0])
