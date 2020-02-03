@@ -14,11 +14,13 @@ client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiyn
 def hello():
     return "Hello, World! 3 "
 
-@app.route("/webhook", methods=["POST","GET"])
-def webhook():
+
+@app.route("/webhook/<channel_id>", methods=["POST", "GET"])
+def webhook(channel_id):
     
     try:
         jsondata = request.get_json()
+        jsondata["channel_id"] = channel_id
     except:
         jsondata = {'data': 'nodata'}
     
@@ -27,4 +29,4 @@ def webhook():
     df = pd.DataFrame(jsondata, index=[0])
     mycol.insert_many(df.to_dict('records'))
 
-    return "200"
+    return channel_id
