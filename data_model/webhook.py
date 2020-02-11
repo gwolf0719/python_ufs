@@ -11,7 +11,22 @@ class Webhook:
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
     
     def add_log(self,jsondata):
-        mycol = self.client.ufs.webhook
+        # 記錄原始得到資料
+        webhook_log = self.client.ufs.webhook_log
         df = pd.DataFrame(jsondata, index=[0])
-        mycol.insert_many(df.to_dict('records'))
+        webhook_log.insert_many(df.to_dict('records'))
+        # 整理資料
+        newjson = {
+            "user_id":jsondata["user_id"],
+            "replyToken":jsondata['event'][0]["replyToken"],
+            "date":datetime.date.today(),
+            "channel_id":jsondata["channel_id"],
+            "timestamp":jsondata["timestamp"],
+        }
+        if jsondata["events"][0]['message']['type'] == "text":
+            newjson['text'] = jsondata["events"][0]['message']['text']
+        webhook = self.client.ufs.webhook
+        df2 = pd.DataFrame(newjson, index=[0])
+        webhook.insert_many(df.to_dict('records'))
+
         return True
