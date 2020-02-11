@@ -23,6 +23,7 @@ class Webhook:
             "channel_id":jsondata["channel_id"],
             "timestamp":jsondata["timestamp"],
         }
+        print(jsondata)
         if jsondata["events"][0]['message']['type'] == "text":
             newjson['text'] = jsondata["events"][0]['message']['text']
         
