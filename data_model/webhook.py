@@ -25,8 +25,10 @@ class Webhook:
         }
         if jsondata["events"][0]['message']['type'] == "text":
             newjson['text'] = jsondata["events"][0]['message']['text']
+        
         webhook = self.client.ufs.webhook
         df2 = pd.DataFrame(newjson, index=[0])
+        print(df2)
         webhook.insert_many(df2.to_dict('records'))
 
         return True
