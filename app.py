@@ -15,6 +15,7 @@ from linebot.exceptions import LineBotApiError
 # Model
 from data_model.manager import *
 from data_model.channel import *
+from data_model.webhook import *
 
 
 app = Flask(__name__)
@@ -94,7 +95,8 @@ def webhook(channel_id):
         jsondata["user_id"] = event["source"]["userId"]
         line_bot_api.push_message(
             jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
-        channel.add_log(jsondata)
+        webhook = Webhook()
+        webhook.add_log(jsondata)
 
 
     except:
