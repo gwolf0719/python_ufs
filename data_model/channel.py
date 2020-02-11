@@ -32,3 +32,10 @@ class Channel:
         df = pd.DataFrame(jsondata, index=[0])
         mycol.insert_many(df.to_dict('records'))
         return True
+
+    # 取得單一 channel 資料
+    def get_channel(self, channel_id):
+        mycol = self.client.ufs.channel
+        find = {"channel_id":channel_id}
+        data = manager.find_one(find)
+        return data

@@ -23,7 +23,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 
 
 manager = Manager()
-channel = Channel()
 # 登入管理者
 @app.route("/login",methods=['GET', 'POST'])
 def login():
@@ -81,25 +80,30 @@ def webhook(channel_id):
     jsondata = request.get_json()
     try:
         jsondata["channel_id"] = channel_id
+        channel = Channel()
+        channel_data = channel.get_channel(channel_id)
+        channel_access_token = channel_data["channel_access_token"]
+
         event = jsondata["events"][0]
-        replyToken = event["replyToken"]
+        # replyToken = event["replyToken"]
         # 回覆
-        line_bot_api = LineBotApi(
-            'EeW1IZR3U3fYS9rVH1njiVkTlaRUFEvkyXS2xl1swT+p+McTNzdZwZphg1BrjvjTXXcQAlSHK/I2bx2s3Fu8GfUS5tljY2ZO8krNSKgpU6O7GRgwMcxKHfQvp7w4m8PHZZmsGy9C3pf4ifaXws7/+wdB04t89/1O/w1cDnyilFU=')
-        line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
+        # line_bot_api = LineBotApi(
+        #     'EeW1IZR3U3fYS9rVH1njiVkTlaRUFEvkyXS2xl1swT+p+McTNzdZwZphg1BrjvjTXXcQAlSHK/I2bx2s3Fu8GfUS5tljY2ZO8krNSKgpU6O7GRgwMcxKHfQvp7w4m8PHZZmsGy9C3pf4ifaXws7/+wdB04t89/1O/w1cDnyilFU=')
+        # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         # 主動發送
-        userId = event["source"]["userId"]
+        jsondata["user_id"] = event["source"]["userId"]
         line_bot_api.push_message(
-            userId, TextSendMessage(text='Hello World! userId'))
+            jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
+        channel.add_log(jsondata)
 
 
     except:
         jsondata = {'data': 'nodata'}
         replyToken = 'null'
         
-    mycol = client.ufs.webhook
-    df = pd.DataFrame(jsondata, index=[0])
-    mycol.insert_many(df.to_dict('records'))
+    # mycol = client.ufs.webhook
+    # df = pd.DataFrame(jsondata, index=[0])
+    # mycol.insert_many(df.to_dict('records'))
     return "replyToken"
 
 

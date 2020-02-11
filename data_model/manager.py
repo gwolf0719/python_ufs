@@ -19,7 +19,6 @@ class Manager:
     def get_once(self,manager_id):
         manager = self.client.ufs.manager
         manager_data = manager.find_one({"manager_id":manager_id})
-        self.manager_data = manager_data
         return manager_data
     # 驗證帳密正確性
     def chk_id_pw(self,manager_id,manager_pwd):
