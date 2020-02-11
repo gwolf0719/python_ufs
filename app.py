@@ -97,6 +97,7 @@ def webhook(channel_id):
         jsondata["user_id"] = event["source"]["userId"]
         webhook = Webhook()
         webhook.add_log(jsondata)
+        line_bot_api = LineBotApi(channel_access_token)
         line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
 
 
