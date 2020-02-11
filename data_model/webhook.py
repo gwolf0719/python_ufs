@@ -27,6 +27,6 @@ class Webhook:
             newjson['text'] = jsondata["events"][0]['message']['text']
         webhook = self.client.ufs.webhook
         df2 = pd.DataFrame(newjson, index=[0])
-        webhook.insert_many(df.to_dict('records'))
+        webhook.insert_many(df2.to_dict('records'))
 
         return True
