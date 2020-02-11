@@ -37,5 +37,5 @@ class Channel:
     def get_channel(self, channel_id):
         mycol = self.client.ufs.channel
         find = {"channel_id":channel_id}
-        data = manager.find_one(find)
+        data = mycol.find_one(find)
         return data

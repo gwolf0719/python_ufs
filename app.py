@@ -80,11 +80,13 @@ def channel():
 def webhook(channel_id):
     jsondata = request.get_json()
     try:
+        
         jsondata["channel_id"] = channel_id
         channel = Channel()
         channel_data = channel.get_channel(channel_id)
+        
         channel_access_token = channel_data["channel_access_token"]
-
+        
         event = jsondata["events"][0]
         # replyToken = event["replyToken"]
         # 回覆
@@ -93,10 +95,9 @@ def webhook(channel_id):
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         # 主動發送
         jsondata["user_id"] = event["source"]["userId"]
-        line_bot_api.push_message(
-            jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
         webhook = Webhook()
         webhook.add_log(jsondata)
+        line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
 
 
     except:
