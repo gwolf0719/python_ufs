@@ -86,7 +86,6 @@ def webhook(channel_id):
         channel_data = channel.get_channel(channel_id)
         
         channel_access_token = channel_data["channel_access_token"]
-        
         event = jsondata["events"][0]
         # replyToken = event["replyToken"]
         # 回覆
@@ -96,12 +95,14 @@ def webhook(channel_id):
         # 主動發送
         jsondata["user_id"] = event["source"]["userId"]
         webhook = Webhook()
+        print("webhook")
         webhook.add_log(jsondata)
         line_bot_api = LineBotApi(channel_access_token)
         line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
 
 
     except:
+        print("webhook err")
         jsondata = {'data': 'nodata'}
         replyToken = 'null'
         

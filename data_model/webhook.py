@@ -13,23 +13,25 @@ class Webhook:
     def add_log(self,jsondata):
         # 記錄原始得到資料
         webhook_log = self.client.ufs.webhook_log
+        # print(jsondata)
         df = pd.DataFrame(jsondata, index=[0])
+        
         webhook_log.insert_many(df.to_dict('records'))
         # 整理資料
-        newjson = {
-            "user_id":jsondata["user_id"],
-            "replyToken":jsondata['event'][0]["replyToken"],
-            "date":datetime.date.today(),
-            "channel_id":jsondata["channel_id"],
-            "timestamp":jsondata["timestamp"],
-        }
-        print(jsondata)
-        if jsondata["events"][0]['message']['type'] == "text":
-            newjson['text'] = jsondata["events"][0]['message']['text']
+        # newjson = {
+        #     "user_id":jsondata["user_id"],
+        #     "replyToken":jsondata['event'][0]["replyToken"],
+        #     "date":datetime.date.today(),
+        #     "channel_id":jsondata["channel_id"],
+        #     "timestamp":jsondata["timestamp"],
+        # }
         
-        webhook = self.client.ufs.webhook
-        df2 = pd.DataFrame(newjson, index=[0])
-        print(df2)
-        webhook.insert_many(df2.to_dict('records'))
+        # if jsondata["events"][0]['message']['type'] == "text":
+        #     newjson['text'] = jsondata["events"][0]['message']['text']
+        
+        # webhook = self.client.ufs.webhook
+        # df2 = pd.DataFrame(newjson, index=[0])
+        
+        # webhook.insert_many(df2.to_dict('records'))
 
         return True
