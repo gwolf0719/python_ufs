@@ -35,16 +35,3 @@ class Manager:
     # 登出
     def logout(self):
         session['manager_id'] = False
-        
-
-
-    # 宣告資料庫和資料表
-        # manager = self.client.thermometer.thermometer_mac
-        # cursor = mycol.find({'mac_id': mac_id})
-        # count_result = cursor.count()
-        # if(count_result == 0):
-        #     return False
-        # else:
-        #     return True
-
-    # 確認帳號密碼正確

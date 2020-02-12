@@ -16,6 +16,7 @@ from linebot.exceptions import LineBotApiError
 from data_model.manager import *
 from data_model.channel import *
 from data_model.webhook import *
+from data_model.user import *
 
 
 app = Flask(__name__)
@@ -78,32 +79,48 @@ def channel():
 # 單純抓取 webhook 回傳資料
 @app.route("/webhook/<channel_id>", methods=["POST", "GET"])
 def webhook(channel_id):
+    channel = Channel()
+    webhook = Webhook()
+    user = User()
     jsondata = request.get_json()
     try:
         
         jsondata["channel_id"] = channel_id
-        channel = Channel()
         channel_data = channel.get_channel(channel_id)
-        
         channel_access_token = channel_data["channel_access_token"]
         event = jsondata["events"][0]
+        user_id = event["source"]["userId"]
+        jsondata["user_id"] = user_id
+        webhook.add_log(jsondata)
+
+        # 使用者紀錄
+        if(user.chk_once(user_id,channel_id) == True):
+            print("User is set");
+            user.set_user_tag(user_id,channel_id,event['type'])
+        else :
+            print("User is null");
+            user.add_once(user_id,channel_id)
+            user.set_user_tag(user_id,channel_id,event['type'])
+
         # replyToken = event["replyToken"]
         # 回覆
         # line_bot_api = LineBotApi(
         #     'EeW1IZR3U3fYS9rVH1njiVkTlaRUFEvkyXS2xl1swT+p+McTNzdZwZphg1BrjvjTXXcQAlSHK/I2bx2s3Fu8GfUS5tljY2ZO8krNSKgpU6O7GRgwMcxKHfQvp7w4m8PHZZmsGy9C3pf4ifaXws7/+wdB04t89/1O/w1cDnyilFU=')
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         # 主動發送
-        jsondata["user_id"] = event["source"]["userId"]
-        webhook = Webhook()
-        webhook.add_log(jsondata)
-        line_bot_api = LineBotApi(channel_access_token)
-        line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
+        
+        
+        
+        
+
+        
+        # line_bot_api = LineBotApi(channel_access_token)
+        # line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
 
 
-    except:
-        print("webhook err")
-        jsondata = {'data': 'nodata'}
-        replyToken = 'null'
+    except (EOFError, KeyboardInterrupt):
+
+        print(EOFError)
         
     # mycol = client.ufs.webhook
     # df = pd.DataFrame(jsondata, index=[0])
