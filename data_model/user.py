@@ -36,6 +36,7 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id
         }
+        print(jsondata)
         self.col_user.insert_one(jsondata)
         return True
 
