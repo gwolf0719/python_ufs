@@ -83,24 +83,24 @@ def webhook(channel_id):
     webhook = Webhook()
     user = User()
     jsondata = request.get_json()
-    try:
+    # try:
         
-        jsondata["channel_id"] = channel_id
-        channel_data = channel.get_channel(channel_id)
-        channel_access_token = channel_data["channel_access_token"]
-        event = jsondata["events"][0]
-        user_id = event["source"]["userId"]
-        jsondata["user_id"] = user_id
-        webhook.add_log(jsondata)
+    jsondata["channel_id"] = channel_id
+    channel_data = channel.get_channel(channel_id)
+    channel_access_token = channel_data["channel_access_token"]
+    event = jsondata["events"][0]
+    user_id = event["source"]["userId"]
+    jsondata["user_id"] = user_id
+    webhook.add_log(jsondata)
 
-        # 使用者紀錄
-        if(user.chk_once(user_id,channel_id) == True):
-            print("User is set");
-            user.set_user_tag(user_id,channel_id,event['type'])
-        else :
-            print("User is null");
-            user.add_once(user_id,channel_id)
-            user.set_user_tag(user_id,channel_id,event['type'])
+    # 使用者紀錄
+    if(user.chk_once(user_id,channel_id) == True):
+        print("User is set");
+        user.set_user_tag(user_id,channel_id,event['type'])
+    else :
+        print("User is null");
+        user.add_once(user_id,channel_id)
+        user.set_user_tag(user_id,channel_id,event['type'])
 
         # replyToken = event["replyToken"]
         # 回覆
@@ -118,9 +118,9 @@ def webhook(channel_id):
         # line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
 
 
-    except (EOFError, KeyboardInterrupt):
+    # except (EOFError, KeyboardInterrupt):
 
-        print(EOFError)
+    #     print(EOFError)
         
     # mycol = client.ufs.webhook
     # df = pd.DataFrame(jsondata, index=[0])
