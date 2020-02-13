@@ -18,6 +18,7 @@ class User:
             "channel_id": channel_id
         }
         userdata = self.col_user.find_one(find)
+        del userdata["_id"]
         return userdata
     #確認帳號存在
     def chk_once(self, user_id, channel_id):
@@ -34,9 +35,11 @@ class User:
     def add_once(self,user_id,channel_id):
         jsondata = {
             "user_id":user_id,
-            "channel_id":channel_id
+            "channel_id":channel_id,
+            "points":0,
+            "created_datetime":datetime.today()
         }
-        print(jsondata)
+        
         self.col_user.insert_one(jsondata)
         return True
 
@@ -53,34 +56,14 @@ class User:
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
         return True
+    def update_user_main(self,user_id,channel_id,data):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id
+        }
+        
+        self.col_user.update_one(find,{"$set":data})
+        return True
+
 
         
-
-    # 驗證帳密正確性
-    # def chk_id_pw(self,manager_id,manager_pwd):
-    #     manager_data = Manager.get_once(self,manager_id)
-    #     if(manager_data["manager_pwd"] == manager_pwd):
-    #         return True
-    #     else:
-    #         return False
-    
-
-    # # 登入
-    # def login(self,manager_id):
-    #     session["manager_id"] = manager_id
-    # # 登出
-    # def logout(self):
-    #     session['manager_id'] = False
-        
-
-
-    # 宣告資料庫和資料表
-        # manager = self.client.thermometer.thermometer_mac
-        # cursor = mycol.find({'mac_id': mac_id})
-        # count_result = cursor.count()
-        # if(count_result == 0):
-        #     return False
-        # else:
-        #     return True
-
-    # 確認帳號密碼正確

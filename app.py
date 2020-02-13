@@ -1,5 +1,5 @@
 #系統元件
-from flask import Flask, jsonify, request, render_template,session,redirect,url_for,flash
+from flask import Flask, jsonify, request, render_template,session,redirect,url_for,flash,Blueprint
 import os
 import json
 import pymongo
@@ -18,11 +18,13 @@ from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
 
+from api import *
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
-
+app.register_blueprint(api)
 
 manager = Manager()
 # 登入管理者
@@ -95,10 +97,8 @@ def webhook(channel_id):
 
         # 使用者紀錄
         if(user.chk_once(user_id,channel_id) == True):
-            print("User is set");
             user.set_user_tag(user_id,channel_id,event['type'])
         else :
-            print("User is null");
             user.add_once(user_id,channel_id)
             user.set_user_tag(user_id,channel_id,event['type'])
 
