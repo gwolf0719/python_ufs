@@ -43,6 +43,14 @@ class User:
         self.col_user.insert_one(jsondata)
         return True
 
+    
+    def update_user_main(self,user_id,channel_id,data):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id
+        }
+        self.col_user.update_one(find,{"$set":data})
+        return True
     # 設定使用者參數
     def set_user_tag(self,user_id,channel_id,tag):
         find = {
@@ -56,14 +64,20 @@ class User:
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
         return True
-    def update_user_main(self,user_id,channel_id,data):
+    def get_user_tags(self,user_id,channel_id):
         find = {
             "user_id":user_id,
             "channel_id":channel_id
         }
+        user_data = self.col_user.find_one(find)
+        res = []
+        if "tags" in user_data:
+            for t in user_data["tags"]:
+                if t['tag'] not in res:
+                    res.append(t['tag'])
         
-        self.col_user.update_one(find,{"$set":data})
-        return True
+        
+        return res
 
 
         
