@@ -14,6 +14,10 @@ api = Blueprint('api', __name__)
 user = User()
 channel = Channel()
 
+@api.route('/api/test')
+def api_test():
+    return "Hello"
+
 # 第三方使用 API
 # 會員
 # =================================================================
@@ -31,15 +35,16 @@ def v0_get_user_info(channel_id,user_id):
         return json_data
     
     user_info = user.get_once(user_id,channel_id)
-    del user_info['tags'] # 不需要歷史紀錄
+    if "tags" in user_info:
+        del user_info['tags'] # 不需要歷史紀錄
     json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
 
     return json_data
 
 
 
-# =================================================================    
-# 設定會員資料 
+# # =================================================================    
+# # 設定會員資料 
 @api.route("/api/v0/set_user_info/<channel_id>/<user_id>", methods=["POST", "GET"])
 def v0_set_user_info(channel_id, user_id):
     # 確認 channel_id
@@ -67,7 +72,7 @@ def v0_set_user_info(channel_id, user_id):
 
     return json_data
 
-# 設定會員標籤
+# # 設定會員標籤
 @api.route('/api/v0/set_user_tag/<channel_id>/<user_id>/<tag>')
 def v0_set_user_tag(channel_id,user_id,tag):
     # 確認 channel_id
@@ -82,7 +87,8 @@ def v0_set_user_tag(channel_id,user_id,tag):
     user.set_user_tag(user_id,channel_id,tag)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
-# 取回會員標籤清單
+
+# # 取回會員標籤清單
 @api.route('/api/v0/get_user_tags/<channel_id>/<user_id>/')
 def get_user_tags(channel_id, user_id):
     # 確認 channel_id
@@ -97,3 +103,31 @@ def get_user_tags(channel_id, user_id):
     json_data = {'sys_code':"200","sys_msg":"success","tags":tags}
 
     return json_data
+
+# # 增加點數
+@api.route('/api/v0/add_user_point/<channel_id>/<user_id>', methods=["POST", "GET"])
+def add_user_point(channel_id, user_id):
+    jsondata = request.get_json()
+    point = jsondata["point"]
+    point_note = jsondata["point_note"]
+
+    new_point = user.add_point(user_id,channel_id,point,point_note)
+    json_data = {'sys_code':"200","sys_msg":"success",'new_point':new_point}
+
+    return json_data
+# 扣儲點數
+@api.route('/api/v0/deduct_user_point/<channel_id>/<user_id>', methods=["POST", "GET"])
+def deduct_user_point(channel_id, user_id):
+    jsondata = request.get_json()
+    point = jsondata["point"]
+    point_note = jsondata["point_note"]
+
+    new_point = user.deduct_point(user_id,channel_id,point,point_note)
+    json_data = {'sys_code':"200","sys_msg":"success",'new_point':new_point}
+
+    return json_data
+
+    #  manager_id = request.values["manager_id"]
+    #     manager_pwd = request.values["manager_pwd"]
+# # 扣除紅利點數
+# # 點數查詢

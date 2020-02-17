@@ -22,11 +22,13 @@ from api import *
 
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 app.register_blueprint(api)
 
 manager = Manager()
+
 # 登入管理者
 @app.route("/login",methods=['GET', 'POST'])
 def login():
