@@ -13,13 +13,13 @@ from data_model.user import *
 api = Blueprint('api', __name__)
 user = User()
 channel = Channel()
-
-@api.route('/api/test')
-def api_test():
-    return "Hello"
-
-# 第三方使用 API
-# 會員
+ #============================================================================
+    #
+    # 
+    # 會員
+    #
+    # 
+    # =================================================================
 # =================================================================
 # 取得會員資料
 @api.route("/api/v0/get_user_info/<channel_id>/<user_id>", methods=["POST", "GET"])
@@ -28,20 +28,16 @@ def v0_get_user_info(channel_id,user_id):
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
         return json_data
-    
     # 確認 user_id
     if(user.chk_once(user_id,channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
-    
     user_info = user.get_once(user_id,channel_id)
     if "tags" in user_info:
         del user_info['tags'] # 不需要歷史紀錄
     json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
 
     return json_data
-
-
 
 # # =================================================================    
 # # 設定會員資料 
@@ -104,6 +100,15 @@ def get_user_tags(channel_id, user_id):
 
     return json_data
 
+
+#============================================================================
+    #
+    # 
+    # 點數
+    #
+    # 
+    # =================================================================
+# =================================================================
 # # 增加點數
 @api.route('/api/v0/add_user_point/<channel_id>/<user_id>', methods=["POST", "GET"])
 def add_user_point(channel_id, user_id):
@@ -127,7 +132,20 @@ def deduct_user_point(channel_id, user_id):
 
     return json_data
 
-    #  manager_id = request.values["manager_id"]
-    #     manager_pwd = request.values["manager_pwd"]
-# # 扣除紅利點數
 # # 點數查詢
+@api.route('/api/v0/get_user_points/<channel_id>/<user_id>', methods=['GET'])
+def get_user_points(channel_id, user_id):
+    user_data = user.get_once(user_id,channel_id)
+    if "point" in user_data:
+        point = user_data["point"]
+        point_logs = user.get_point_logs(user_id,channel_id)
+    else:
+        point = 0
+        point_logs = {}
+    json_data = {
+        "sys_code": "200",
+        "sys_msg": "Success",
+        "point": point,
+        "point_logs":point_logs
+    }
+    return json_data

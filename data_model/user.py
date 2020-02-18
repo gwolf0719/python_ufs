@@ -147,9 +147,10 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id
         }
-        logs_data = self.col_point_logs.find(find)
+        logs_data = self.col_point_logs.find(find).sort("update_datetime",-1)
         datalist = []
-        for index,row in logs_data:
+        for row in logs_data:
+            del row["_id"]
             datalist.append(row)
         
         return list(datalist)
