@@ -9,7 +9,6 @@ from data_model.webhook import *
 from data_model.user import *
 
 
-
 api = Blueprint('api', __name__)
 user = User()
 channel = Channel()
@@ -120,6 +119,8 @@ def add_user_point(channel_id, user_id):
     json_data = {'sys_code':"200","sys_msg":"success",'new_point':new_point}
 
     return json_data
+
+
 # 扣儲點數
 @api.route('/api/v0/deduct_user_point/<channel_id>/<user_id>', methods=["POST", "GET"])
 def deduct_user_point(channel_id, user_id):

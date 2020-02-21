@@ -73,12 +73,20 @@ def channel():
                 "channel_access_token":request.values["channel_access_token"]
             }
             channel.add_once(jsondata)
-        
         datalist = channel.get_list(manager_id)
-        return render_template("index.html",datalist=datalist)
+        return render_template("channel.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 
+@app.route("/functions", methods=["GET", "POST"])
+def functions():
+    if(manager.chk_now() == True):
+        channel = Channel()
+        manager_id = session.get("manager_id")
+
+        return render_template("functions.html")
+    else:
+        return redirect(url_for("login"))
 
 # 單純抓取 webhook 回傳資料
 @app.route("/webhook/<channel_id>", methods=["POST", "GET"])

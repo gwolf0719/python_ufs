@@ -39,8 +39,8 @@
         <div class="row no-gutters">
             <div class="col fox-sidebar">
                 <ul id="fox-sidebar-ul">
-                    <li><a href="./channel">Channel 設定</a></li>
-                    <li><a href="index.html" class="active">元件：chart</a></li>
+                    <li><a href="./channel" class="active">Channel 設定</a></li>
+                    <li><a href="./functions" >Functions</a></li>
                     <li><a href="tool-form.html">元件：表單</a></li>
                     <li><a href="tool-table.html">元件：表格</a></li>
                     <li><a href="tool-button.html">元件：按鈕</a></li>
@@ -51,10 +51,14 @@
                 </ul>
             </div>
             <div class="col fox-content p-5">
-                <h2>
-                    {% block title %}
-                    {% endblock title%}
-                </h2>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2>
+                        {% block title %}
+                        {% endblock title%}
+                    </h2>
+                    {% block add_button %}
+                    {% endblock add_button %}
+                </div>
                 <hr>
                 {% block content %}
                 {% endblock content %}
