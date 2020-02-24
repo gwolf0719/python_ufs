@@ -12,6 +12,7 @@
     <table class="table table-hover ins-table-1">
         <thead>
             <tr>
+                <th>訊息編號</th>
                 <th>類型</th>
                 <th>標題</th>
                 <th>建立時間</th>
@@ -21,6 +22,7 @@
         <tbody>
             {% for data in datalist %}
             <tr>
+                <td>{{data.msg_id}}</td>
                 <td>{{data.type}}</td>
                 <td>{{data.subject}}</td>
                 <td>{{data.created_datetime}}</td>

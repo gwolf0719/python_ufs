@@ -6,11 +6,24 @@ from datetime import datetime
 import time
 import numpy as np
 
+
+# Model
+from data_model.manager import *
+from data_model.channel import *
+from data_model.webhook import *
+from data_model.user import *
+
+# line bot 相關元件
+from linebot import LineBotApi
+from linebot.models import *
+from linebot.exceptions import LineBotApiError
+
 class User:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
         self.col_user = self.client.ufs.users
         self.col_point_logs = self.client.ufs.point_logs
+        self.col_user_log = self.client.ufs.user_log
 
     # 取得單一帳號資料
     def get_once(self,user_id,channel_id):
@@ -38,10 +51,22 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id,
             "point":0,
-            "created_datetime":datetime.today()
+            "created_datetime":datetime.datetime.today()
         }
+        channel = Channel()
+        channel_info = channel.get_channel(channel_id)
+        channel_access_token = channel_info['channel_access_token']
+        line_bot_api = LineBotApi(channel_access_token)
+        profile = line_bot_api.get_profile(user_id)
+        jsondata['name'] = profile.display_name
+        jsondata['avator'] = profile.picture_url
+        jsondata['status_message'] = profile.status_message
         
         self.col_user.insert_one(jsondata)
+
+        # 新增LOG
+        User().set_user_log(user_id,channel_id,{"log_note":"新增帳號"})
+
         return True
 
     
@@ -169,8 +194,12 @@ class User:
         
         return list(datalist)
 
-    
-
+    def set_user_log(self, user_id,channel_id,log_data):
+        log_data['datetime'] = datetime.datetime.today()
+        log_data['user_id'] = user_id
+        log_data['channel_id'] = channel_id
+        self.col_user_log.insert_one(log_data)
+        return True
 
 
 
