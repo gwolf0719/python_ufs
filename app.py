@@ -10,15 +10,18 @@ import time
 import numpy as np
 # line bot 相關元件
 from linebot import LineBotApi
-from linebot.models import TextSendMessage
+from linebot.models import *
 from linebot.exceptions import LineBotApiError
 # Model
 from data_model.manager import *
 from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
+from data_model.msg import *
 
 from api import *
+from api_sys import *
+
 
 
 app = Flask(__name__)
@@ -26,7 +29,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 app.register_blueprint(api)
-
+app.register_blueprint(api_sys)
 manager = Manager()
 
 # 登入管理者
@@ -78,13 +81,34 @@ def channel():
     else:
         return redirect(url_for("login"))
 
-@app.route("/functions", methods=["GET", "POST"])
-def functions():
+@app.route("/msg", methods=["GET", "POST"])
+def msg():
     if(manager.chk_now() == True):
-        channel = Channel()
         manager_id = session.get("manager_id")
+        msg = Msg()
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            if(request.method == "POST"):
+                channel = Channel()
+                channel_id = request.values["channel_id"]
+                subject = request.values["subject"]
+                # 標準資料配置
+                jsondata = {
+                    "manager_id": manager_id,
+                    "channel_id":channel_id,
+                    "type":request.values["type"],
+                    "subject":request.values["subject"],
+                    "need_tags":request.values["need_tags"]
+                }
+                msg.add_once(jsondata,request.values["type"])
+                flash("訊息設定完成 "+subject+" ，請點選操作工具發送","success")
+                
 
-        return render_template("functions.html")
+            datalist = msg.get_list()
+            
+            return render_template("msg.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 

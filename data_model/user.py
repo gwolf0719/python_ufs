@@ -78,6 +78,20 @@ class User:
                 if t['tag'] not in res:
                     res.append(t['tag'])
         return res
+    
+    # 取得所有人
+    def get_all_users(self,channel_id):
+        find = {
+            "channel_id":channel_id
+        }
+        datalist = []
+        for d in self.col_user.find(find):
+            datalist.append({
+                "user_id":d["user_id"],
+                "name":d["name"],
+            })
+        return list(datalist)
+
 
     #============================================================================
     #
