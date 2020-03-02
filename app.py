@@ -216,6 +216,36 @@ def products():
 
 
 
+# 訂單管理
+@app.route("/orders", methods=["GET", "POST"])
+def orders():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            return render_template("orders.html")
+    else:
+        return redirect(url_for("login"))
+
+@app.route("/order_info", methods=["GET", "POST"])
+def order_info():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            return render_template("order_info.html")
+    else:
+        return redirect(url_for("login"))
+
+
+
+
 
 
 
