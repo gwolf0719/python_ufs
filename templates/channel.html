@@ -74,7 +74,8 @@
         $("body").on("click",".set_use",function(){
             // alert($(this).attr("channel_id"));
             $.getJSON("./api_sys/set_channel/"+ $(this).attr("channel_id"),function(data){
-                alert("Success:"+ data.channel_id);
+                // alert("Success:"+ data.channel_id);
+                alert("請開始進行操作")
             })
         })
     })

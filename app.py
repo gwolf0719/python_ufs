@@ -245,6 +245,21 @@ def order_info():
 
 
 
+# 腳本訓息
+@app.route("/scripts", methods=["GET", "POST"])
+def scripts():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            return render_template("scripts.html")
+    else:
+        return redirect(url_for("login"))
+
+
 
 
 
