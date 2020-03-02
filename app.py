@@ -5,6 +5,7 @@ import json
 import pymongo
 import pandas as pd
 import datetime
+import hashlib
 from datetime import timedelta
 import time
 import numpy as np
@@ -18,6 +19,7 @@ from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
 from data_model.msg import *
+from data_model.re_url import *
 
 from api import *
 from api_sys import *
@@ -111,6 +113,105 @@ def msg():
             return render_template("msg.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
+
+
+
+
+@app.route("/users", methods=["GET", "POST"])
+def users():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            datalist = user.get_all_users(channel_id)
+            return render_template("users.html",datalist=datalist)
+    else:
+        return redirect(url_for("login"))
+
+@app.route("/user_info/<channel_id>/<user_id>", methods=["POST", "GET"])
+def user_info(channel_id, user_id):
+    
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        user = User()
+        user_info = user.get_once(user_id,channel_id)
+        user_logs = user.get_user_log(user_id,channel_id)
+        return render_template("user_info.html",user_info=user_info,user_logs=user_logs)
+    else:
+        return redirect(url_for("login"))
+
+
+@app.route("/re_url/", methods=["GET", "POST"])
+def re_url():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            re_url = Re_url()
+            if request.method == "POST":
+                subject = request.values['subject']
+                target_url = request.values['target_url']
+                tags = request.values['tags']
+                
+                # 先將資料編碼，再更新 MD5 雜湊值
+                m = hashlib.md5()
+                m.update(str(time.time()).encode("utf-8"))
+                link_id = m.hexdigest()[-6:]
+                datajson = {
+                    "subject":subject,
+                    "target_url":target_url,
+                    "tags":tags,
+                    "channel_id":channel_id,
+                    "url":link_id,
+                    "link_id":link_id
+                }
+                
+                re_url.add_once(datajson)
+                
+            urls = re_url.get_list(channel_id)
+            print(urls)
+        return render_template("re_url.html",datalist=urls)
+    else:
+        return redirect(url_for("login"))
+
+
+
+@app.route("/tags/", methods=["GET", "POST"])
+def tags():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            
+                
+            
+        return render_template("tags.html")
+    else:
+        return redirect(url_for("login"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 單純抓取 webhook 回傳資料
 @app.route("/webhook/<channel_id>", methods=["POST", "GET"])

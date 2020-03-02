@@ -54,8 +54,18 @@ html, body {
   color: #353a40;
   border-color: #353a40; }
 
+.badge-outline-primary {
+  border: 1px solid #00b900;
+  color: #00b900;
+  font-weight: 400; }
+
 .badge-primary {
   background: #00b900; }
+
+.badge-outline-secondary {
+  border: 1px solid #6c757d;
+  color: #6c757d;
+  font-weight: 400; }
 
 .badge-success {
   background: #07d1a7; }

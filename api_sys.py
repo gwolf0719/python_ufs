@@ -40,8 +40,10 @@ def send_message(channel_id,msg_id):
     if msg_data["need_tags"] == "":
         users = user.get_all_users(channel_id)
     
-    for user in users:
-        user_ids.append(user['user_id'])
+    for user_data in users:
+        user_ids.append(user_data['user_id'])
+        # 設定log
+        user.set_user_log(user_data['user_id'],channel_id,"發送訊息: "+msg_data['text'])
 
     line_bot_api = LineBotApi(channel_access_token)
     # for user in users:

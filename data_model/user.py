@@ -51,7 +51,8 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id,
             "point":0,
-            "created_datetime":datetime.datetime.today()
+            "created_datetime":datetime.datetime.today(),
+            "last_datetime":datetime.datetime.today()
         }
         channel = Channel()
         channel_info = channel.get_channel(channel_id)
@@ -65,7 +66,7 @@ class User:
         self.col_user.insert_one(jsondata)
 
         # 新增LOG
-        User().set_user_log(user_id,channel_id,{"log_note":"新增帳號"})
+        User().set_user_log(user_id,channel_id,"新增帳號")
 
         return True
 
@@ -73,8 +74,10 @@ class User:
     def update_user_main(self,user_id,channel_id,data):
         find = {
             "user_id":user_id,
-            "channel_id":channel_id
+            "channel_id":channel_id,
+            
         }
+        data["last_datetime"] =datetime.datetime.today()
         self.col_user.update_one(find,{"$set":data})
         return True
     # 設定使用者參數
@@ -85,10 +88,14 @@ class User:
         }
         tag = {
             "tag":tag,
-            "time":datetime.now(),
-            "date":datetime.today()
+            "date":datetime.datetime.today()
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
+        # 更新最後操作時間和 log
+        data = {}
+        data["last_datetime"] =datetime.datetime.today()
+        self.col_user.update_one(find,{"$set":data})
+        User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag))
         return True
     # 取得使用者有使用到的 TAG
     def get_user_tags(self,user_id,channel_id):
@@ -111,10 +118,8 @@ class User:
         }
         datalist = []
         for d in self.col_user.find(find):
-            datalist.append({
-                "user_id":d["user_id"],
-                "name":d["name"],
-            })
+            del d["_id"]
+            datalist.append(d)
         return list(datalist)
 
 
@@ -141,7 +146,7 @@ class User:
             'original':old_point,
             "point":point,
             "act":"add",
-            "update_datetime":datetime.today(),
+            "update_datetime":datetime.datetime.today(),
             "balance_point":new_point,
             "point_note":point_note
         }
@@ -152,6 +157,13 @@ class User:
             "channel_id":channel_id
         }
         self.col_user.update_one(find,{"$set":{"point":new_point}})
+
+        # 更新最後操作時間和 log
+        data = {}
+        data["last_datetime"] =datetime.datetime.today()
+        self.col_user.update_one(find,{"$set":data})
+        log = "新增點數({0}):{1}".format(point_note,point)
+        User().set_user_log(user_id,channel_id,log)
         return new_point
 
 
@@ -167,7 +179,7 @@ class User:
             'original':old_point,
             "point":point,
             "act":"deduct",
-            "update_datetime":datetime.today(),
+            "update_datetime":datetime.datetime.today(),
             "balance_point":new_point,
             "point_note":point_note
         }
@@ -178,6 +190,12 @@ class User:
             "channel_id":channel_id
         }
         self.col_user.update_one(find,{"$set":{"point":new_point}})
+
+        # 更新最後操作時間和 log
+        data = {}
+        data["last_datetime"] =datetime.datetime.today()
+        log = "扣除點數({0}):{1}".format(point_note,point)
+        User().set_user_log(user_id,channel_id,log)
         return new_point
 
     # 取得交易紀錄
@@ -194,12 +212,29 @@ class User:
         
         return list(datalist)
 
-    def set_user_log(self, user_id,channel_id,log_data):
+    def set_user_log(self, user_id,channel_id,log_msg):
+        log_data = {}
+        log_data['log_note'] = log_msg
         log_data['datetime'] = datetime.datetime.today()
         log_data['user_id'] = user_id
         log_data['channel_id'] = channel_id
         self.col_user_log.insert_one(log_data)
         return True
+    
+    def get_user_log(self,user_id,channel_id):
+        find = {
+            "user_id": user_id,
+            "channel_id": channel_id
+        }
+        logs_data = self.col_user_log.find(find).sort("datetime",-1)
+        datalist = []
+        for row in logs_data:
+            del row["_id"]
+            datalist.append(row)
+        
+        return list(datalist)
+
+
 
 
 
