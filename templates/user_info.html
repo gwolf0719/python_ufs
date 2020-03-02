@@ -41,24 +41,22 @@
 </div>
 
 
-<div class="row">
-    <table class="table table-hover ins-table-1">
-        <thead>
-            <tr>
-                <th>最後互動時間</th>
-                <th>行為</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in user_logs %}
-            <tr>
-                <td>{{data.datetime}}</td>
-                <td>{{data.log_note}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<table class="table table-hover ins-table-1">
+    <thead>
+        <tr>
+            <th>最後互動時間</th>
+            <th>行為</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in user_logs %}
+        <tr>
+            <td>{{data.datetime}}</td>
+            <td>{{data.log_note}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 {% endblock content %}
