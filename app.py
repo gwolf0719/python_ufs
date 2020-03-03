@@ -83,6 +83,20 @@ def channel():
     else:
         return redirect(url_for("login"))
 
+@app.route("/channel_info", methods=["GET", "POST"])
+def channel_info():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            return render_template("channel_info.html")
+    else:
+        return redirect(url_for("login"))
+
+
 @app.route("/msg", methods=["GET", "POST"])
 def msg():
     if(manager.chk_now() == True):

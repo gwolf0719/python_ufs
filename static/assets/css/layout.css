@@ -330,6 +330,21 @@ a {
 .breadcrumb .current {
   font-weight: 500; }
 
+.channel-item {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 2px;
+  overflow: hidden; }
+  .channel-item:hover {
+    -webkit-box-shadow: 0 6px 17px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 17px 0 rgba(0, 0, 0, 0.1);
+    color: initial; }
+  .channel-item h3 {
+    text-align: center;
+    font-size: 1.25em;
+    white-space: pre-wrap;
+    word-break: break-all; }
+
 @media (min-width: 768px) {
   .breadcrumb {
     display: inline-grid;

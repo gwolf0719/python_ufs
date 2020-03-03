@@ -12,12 +12,10 @@
 <div class="row">
 
     {% for data in datalist %}
-    <div class="col-4">
-        <div class="chart_area_wrapper p-3 card">
-            <h3>{{ data.channel_name }}</h3>
-            <div class="chart_area" id="chart_2" style="width: 100%;height:400px;">
-                <button class="btn btn-primary set_use" channel_id="{{ data.channel_id }}">設為使用中</button>
-            </div>
+    <div class="col-3">
+        <div class="channel-item text-center">
+            <h3 class="text-center mt-3 mb-3">{{ data.channel_name }}</h3>  
+            <button class="btn btn-outline-primary btn-sm set_use mb-3" channel_id="{{ data.channel_id }}">管理</button>
         </div>
     </div>
     {% endfor %}
@@ -75,7 +73,8 @@
             // alert($(this).attr("channel_id"));
             $.getJSON("./api_sys/set_channel/"+ $(this).attr("channel_id"),function(data){
                 // alert("Success:"+ data.channel_id);
-                alert("請開始進行操作")
+                // alert("請開始進行操作")
+                location.href = 'channel_info'
             })
         })
     })

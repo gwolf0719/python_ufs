@@ -8,33 +8,31 @@
 {% endblock title%}
 
 {% block content %}
-<div class="row">
-    <table class="table table-hover ins-table-1">
-        <thead>
-            <tr>
-                <th>訊息編號</th>
-                <th>類型</th>
-                <th>標題</th>
-                <th>建立時間</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in datalist %}
-            <tr>
-                <td>{{data.msg_id}}</td>
-                <td>{{data.type}}</td>
-                <td>{{data.subject}}</td>
-                <td>{{data.created_datetime}}</td>
-                <td>
-                    <button class="btn btn-primary send-message" msg_id="{{ data.msg_id }}" >發送</button>
-                    <button class="btn btn-primary" msg_id="{{ data.msg_id }}" >編輯</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<table class="table table-hover ins-table-1">
+    <thead>
+        <tr>
+            <th>訊息編號</th>
+            <th>類型</th>
+            <th>標題</th>
+            <th>建立時間</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in datalist %}
+        <tr>
+            <td>{{data.msg_id}}</td>
+            <td>{{data.type}}</td>
+            <td>{{data.subject}}</td>
+            <td>{{data.created_datetime}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm send-message" msg_id="{{ data.msg_id }}" >發送</button>
+                <button class="btn btn-outline-primary btn-sm" msg_id="{{ data.msg_id }}" >編輯</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 {# 燈箱組件 #}
