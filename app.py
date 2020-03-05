@@ -115,8 +115,7 @@ def msg():
                     "manager_id": manager_id,
                     "channel_id":channel_id,
                     "type":request.values["type"],
-                    "subject":request.values["subject"],
-                    "need_tags":request.values["need_tags"]
+                    "subject":request.values["subject"]
                 }
                 msg.add_once(jsondata,request.values["type"])
                 flash("訊息設定完成 "+subject+" ，請點選操作工具發送","success")

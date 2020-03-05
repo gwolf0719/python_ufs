@@ -31,24 +31,49 @@ def send_message(channel_id,msg_id):
     channel_info = channel.get_channel(channel_id)
     channel_access_token = channel_info['channel_access_token']
     msg_data = msg.get_once(msg_id)
+    
+
+    # 設定發送內容
     if msg_data["type"] == "text":
-        text_send_message = TextSendMessage(text=msg_data["text"])
-    else:
-        text_send_message = TextSendMessage(text="hello")
+        send_message = TextSendMessage(text=msg_data["text"])
+    elif msg_data["type"] == "image":
+        send_message = ImageSendMessage(
+            original_content_url=msg_data['original_content_url'],
+            preview_image_url=msg_data['original_content_url']
+        )
+    elif msg_data['type'] == "imagemap":
+        send_message = ImagemapSendMessage(
+            base_url=msg_data['base_url'],
+            alt_text=msg_data['alt_text'],
+            base_size=BaseSize(height=1040, width=1040),
+            actions=[
+                URIImagemapAction(
+                    link_uri=msg_data['link_uri'],
+                    area=ImagemapArea(
+                        x=0, y=0, width=1040, height=1040
+                    )
+                )
+            ]
+        )
+
+
     users = []
     user_ids = []
-    if msg_data["need_tags"] == "":
-        users = user.get_all_users(channel_id)
+    line_bot_api = LineBotApi(channel_access_token)
+    users = user.get_all_users(channel_id)
+        
     
     for user_data in users:
         user_ids.append(user_data['user_id'])
         # 設定log
-        user.set_user_log(user_data['user_id'],channel_id,"發送訊息: "+msg_data['text'])
+        user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
+        res = line_bot_api.push_message(user_data['user_id'], send_message)
 
-    line_bot_api = LineBotApi(channel_access_token)
+
+    
     # for user in users:
-    # line_bot_api.push_message("Ufd5d3bb5d828bfcef65344c0bd5b5c07", text_send_message)
-    line_bot_api.multicast(user_ids, text_send_message)
+    
+    # line_bot_api.multicast(user_ids, text_send_message)
     json_data = {'sys_code':"200","sys_msg":"success"}
 
     return json_data
