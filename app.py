@@ -188,11 +188,23 @@ def re_url():
                 re_url.add_once(datajson)
                 
             urls = re_url.get_list(channel_id)
-            print(urls)
         return render_template("re_url.html",datalist=urls)
     else:
         return redirect(url_for("login"))
 
+# 轉址動作
+@app.route("/re_url/<link_id>", methods=["GET", "POST"])
+def re_url_go(link_id):
+    re_url = Re_url()
+    data = re_url.get_once(link_id)
+    if 'tags' in data:
+        if data['tags'].find('?') == -1:
+            return redirect(data['target_url']+"?tags="+data['tags'])
+        else:
+            return redirect(data['target_url']+"&tags="+data['tags'])
+
+    
+    return data['target_url']
 
 
 @app.route("/tags/", methods=["GET", "POST"])

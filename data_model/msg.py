@@ -15,8 +15,10 @@ class Msg:
         datajson['msg_id']  = str(round(time.time()))
         if msg_type == "text":
             datajson['text'] = request.values['desc']
+
         elif msg_type == "image":
             datajson['original_content_url'] = request.values['original_content_url']
+            
         elif msg_type == "imagemap":
             datajson['base_url'] = request.values['base_url']
             datajson['alt_text'] = request.values['alt_text']

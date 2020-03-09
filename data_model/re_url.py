@@ -35,4 +35,10 @@ class Re_url:
 
 
     def get_once(self,link_id):
-        return True
+        find = {
+            "link_id": link_id
+        }
+        data = self.col_reurl.find_one(find)
+        print(data)
+        del data["_id"]
+        return data
