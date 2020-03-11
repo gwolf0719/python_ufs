@@ -11,19 +11,9 @@ class Msg:
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
         self.col_msg = self.client.ufs.msgs
 
-    def add_once(self,datajson,msg_type):
+    def add_once(self,datajson):
+        datajson['manager_id']  = session.get("manager_id")
         datajson['msg_id']  = str(round(time.time()))
-        if msg_type == "text":
-            datajson['text'] = request.values['desc']
-
-        elif msg_type == "image":
-            datajson['original_content_url'] = request.values['original_content_url']
-            
-        elif msg_type == "imagemap":
-            datajson['base_url'] = request.values['base_url']
-            datajson['alt_text'] = request.values['alt_text']
-            datajson['link_uri'] = request.values['link_uri']
-
         datajson["created_datetime"] = datetime.today()
         self.col_msg.insert_one(datajson)
         return True

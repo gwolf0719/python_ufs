@@ -22,7 +22,7 @@
         {% for data in datalist %}
         <tr>
             <td>{{data.msg_id}}</td>
-            <td>{{data.type}}</td>
+            <td>{{data.msg_type}}</td>
             <td>{{data.subject}}</td>
             <td>{{data.created_datetime}}</td>
             <td>
@@ -48,6 +48,7 @@
                 </button>
             </div>
             <form action="" method="post">
+                <input type="hidden" name="type" value="send_msg">
                 <div class="modal-body">
                     <div class="tool-list-width">
 
@@ -66,7 +67,7 @@
                             <label class="col-2 col-form-label" for="">訊息種類<span class="text-danger">*</span></label>
                             <div class="col-10"> 
                                 <div class="form-group">
-                                  <select  class="form-control" name="type" id="msg_type">
+                                  <select  class="form-control" name="msg_type" id="msg_type">
                                     <option value="text">純文字</option>
                                     <option value="image">純圖片</option>
                                     <option value="imagemap">影像地圖</option>
@@ -82,7 +83,7 @@
                                 <label class="col-2 col-form-label" for="">內文<span
                                         class="text-danger">*</span></label>
                                 <div class="col-10">
-                                    <textarea class="form-control" name="desc"></textarea>
+                                    <textarea class="form-control" name="text"></textarea>
                                 </div>
                             </div>
                         </div>

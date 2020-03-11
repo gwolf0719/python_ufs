@@ -211,6 +211,21 @@ class User:
             datalist.append(row)
         
         return list(datalist)
+    # 取得累績總點數
+    def lifetime_record(self,user_id,channel_id):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id,
+            "act":"add"
+        }
+        pipeline = [
+            {'$match':find},
+            {'$group': {'_id': "$user_id", 'point': {'$sum': '$point'}}},
+        ]
+        res = self.col_point_logs.aggregate(pipeline)
+        for data in res:
+            print(data)
+        return data['point']
 
     def set_user_log(self, user_id,channel_id,log_msg):
         log_data = {}

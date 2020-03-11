@@ -157,14 +157,38 @@ def get_user_points(channel_id, user_id):
     user_data = user.get_once(user_id,channel_id)
     if "point" in user_data:
         point = user_data["point"]
-        point_logs = user.get_point_logs(user_id,channel_id)
+        lifetime_record=user.lifetime_record(user_id,channel_id)
     else:
         point = 0
-        point_logs = {}
+        lifetime_record=0
+
     json_data = {
         "sys_code": "200",
         "sys_msg": "Success",
-        "point": point,
+        "canuse_point": point,
+        "used_point": lifetime_record-point,
+        "lifetime_record":lifetime_record
+    }
+    return json_data
+# 查詢點數記錄
+@api.route('/api/v0/get_user_points_log/<channel_id>/<user_id>', methods=['GET'])
+def get_user_points_log(channel_id, user_id):
+    user_data = user.get_once(user_id,channel_id)
+    if "point" in user_data:
+        point = user_data["point"]
+        lifetime_record=user.lifetime_record(user_id,channel_id)
+        point_logs = user.get_point_logs(user_id,channel_id)
+    else:
+        point = 0
+        lifetime_record=0
+        point_logs = []
+
+    json_data = {
+        "sys_code": "200",
+        "sys_msg": "Success",
+        "canuse_point": point,
+        "used_point": lifetime_record-point,
+        "lifetime_record":lifetime_record,
         "point_logs":point_logs
     }
     return json_data

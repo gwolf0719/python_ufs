@@ -14,6 +14,20 @@ from data_model.msg import *
 
 api_sys = Blueprint('api_sys', __name__)
 
+# 設定腳本
+# 2020-03-09 改成 script 和 msg 共用設定和資廖庫
+@api_sys.route('/api_sys/set_msg/', methods=["POST"])
+def set_msg():
+    # 取得輸入資料
+    jsondata = request.get_json()
+    print(jsondata)
+    # msg = Msg()
+    # msg.add_once(jsondata)
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
+        
+
+
 @api_sys.route('/api_sys/set_channel/<channel_id>')
 def set_channel(channel_id):
     session["channel_id"] = channel_id
@@ -34,14 +48,17 @@ def send_message(channel_id,msg_id):
     
 
     # 設定發送內容
-    if msg_data["type"] == "text":
+    # 純文字訊息
+    if msg_data["msg_type"] == "text":
         send_message = TextSendMessage(text=msg_data["text"])
-    elif msg_data["type"] == "image":
+    # 圖片
+    elif msg_data["msg_type"] == "image":
         send_message = ImageSendMessage(
             original_content_url=msg_data['original_content_url'],
             preview_image_url=msg_data['original_content_url']
         )
-    elif msg_data['type'] == "imagemap":
+    # 圖片帶連結
+    elif msg_data['msg_type'] == "imagemap":
         send_message = ImagemapSendMessage(
             base_url=msg_data['base_url'],
             alt_text=msg_data['alt_text'],
@@ -56,24 +73,18 @@ def send_message(channel_id,msg_id):
             ]
         )
 
-
+    # 整理會員名單
     users = []
     user_ids = []
-    line_bot_api = LineBotApi(channel_access_token)
     users = user.get_all_users(channel_id)
-        
-    
+    line_bot_api = LineBotApi(channel_access_token)
+    # 發送訊息
     for user_data in users:
         user_ids.append(user_data['user_id'])
         # 設定log
         user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
         res = line_bot_api.push_message(user_data['user_id'], send_message)
 
-
-    
-    # for user in users:
-    
-    # line_bot_api.multicast(user_ids, text_send_message)
     json_data = {'sys_code':"200","sys_msg":"success"}
 
     return json_data

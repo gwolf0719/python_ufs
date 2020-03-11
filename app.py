@@ -100,27 +100,14 @@ def channel_info():
 @app.route("/msg", methods=["GET", "POST"])
 def msg():
     if(manager.chk_now() == True):
-        manager_id = session.get("manager_id")
         msg = Msg()
         if session.get("channel_id") is None:
             flash("請先選取要設定的 Channel ","danger")
             return redirect(url_for("channel"))
         else:
             if(request.method == "POST"):
-                channel = Channel()
-                channel_id = request.values["channel_id"]
-                subject = request.values["subject"]
-                # 標準資料配置
-                jsondata = {
-                    "manager_id": manager_id,
-                    "channel_id":channel_id,
-                    "type":request.values["type"],
-                    "subject":request.values["subject"]
-                }
-                msg.add_once(jsondata,request.values["type"])
-                flash("訊息設定完成 "+subject+" ，請點選操作工具發送","success")
-                
-
+                msg.add_once(request.form.to_dict())
+                flash("訊息設定完成，請點選操作工具發送","success")
             datalist = msg.get_list()
             
             return render_template("msg.html",datalist=datalist)
