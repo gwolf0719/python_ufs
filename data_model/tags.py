@@ -6,6 +6,8 @@ from datetime import datetime
 import time
 import numpy as np
 
+from data_model.user import *
+
 
 class Tags:
     def __init__(self):
@@ -64,7 +66,7 @@ class Tags:
     # day,month,year,total
     def chk_limit(self,channel_id,user_id,tag):
         tag_data = Tags().get_once(channel_id,tag);
-        now = datetime.now();
+        now = datetime.datetime.now();
         find = {
                 "channel_id":channel_id,
                 "user_id":user_id,
@@ -90,7 +92,7 @@ class Tags:
 
     # 記錄追蹤
     def set_tag_log(self,channel_id, user_id,tag):
-        now = datetime.now();
+        now = datetime.datetime.now();
         data = {
             "channel_id":channel_id,
             "user_id":user_id,
@@ -102,5 +104,12 @@ class Tags:
 
 
     # 執行動作
-    # def do_tag_act(self,channel_id,user_id,tag):
-
+    def do_tag_act(self,channel_id,user_id,tag):
+        tag_data = Tags().get_once(channel_id,tag);
+        user = User()
+        if "act" in tag_data:
+            for a in tag_data["act"]:
+                if a["act_key"] == "add_user_point":
+                    user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+        
+        return True

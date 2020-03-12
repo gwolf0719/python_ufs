@@ -12,6 +12,7 @@ from data_model.manager import *
 from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
+from data_model.tags import *
 
 # line bot 相關元件
 from linebot import LineBotApi
@@ -96,6 +97,18 @@ class User:
         data["last_datetime"] =datetime.datetime.today()
         self.col_user.update_one(find,{"$set":data})
         User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag))
+
+        # 設定 tag
+        tags = Tags()
+        # 如果是在追蹤清單中
+        if tags.chk_once(channel_id,tag) == True:
+            tag_limit = tags.chk_limit(channel_id,user_id,tag)
+            # 如果額度還夠
+            if tag_limit == True:
+                # 執行動作
+                tags.do_tag_act(channel_id, user_id,tag)
+                tags.set_tag_log(channel_id, user_id,tag)
+
         return True
     # 取得使用者有使用到的 TAG
     def get_user_tags(self,user_id,channel_id):
@@ -222,12 +235,10 @@ class User:
             {'$match':find},
             {'$group': {'_id': "$user_id", 'point': {'$sum': '$point'}}},
         ]
-        # print(pipeline)
         if self.col_point_logs.find(find).count() == 0:
             return 0
         else :
             res = self.col_point_logs.aggregate(pipeline)
-            # print(res)
             for data in res:
                 print(data)
             return data['point']

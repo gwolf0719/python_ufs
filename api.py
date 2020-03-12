@@ -103,12 +103,15 @@ def v0_set_user_tag(channel_id,user_id,tag):
     # 如果是在追蹤清單中
     if tags.chk_once(channel_id,tag) == True:
         tag_limit = tags.chk_limit(channel_id,user_id,tag)
+        # 如果額度還夠
         if tag_limit == True:
+            # 動做
+            tags.do_tag_act(channel_id, user_id,tag)
             tags.set_tag_log(channel_id, user_id,tag)
 
 
     user.set_user_tag(user_id,channel_id,tag)
-    json_data = {'sys_code':"200","sys_msg":"success","tag_limit":tag_limit}
+    json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
 
 # # 取回會員標籤清單

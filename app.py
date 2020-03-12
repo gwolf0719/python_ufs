@@ -275,12 +275,6 @@ def scripts():
 
 
 
-
-
-
-
-
-
 # 單純抓取 webhook 回傳資料
 @app.route("/webhook/<channel_id>", methods=["POST", "GET"])
 def webhook(channel_id):
