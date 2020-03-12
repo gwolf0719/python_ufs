@@ -152,6 +152,13 @@ def add_user_point(channel_id, user_id):
 # 扣儲點數
 @api.route('/api/v0/deduct_user_point/<channel_id>/<user_id>', methods=["POST", "GET"])
 def deduct_user_point(channel_id, user_id):
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
     jsondata = request.get_json()
     point = jsondata["point"]
     point_note = jsondata["point_note"]
@@ -164,7 +171,15 @@ def deduct_user_point(channel_id, user_id):
 # # 點數查詢
 @api.route('/api/v0/get_user_points/<channel_id>/<user_id>', methods=['GET'])
 def get_user_points(channel_id, user_id):
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
     user_data = user.get_once(user_id,channel_id)
+    
     if "point" in user_data:
         point = user_data["point"]
         lifetime_record=user.lifetime_record(user_id,channel_id)
@@ -183,6 +198,13 @@ def get_user_points(channel_id, user_id):
 # 查詢點數記錄
 @api.route('/api/v0/get_user_points_log/<channel_id>/<user_id>', methods=['GET'])
 def get_user_points_log(channel_id, user_id):
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
     user_data = user.get_once(user_id,channel_id)
     if "point" in user_data:
         point = user_data["point"]
