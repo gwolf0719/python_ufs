@@ -11,6 +11,7 @@ class Msg:
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
         self.col_msg = self.client.ufs.msgs
 
+    
     def add_once(self,datajson):
         datajson['manager_id']  = session.get("manager_id")
         datajson['msg_id']  = str(round(time.time()))

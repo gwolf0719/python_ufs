@@ -312,9 +312,9 @@ def webhook(channel_id):
         replyToken = event["replyToken"]
         # 回覆
         line_bot_api = LineBotApi(channel_access_token)
-        print(user_id)
-        line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
-        # 主動發送
+        # print(user_id)
+        # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
+        # 檢查腳本關鍵字觸發
         
         
         
