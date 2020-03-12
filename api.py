@@ -256,5 +256,17 @@ def set_tag_main():
     else:
         tags.set_tag_main(jsondata)
         return "jsondata"
+
+
+@api.route('/api/v0/send_message/<channel_id>/<user_id>/<msg>', methods=['POST',"GET"])
+def send_message(channel_id, user_id, msg):
+    channel = Channel()
+    
+    channel_info = channel.get_channel(channel_id)
+    channel_access_token = channel_info['channel_access_token']
+    line_bot_api = LineBotApi(channel_access_token)
+    
+    res = line_bot_api.push_message(user_id, TextSendMessage(text=msg))
+    return "12345"
     
     
