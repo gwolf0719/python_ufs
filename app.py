@@ -190,7 +190,17 @@ def re_url_go(link_id):
         else:
             return redirect(data['target_url']+"&tags="+data['tags'])
 
-    
+    return data['target_url']
+@app.route("/re_url/<link_id>/<user_id>", methods=["GET"])
+def re_url_go(link_id,user_id):
+    re_url = Re_url()
+    data = re_url.get_once(link_id)
+    if 'tags' in data:
+        if data['tags'].find('?') == -1:
+            return redirect(data['target_url']+"?tags="+data['tags'])
+        else:
+            return redirect(data['target_url']+"&tags="+data['tags'])
+
     return data['target_url']
 
 
@@ -299,11 +309,11 @@ def webhook(channel_id):
             user.add_once(user_id,channel_id)
             user.set_user_tag(user_id,channel_id,event['type'])
 
-        # replyToken = event["replyToken"]
+        replyToken = event["replyToken"]
         # 回覆
-        # line_bot_api = LineBotApi(
-        #     'EeW1IZR3U3fYS9rVH1njiVkTlaRUFEvkyXS2xl1swT+p+McTNzdZwZphg1BrjvjTXXcQAlSHK/I2bx2s3Fu8GfUS5tljY2ZO8krNSKgpU6O7GRgwMcxKHfQvp7w4m8PHZZmsGy9C3pf4ifaXws7/+wdB04t89/1O/w1cDnyilFU=')
-        # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
+        line_bot_api = LineBotApi(channel_access_token)
+        print(user_id)
+        line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'.user_id))
         # 主動發送
         
         
