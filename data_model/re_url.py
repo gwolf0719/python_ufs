@@ -7,11 +7,6 @@ import time
 import numpy as np
 
 
-# Model
-from data_model.manager import *
-from data_model.channel import *
-from data_model.webhook import *
-from data_model.user import *
 
 class Re_url:
     def __init__(self):
@@ -39,6 +34,5 @@ class Re_url:
             "link_id": link_id
         }
         data = self.col_reurl.find_one(find)
-        print(data)
         del data["_id"]
         return data

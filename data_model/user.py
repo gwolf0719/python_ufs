@@ -2,17 +2,12 @@
 from flask import Flask, jsonify, request, render_template,session
 import pymongo
 import pandas as pd
-from datetime import datetime
+import datetime 
 import time
 import numpy as np
 
-
-# Model
-from data_model.manager import *
-from data_model.channel import *
-from data_model.webhook import *
-from data_model.user import *
 from data_model.tags import *
+
 
 # line bot 相關元件
 from linebot import LineBotApi
@@ -52,8 +47,8 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id,
             "point":0,
-            "created_datetime":datetime.datetime.today(),
-            "last_datetime":datetime.datetime.today()
+            "created_datetime":datetime.datetime.now(),
+            "last_datetime":datetime.datetime.now()
         }
         channel = Channel()
         channel_info = channel.get_channel(channel_id)
@@ -78,7 +73,7 @@ class User:
             "channel_id":channel_id,
             
         }
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
         return True
     # 設定使用者參數
@@ -89,12 +84,12 @@ class User:
         }
         tag = {
             "tag":tag,
-            "date":datetime.datetime.today()
+            "date":datetime.datetime.now()
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
         # 更新最後操作時間和 log
         data = {}
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
         User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag))
 
@@ -159,7 +154,7 @@ class User:
             'original':old_point,
             "point":point,
             "act":"add",
-            "update_datetime":datetime.datetime.today(),
+            "update_datetime":datetime.datetime.now(),
             "balance_point":new_point,
             "point_note":point_note
         }
@@ -173,7 +168,7 @@ class User:
 
         # 更新最後操作時間和 log
         data = {}
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
         log = "新增點數({0}):{1}".format(point_note,point)
         User().set_user_log(user_id,channel_id,log)
@@ -192,7 +187,7 @@ class User:
             'original':old_point,
             "point":point,
             "act":"deduct",
-            "update_datetime":datetime.datetime.today(),
+            "update_datetime":datetime.datetime.now(),
             "balance_point":new_point,
             "point_note":point_note
         }
@@ -206,7 +201,7 @@ class User:
 
         # 更新最後操作時間和 log
         data = {}
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         log = "扣除點數({0}):{1}".format(point_note,point)
         User().set_user_log(user_id,channel_id,log)
         return new_point
@@ -246,7 +241,7 @@ class User:
     def set_user_log(self, user_id,channel_id,log_msg):
         log_data = {}
         log_data['log_note'] = log_msg
-        log_data['datetime'] = datetime.datetime.today()
+        log_data['datetime'] = datetime.datetime.now()
         log_data['user_id'] = user_id
         log_data['channel_id'] = channel_id
         self.col_user_log.insert_one(log_data)

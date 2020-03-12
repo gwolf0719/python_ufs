@@ -90,6 +90,7 @@ def v0_set_user_info(channel_id, user_id):
 # # 設定會員標籤
 @api.route('/api/v0/set_user_tag/<channel_id>/<user_id>/<tag>')
 def v0_set_user_tag(channel_id,user_id,tag):
+    # user = User()
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
@@ -100,13 +101,21 @@ def v0_set_user_tag(channel_id,user_id,tag):
         return json_data
     # 設定 tag
     tags = Tags()
+    
+
     # 如果是在追蹤清單中
     if tags.chk_once(channel_id,tag) == True:
         tag_limit = tags.chk_limit(channel_id,user_id,tag)
         # 如果額度還夠
         if tag_limit == True:
-            # 動做
-            tags.do_tag_act(channel_id, user_id,tag)
+            # 動作
+            tag_data = tags.get_once(channel_id,tag);
+            # tags.do_tag_act(channel_id,user_id,tag)
+            if "act" in tag_data:
+                for a in tag_data["act"]:
+                    if a["act_key"] == "add_user_point":
+                        user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+
             tags.set_tag_log(channel_id, user_id,tag)
 
 
@@ -232,7 +241,7 @@ def get_user_points_log(channel_id, user_id):
 #============================================================================
     #
     # 
-    # 會員
+    # 標籤
     #
     # 
     # =================================================================

@@ -2,18 +2,23 @@
 from flask import Flask, jsonify, request, render_template,session
 import pymongo
 import pandas as pd
-from datetime import datetime
+import datetime 
 import time
 import numpy as np
 
 from data_model.user import *
 
+# line bot 相關元件
+from linebot import LineBotApi
+from linebot.models import *
+from linebot.exceptions import LineBotApiError
 
 class Tags:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
         self.col_tag_main = self.client.ufs.tag_main
         self.col_tag_log = self.client.ufs.tag_log
+        
 
     # 新增標籤主表資料
     # ===============================
@@ -102,14 +107,15 @@ class Tags:
         self.col_tag_log.insert_one(data)
         return True
 
-
     # 執行動作
     def do_tag_act(self,channel_id,user_id,tag):
-        tag_data = Tags().get_once(channel_id,tag);
-        user = User()
+        # user = User()
+        tag_data = Tags().get_once(channel_id,tag)
+        
         if "act" in tag_data:
             for a in tag_data["act"]:
                 if a["act_key"] == "add_user_point":
                     user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
         
         return True
+ 
