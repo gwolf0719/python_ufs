@@ -102,5 +102,5 @@ class Tags:
 
 
     # 執行動作
-    def do_tag_act(self,channel_id,user_id,tag):
-        
+    # def do_tag_act(self,channel_id,user_id,tag):
+
