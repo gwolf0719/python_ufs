@@ -7,11 +7,13 @@ from data_model.manager import *
 from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
+from data_model.tags import *
 
 
 api = Blueprint('api', __name__)
 user = User()
 channel = Channel()
+
  #============================================================================
     #
     # 
@@ -97,8 +99,16 @@ def v0_set_user_tag(channel_id,user_id,tag):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
     # 設定 tag
+    tags = Tags()
+    # 如果是在追蹤清單中
+    if tags.chk_once(channel_id,tag) == True:
+        tag_limit = tags.chk_limit(channel_id,user_id,tag)
+        if tag_limit == True:
+            tags.set_tag_log(channel_id, user_id,tag)
+
+
     user.set_user_tag(user_id,channel_id,tag)
-    json_data = {'sys_code':"200","sys_msg":"success"}
+    json_data = {'sys_code':"200","sys_msg":"success","tag_limit":tag_limit}
     return json_data
 
 # # 取回會員標籤清單
@@ -192,3 +202,25 @@ def get_user_points_log(channel_id, user_id):
         "point_logs":point_logs
     }
     return json_data
+
+
+#============================================================================
+    #
+    # 
+    # 會員
+    #
+    # 
+    # =================================================================
+# =================================================================
+
+@api.route('/api/v0/set_tag_main', methods=['POST'])
+def set_tag_main():
+    jsondata = request.get_json()
+    tags = Tags()
+    if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
+        return  {'sys_code':"500","sys_msg":"重複設定"}
+    else:
+        tags.set_tag_main(jsondata)
+        return "jsondata"
+    
+    

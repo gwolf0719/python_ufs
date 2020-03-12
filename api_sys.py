@@ -20,7 +20,7 @@ api_sys = Blueprint('api_sys', __name__)
 def set_msg():
     # 取得輸入資料
     jsondata = request.get_json()
-    print(jsondata)
+    # print(jsondata)
     # msg = Msg()
     # msg.add_once(jsondata)
     json_data = {'sys_code':"200","sys_msg":"success"}
