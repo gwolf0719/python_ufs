@@ -62,21 +62,6 @@ def send_message(channel_id,msg_id):
     # 圖片帶連結
     elif msg_data['msg_type'] == "imagemap":
         
-
-        # if re.match(r'^https?:/{2}\w.+$', msg_data['link_uri']):
-        #     action = URIImagemapAction(
-        #             link_uri=msg_data['link_uri'],
-        #             area=ImagemapArea(
-        #                 x=0, y=0, width=1040, height=1040
-        #             )
-        #         )
-        # else:
-        #     action = MessageImagemapAction(
-        #                 text=msg_data['link_uri'],
-        #                 area=ImagemapArea(
-        #                     x=0, y=0, width=1040, height=1040
-        #                 )
-        #             )
         action = []
         action.append(URIImagemapAction(
                         link_uri="https://www.google.com.tw",
