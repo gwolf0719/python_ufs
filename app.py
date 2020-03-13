@@ -328,7 +328,7 @@ def webhook(channel_id):
             if msg_data != False:
                 # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
                 print(msg_data['msg_id'])
-                msg.reply_message(channel_id,msg_data['msg_id'],replyToken)
+                msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
         
         
         
