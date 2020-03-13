@@ -315,6 +315,13 @@ def webhook(channel_id):
         # print(user_id)
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         # 檢查腳本關鍵字觸發
+        msg = Msg()
+        if "message" in event:
+            msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+            if msg_data != False:
+                # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
+                print(msg_data['msg_id'])
+                msg.reply_message(channel_id,msg_data['msg_id'],replyToken)
         
         
         
