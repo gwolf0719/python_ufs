@@ -6,6 +6,13 @@ import datetime
 import time
 import numpy as np
 
+# Model
+from data_model.manager import *
+from data_model.channel import *
+from data_model.webhook import *
+from data_model.user import *
+from data_model.tags import *
+
 class Channel:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")

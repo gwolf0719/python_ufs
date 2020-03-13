@@ -6,7 +6,12 @@ import datetime
 import time
 import numpy as np
 
+# Model
+from data_model.manager import *
+from data_model.channel import *
+from data_model.webhook import *
 from data_model.user import *
+from data_model.tags import *
 
 # line bot 相關元件
 from linebot import LineBotApi
