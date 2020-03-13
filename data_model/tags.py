@@ -86,11 +86,11 @@ class Tags:
         elif tag_data['limit_cycle'] == 'month':
             day = "{0}-{1}".format(now.year, now.month)
             find['datetime'] = {"$regex": day}
-        elif tag['limit_cycle'] == 'year':
+        elif tag_data['limit_cycle'] == 'year':
             day = "{0}-".format(now.year)
             find['datetime'] = {"$regex": day}
        
-        if(self.col_tag_log.find(find).count() > tag_data['limit_qty']):
+        if(self.col_tag_log.find(find).count() >= tag_data['limit_qty']):
             return False
         else:
             return True

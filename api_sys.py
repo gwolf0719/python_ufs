@@ -37,7 +37,7 @@ def set_channel(channel_id):
 
     return json_data
 
-# 設定發送名單排程隊列
+# 發送
 @api_sys.route('/api_sys/send_message/<channel_id>/<msg_id>')
 def send_message(channel_id,msg_id):
     msg = Msg()
@@ -45,47 +45,7 @@ def send_message(channel_id,msg_id):
     user = User()
     user_id = "Ufd5d3bb5d828bfcef65344c0bd5b5c07"
     msg.send_message(channel_id,msg_id,user_id)
-    # channel_info = channel.get_channel(channel_id)
-    # channel_access_token = channel_info['channel_access_token']
-    # msg_data = msg.get_once(msg_id)
-    
-
-    # # 設定發送內容
-    # # 純文字訊息
-    # if msg_data["msg_type"] == "text":
-    #     send_message = TextSendMessage(text=msg_data["text"])
-    # # 圖片
-    # elif msg_data["msg_type"] == "image":
-    #     send_message = ImageSendMessage(
-    #         original_content_url=msg_data['original_content_url'],
-    #         preview_image_url=msg_data['original_content_url']
-    #     )
-    # # 圖片帶連結
-    # elif msg_data['msg_type'] == "imagemap":
-        
-    #     action = []
-    #     for action_item in msg_data['actions']:
-    #         if action_item['act_type'] == "text":
-    #             action.append(MessageImagemapAction(
-    #                             text=action_item['text'],
-    #                             area=ImagemapArea(
-    #                                 x=action_item['x'], y=action_item['y'], width=action_item['width'], height=action_item['height']
-    #                             )
-    #                         ))
-    #         if action_item['act_type'] == "link":
-    #             action.append(URIImagemapAction(
-    #                             link_uri=action_item['link_uri'],
-    #                             area=ImagemapArea(
-    #                                 x=action_item['x'], y=action_item['y'], width=action_item['width'], height=action_item['height']
-    #                             )
-    #                         ))
-        
-    #     send_message = ImagemapSendMessage(
-    #         base_url=msg_data['base_url'],
-    #         alt_text=msg_data['alt_text'],
-    #         base_size=BaseSize(height=1040, width=1040),
-    #         actions=action
-    #     )
+   
 
     # # # 整理會員名單
     # # users = []

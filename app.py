@@ -183,25 +183,32 @@ def re_url():
 @app.route("/re_url/<link_id>", methods=["GET", "POST"])
 def re_url_go(link_id):
     re_url = Re_url()
+    tags = Tags()
     data = re_url.get_once(link_id)
-    if 'tags' in data:
-        if data['tags'].find('?') == -1:
-            return redirect(data['target_url']+"?tags="+data['tags'])
-        else:
-            return redirect(data['target_url']+"&tags="+data['tags'])
+    if 'user_id' in request.values and 'channel_id' in request.values :
+        channel_id = request.values['channel_id']
+        user_id = request.values['user_id']
+        print(data)
+        if 'tags' in data:
+            # 如果是在追蹤清單中
+            tag = data['tags']
+            if tags.chk_once(channel_id,tag) == True:
+                tag_limit = tags.chk_limit(channel_id,user_id,tag)
+                # 如果額度還夠
+                if tag_limit == True:
+                    # 動作
+                    tag_data = tags.get_once(channel_id,tag);
+                    # tags.do_tag_act(channel_id,user_id,tag)
+                    if "act" in tag_data:
+                        for a in tag_data["act"]:
+                            if a["act_key"] == "add_user_point":
+                                user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+
+                    tags.set_tag_log(channel_id, user_id,tag)
+        return redirect(data['target_url'])
 
     return data['target_url']
-# @app.route("/re_url/<link_id>/<user_id>", methods=["GET"])
-# def re_url_go(link_id,user_id):
-#     re_url = Re_url()
-#     data = re_url.get_once(link_id)
-#     if 'tags' in data:
-#         if data['tags'].find('?') == -1:
-#             return redirect(data['target_url']+"?tags="+data['tags'])
-#         else:
-#             return redirect(data['target_url']+"&tags="+data['tags'])
 
-#     return data['target_url']
 
 
 @app.route("/tags/", methods=["GET", "POST"])

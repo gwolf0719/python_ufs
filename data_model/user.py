@@ -146,7 +146,7 @@ class User:
         old_point = 0
         if 'point' in user_data:
             old_point = user_data['point']
-        new_point = old_point + point
+        new_point = int(old_point) + int(point)
         # 建立 log
         log_data = {
             "user_id":user_id,

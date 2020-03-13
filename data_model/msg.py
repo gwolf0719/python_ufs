@@ -61,7 +61,7 @@ class Msg:
             return res
 
     # 設定發送內容
-    def set_msg_format(self,msg_id):
+    def set_msg_format(self,msg_id,channel_id,user_id):
         msg_data = Msg().get_once(msg_id)
         # 純文字訊息
         if msg_data["msg_type"] == "text":
@@ -86,7 +86,7 @@ class Msg:
                                 ))
                 if action_item['act_type'] == "link":
                     action.append(URIImagemapAction(
-                                    link_uri=action_item['link_uri'],
+                                    link_uri=action_item['link_uri']+"?user_id="+user_id+"&channel_id="+channel_id,
                                     area=ImagemapArea(
                                         x=action_item['x'], y=action_item['y'], width=action_item['width'], height=action_item['height']
                                     )
@@ -107,7 +107,7 @@ class Msg:
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
         
-        send_message = Msg().set_msg_format(msg_id)
+        send_message = Msg().set_msg_format(msg_id,channel_id,user_id)
         
         
 
@@ -120,7 +120,7 @@ class Msg:
         channel = Channel()
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
-        send_message = Msg().set_msg_format(msg_id)
+        send_message = Msg().set_msg_format(msg_id,channel_id,user_id)
         line_bot_api = LineBotApi(channel_access_token)
         line_bot_api.reply_message(replyToken, send_message)
         return True
