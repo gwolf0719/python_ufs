@@ -139,6 +139,27 @@ def get_user_tags(channel_id, user_id):
 
     return json_data
 
+# 取得須要被統計的標籤使用次數
+@api.route('/api/v0/get_tag_count/<channel_id>/<user_id>/<track_types>')
+def get_tag_count(channel_id, user_id,track_types):
+    tags = Tags()
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    
+    # 取得要被追縱的 tag
+    t_tags = tags.track_types(channel_id,track_types)
+    print(t_tags)
+    c = tags.track_types_count(channel_id,user_id,t_tags)
+    print(c)
+    json_data = {'sys_code':"404","sys_msg":"user not found"}
+    return json_data
+
 
 #============================================================================
     #
@@ -268,5 +289,8 @@ def send_message(channel_id, user_id, msg):
     
     res = line_bot_api.push_message(user_id, TextSendMessage(text=msg))
     return "12345"
+
+
+
     
     

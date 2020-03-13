@@ -118,4 +118,23 @@ class Tags:
                     user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
         
         return True
- 
+
+    # 取得要被追縱的 tag
+    def track_types(self,channel_id,track_types):
+        find = {
+            "channel_id": channel_id,
+            "type":track_types
+        }
+        datalist = []
+        for row in self.col_tag_main.find(find):
+            datalist.append(row['tag'])
+        return list(datalist)
+    
+    def track_types_count(self,channel_id,user_id,t_tags):
+        find = {
+            "channel_id": channel_id,
+            "user_id":user_id,
+            "tag":{"$in":t_tags}
+        }
+        return self.col_tag_log.find(find).count()
+
