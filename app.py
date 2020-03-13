@@ -316,16 +316,18 @@ def webhook(channel_id):
             user.add_once(user_id,channel_id)
             user.set_user_tag(user_id,channel_id,event['type'])
 
-        replyToken = event["replyToken"]
-        # 回覆
-        line_bot_api = LineBotApi(channel_access_token)
-       
-        # 檢查腳本關鍵字觸發
-        msg = Msg()
-        if "message" in event:
-            msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
-            if msg_data != False:
-                msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
+        # 如果有回覆碼可以用
+        if "replyToken" in event:
+            replyToken = event["replyToken"]
+            # 回覆
+            line_bot_api = LineBotApi(channel_access_token)
+        
+            # 檢查腳本關鍵字觸發
+            msg = Msg()
+            if "message" in event:
+                msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+                if msg_data != False:
+                    msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
         
         
 
