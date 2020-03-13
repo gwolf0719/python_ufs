@@ -154,10 +154,10 @@ def get_tag_count(channel_id, user_id,track_types):
     
     # 取得要被追縱的 tag
     t_tags = tags.track_types(channel_id,track_types)
-    print(t_tags)
+    # print(t_tags)
     c = tags.track_types_count(channel_id,user_id,t_tags)
-    print(c)
-    json_data = {'sys_code':"404","sys_msg":"user not found"}
+    # print(c)
+    json_data = {'sys_code':"200","sys_msg":"Success","count":c}
     return json_data
 
 
