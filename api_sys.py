@@ -44,22 +44,22 @@ def send_message(channel_id,msg_id):
     channel = Channel()
     user = User()
     user_id = "Ufd5d3bb5d828bfcef65344c0bd5b5c07"
-    msg.send_message(channel_id,msg_id,user_id)
+    msg_data = msg.get_once(msg_id)
    
 
     # # # 整理會員名單
-    # # users = []
-    # # user_ids = []
-    # # users = user.get_all_users(channel_id)
+    users = []
+    user_ids = []
+    users = user.get_all_users(channel_id)
     # # line_bot_api = LineBotApi(channel_access_token)
     # # # U7e053ed8fcca7e8bf4b82ac79accf8cc
     # # # res = line_bot_api.push_message('U7e053ed8fcca7e8bf4b82ac79accf8cc', send_message)
     # # # 發送訊息
-    # # for user_data in users:
-    # #     user_ids.append(user_data['user_id'])
-    # #     # 設定log
-    # #     user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
-    # #     res = line_bot_api.push_message(user_data['user_id'], send_message)
+    for user_data in users:
+        
+        # 設定log
+        user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
+        msg.send_message(channel_id,msg_id,user_data['user_id'])
 
     json_data = {'sys_code':"200","sys_msg":"success"}
 

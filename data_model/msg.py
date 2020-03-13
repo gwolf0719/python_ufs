@@ -109,8 +109,6 @@ class Msg:
         
         send_message = Msg().set_msg_format(msg_id,channel_id,user_id)
         
-        
-
         line_bot_api = LineBotApi(channel_access_token)
         line_bot_api.push_message(user_id, send_message)
         return True
