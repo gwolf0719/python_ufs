@@ -8,6 +8,8 @@ from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
 from data_model.tags import *
+from data_model.msg import *
+from data_model.re_url import *
 
 
 api = Blueprint('api', __name__)
@@ -140,6 +142,7 @@ def get_user_tags(channel_id, user_id):
     return json_data
 
 # 取得須要被統計的標籤使用次數
+# track_types read_ranking=>指定閱讀,share_ranking=>分享連結
 @api.route('/api/v0/get_tag_count/<channel_id>/<user_id>/<track_types>')
 def get_tag_count(channel_id, user_id,track_types):
     tags = Tags()
@@ -159,6 +162,52 @@ def get_tag_count(channel_id, user_id,track_types):
     # print(c)
     json_data = {'sys_code':"200","sys_msg":"Success","count":c}
     return json_data
+
+# 取得須要被分享的資料
+@api.route('/api/v0/get_share_info/<channel_id>/<user_id>/<link_id>')
+def get_share_info(channel_id, user_id, link_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+
+    # 取得內容
+    re_url = Re_url()
+    re_url_data = re_url.get_once(link_id)
+    
+    if 'type' in re_url_data:
+        if re_url_data['type'] == 'share':
+        # 設定對應標籤
+            tag = re_url_data['tags']
+            user.set_user_tag(user_id,channel_id,re_url_data['tags'])
+            # 設定 tag
+            # tags = Tags()
+            # # 如果是在追蹤清單中
+            # if tags.chk_once(channel_id,tag) == True:
+            #     tag_limit = tags.chk_limit(channel_id,user_id,tag)
+            #     # 如果額度還夠
+            #     if tag_limit == True:
+            #         # 動作
+            #         tag_data = tags.get_once(channel_id,tag);
+            #         # tags.do_tag_act(channel_id,user_id,tag)
+            #         if "act" in tag_data:
+            #             for a in tag_data["act"]:
+            #                 if a["act_key"] == "add_user_point":
+            #                     user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+
+            #         tags.set_tag_log(channel_id, user_id,tag)
+            #         user.set_user_tag(user_id,channel_id,tag)
+        json_data = {'sys_code':"200","sys_msg":"Success","desc":re_url_data["desc"]}
+        return json_data
+    else:
+        json_data = {'sys_code':"404","sys_msg":"查無資料"}
+        return json_data
+    
+
 
 
 #============================================================================

@@ -113,16 +113,16 @@ class Tags:
         return True
 
     # 執行動作
-    def do_tag_act(self,channel_id,user_id,tag):
-        # user = User()
-        tag_data = Tags().get_once(channel_id,tag)
+    # def do_tag_act(self,channel_id,user_id,tag):
+    #     user = User()
+    #     tag_data = Tags().get_once(channel_id,tag)
         
-        if "act" in tag_data:
-            for a in tag_data["act"]:
-                if a["act_key"] == "add_user_point":
-                    user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+    #     if "act" in tag_data:
+    #         for a in tag_data["act"]:
+    #             if a["act_key"] == "add_user_point":
+    #                 user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
         
-        return True
+    #     return True
 
     # 取得要被追縱的 tag
     def track_types(self,channel_id,track_types):

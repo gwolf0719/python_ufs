@@ -87,8 +87,9 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id
         }
+        tag_name = tag
         tag = {
-            "tag":tag,
+            "tag":tag_name,
             "date":datetime.datetime.now()
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
@@ -96,18 +97,24 @@ class User:
         data = {}
         data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
-        User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag))
+        User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag_name))
 
         # 設定 tag
         tags = Tags()
         # 如果是在追蹤清單中
-        if tags.chk_once(channel_id,tag) == True:
-            tag_limit = tags.chk_limit(channel_id,user_id,tag)
+        if tags.chk_once(channel_id,tag_name) == True:
+            tag_limit = tags.chk_limit(channel_id,user_id,tag_name)
             # 如果額度還夠
             if tag_limit == True:
-                # 執行動作
-                tags.do_tag_act(channel_id, user_id,tag)
-                tags.set_tag_log(channel_id, user_id,tag)
+                # 動作
+                tag_data = tags.get_once(channel_id,tag_name);
+                # tags.do_tag_act(channel_id,user_id,tag)
+                if "act" in tag_data:
+                    for a in tag_data["act"]:
+                        if a["act_key"] == "add_user_point":
+                            User().add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+
+                tags.set_tag_log(channel_id, user_id,tag_name)
 
         return True
     # 取得使用者有使用到的 TAG
