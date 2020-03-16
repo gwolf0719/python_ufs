@@ -12,7 +12,7 @@
 <div class="row">
 
     {% for data in datalist %}
-    <div class="col-3">
+    <div class="col-md-6 col-lg-3">
         <div class="channel-item text-center">
             <h3 class="text-center mt-3 mb-3">{{ data.channel_name }}</h3>  
             <button class="btn btn-outline-primary btn-sm set_use mb-3" channel_id="{{ data.channel_id }}">管理</button>
@@ -37,7 +37,6 @@
             <form action="" method="post">
                 <div class="modal-body">
                     <div class="tool-list-width">
-                        
                             <div class="form-group row">
                                 <label class="col-2 col-form-label" for="">Channel ID<span class="text-danger">*</span></label>
                                 <div class="col-10"> <input type="text" name="channel_id" class="form-control" placeholder="請輸入" required></div>
