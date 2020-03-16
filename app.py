@@ -188,7 +188,6 @@ def re_url_go(link_id):
     if 'user_id' in request.values and 'channel_id' in request.values :
         channel_id = request.values['channel_id']
         user_id = request.values['user_id']
-        print(data)
         if 'tags' in data:
             # 如果是在追蹤清單中
             tag = data['tags']
@@ -206,7 +205,10 @@ def re_url_go(link_id):
 
                     tags.set_tag_log(channel_id, user_id,tag)
         return redirect(data['target_url'])
-
+    else:
+        if 'type' in data and data['type'] == 'share':
+            return redirect(data['target_url']+"?link_id="+data["link_id"])
+    
     return data['target_url']
 
 
