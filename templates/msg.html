@@ -22,7 +22,7 @@
         {% for data in datalist %}
         <tr>
             <td>{{data.msg_id}}</td>
-            <td>{{data.type}}</td>
+            <td>{{data.msg_type}}</td>
             <td>{{data.subject}}</td>
             <td>{{data.created_datetime}}</td>
             <td>
@@ -48,6 +48,7 @@
                 </button>
             </div>
             <form action="" method="post">
+                <input type="hidden" name="type" value="send_msg">
                 <div class="modal-body">
                     <div class="tool-list-width">
 
@@ -57,11 +58,7 @@
                             <div class="col-10"> <input type="text" name="channel_id" class="form-control"
                                     placeholder="請輸入" required value="{{ session.get('channel_id')}}" readonly></div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">必要包含標籤<span class="text-danger"></span></label>
-                            <div class="col-10">
-                                <input type="text" name="need_tags" class="form-control" placeholder="如果沒有填寫就是不篩選成員" ></div>
-                        </div>
+                        
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="">標題<span class="text-danger">*</span></label>
                             <div class="col-10"> <input type="text" name="subject" class="form-control" placeholder="請輸入" required></div>
@@ -70,7 +67,7 @@
                             <label class="col-2 col-form-label" for="">訊息種類<span class="text-danger">*</span></label>
                             <div class="col-10"> 
                                 <div class="form-group">
-                                  <select  class="form-control" name="type" id="msg_type">
+                                  <select  class="form-control" name="msg_type" id="msg_type">
                                     <option value="text">純文字</option>
                                     <option value="image">純圖片</option>
                                     <option value="imagemap">影像地圖</option>
@@ -86,7 +83,7 @@
                                 <label class="col-2 col-form-label" for="">內文<span
                                         class="text-danger">*</span></label>
                                 <div class="col-10">
-                                    <textarea class="form-control" name="desc"></textarea>
+                                    <textarea class="form-control" name="text"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +92,7 @@
                             
                             <div class="form-group row">
                                 <label class="col-2 col-form-label" for="">圖片路徑<span class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control" placeholder="請輸入" required></div>
+                                <div class="col-10"> <input type="text" name="original_content_url"" class=" form-control" placeholder="請輸入" required></div>
                             </div>
                         </div>
 
@@ -103,11 +100,15 @@
                             
                             <div class="form-group row">
                                 <label class="col-2 col-form-label" for="">圖片路徑<span class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control" placeholder="請輸入" required></div>
+                                <div class="col-10"> <input type="text" name="base_url"" class=" form-control" placeholder="請輸入" required></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label" for="">圖片替代文字<span class="text-danger">*</span></label>
+                                <div class="col-10"> <input type="text" name="alt_text"" class=" form-control" placeholder="請輸入" required></div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-2 col-form-label" for="">目標路徑<span class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control" placeholder="請輸入" required></div>
+                                <div class="col-10"> <input type="text" name="link_uri"" class=" form-control" placeholder="請輸入" required></div>
                             </div>
                         </div>
 

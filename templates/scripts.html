@@ -239,7 +239,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="save">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="save_bot">Save changes</button>
                 </div>
             </form>
         </div>
@@ -389,7 +389,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="save">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="save">Save changes</button>
                 </div>
             </form>
         </div>
@@ -397,9 +397,20 @@
 </div>
 <script>
     $(function () {
-        $("body").on("click", "#save", function () {
-            console.log(delta)
-            // $("form").submit();
+        $("body").on("click", "#save_bot", function () {
+            var settings = {
+                "url": "./api_sys/set_msg/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({ "data1": "hello" }),
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+            });
         })
     })
 </script>

@@ -2,16 +2,17 @@
 from flask import Flask, jsonify, request, render_template,session
 import pymongo
 import pandas as pd
-from datetime import datetime
+import datetime 
 import time
 import numpy as np
-
 
 # Model
 from data_model.manager import *
 from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
+from data_model.tags import *
+
 
 # line bot 相關元件
 from linebot import LineBotApi
@@ -51,8 +52,8 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id,
             "point":0,
-            "created_datetime":datetime.datetime.today(),
-            "last_datetime":datetime.datetime.today()
+            "created_datetime":datetime.datetime.now(),
+            "last_datetime":datetime.datetime.now()
         }
         channel = Channel()
         channel_info = channel.get_channel(channel_id)
@@ -77,7 +78,7 @@ class User:
             "channel_id":channel_id,
             
         }
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
         return True
     # 設定使用者參數
@@ -86,16 +87,35 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id
         }
+        tag_name = tag
         tag = {
-            "tag":tag,
-            "date":datetime.datetime.today()
+            "tag":tag_name,
+            "date":datetime.datetime.now()
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
         # 更新最後操作時間和 log
         data = {}
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
-        User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag))
+        User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag_name))
+
+        # 設定 tag
+        tags = Tags()
+        # 如果是在追蹤清單中
+        if tags.chk_once(channel_id,tag_name) == True:
+            tag_limit = tags.chk_limit(channel_id,user_id,tag_name)
+            # 如果額度還夠
+            if tag_limit == True:
+                # 動作
+                tag_data = tags.get_once(channel_id,tag_name);
+                # tags.do_tag_act(channel_id,user_id,tag)
+                if "act" in tag_data:
+                    for a in tag_data["act"]:
+                        if a["act_key"] == "add_user_point":
+                            User().add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+
+                tags.set_tag_log(channel_id, user_id,tag_name)
+
         return True
     # 取得使用者有使用到的 TAG
     def get_user_tags(self,user_id,channel_id):
@@ -138,7 +158,7 @@ class User:
         old_point = 0
         if 'point' in user_data:
             old_point = user_data['point']
-        new_point = old_point + point
+        new_point = int(old_point) + int(point)
         # 建立 log
         log_data = {
             "user_id":user_id,
@@ -146,7 +166,7 @@ class User:
             'original':old_point,
             "point":point,
             "act":"add",
-            "update_datetime":datetime.datetime.today(),
+            "update_datetime":datetime.datetime.now(),
             "balance_point":new_point,
             "point_note":point_note
         }
@@ -160,7 +180,7 @@ class User:
 
         # 更新最後操作時間和 log
         data = {}
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         self.col_user.update_one(find,{"$set":data})
         log = "新增點數({0}):{1}".format(point_note,point)
         User().set_user_log(user_id,channel_id,log)
@@ -179,7 +199,7 @@ class User:
             'original':old_point,
             "point":point,
             "act":"deduct",
-            "update_datetime":datetime.datetime.today(),
+            "update_datetime":datetime.datetime.now(),
             "balance_point":new_point,
             "point_note":point_note
         }
@@ -193,7 +213,7 @@ class User:
 
         # 更新最後操作時間和 log
         data = {}
-        data["last_datetime"] =datetime.datetime.today()
+        data["last_datetime"] =datetime.datetime.now()
         log = "扣除點數({0}):{1}".format(point_note,point)
         User().set_user_log(user_id,channel_id,log)
         return new_point
@@ -211,11 +231,29 @@ class User:
             datalist.append(row)
         
         return list(datalist)
+    # 取得累績總點數
+    def lifetime_record(self,user_id,channel_id):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id,
+            "act":"add"
+        }
+        pipeline = [
+            {'$match':find},
+            {'$group': {'_id': "$user_id", 'point': {'$sum': '$point'}}},
+        ]
+        if self.col_point_logs.find(find).count() == 0:
+            return 0
+        else :
+            res = self.col_point_logs.aggregate(pipeline)
+            for data in res:
+                print(data)
+            return data['point']
 
     def set_user_log(self, user_id,channel_id,log_msg):
         log_data = {}
         log_data['log_note'] = log_msg
-        log_data['datetime'] = datetime.datetime.today()
+        log_data['datetime'] = datetime.datetime.now()
         log_data['user_id'] = user_id
         log_data['channel_id'] = channel_id
         self.col_user_log.insert_one(log_data)

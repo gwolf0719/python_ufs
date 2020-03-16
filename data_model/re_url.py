@@ -6,12 +6,12 @@ from datetime import datetime
 import time
 import numpy as np
 
-
 # Model
 from data_model.manager import *
 from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
+from data_model.tags import *
 
 class Re_url:
     def __init__(self):
@@ -35,4 +35,9 @@ class Re_url:
 
 
     def get_once(self,link_id):
-        return True
+        find = {
+            "link_id": link_id
+        }
+        data = self.col_reurl.find_one(find)
+        del data["_id"]
+        return data

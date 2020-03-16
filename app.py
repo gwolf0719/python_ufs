@@ -20,6 +20,7 @@ from data_model.webhook import *
 from data_model.user import *
 from data_model.msg import *
 from data_model.re_url import *
+from data_model.product import *
 
 from api import *
 from api_sys import *
@@ -100,28 +101,14 @@ def channel_info():
 @app.route("/msg", methods=["GET", "POST"])
 def msg():
     if(manager.chk_now() == True):
-        manager_id = session.get("manager_id")
         msg = Msg()
         if session.get("channel_id") is None:
             flash("請先選取要設定的 Channel ","danger")
             return redirect(url_for("channel"))
         else:
             if(request.method == "POST"):
-                channel = Channel()
-                channel_id = request.values["channel_id"]
-                subject = request.values["subject"]
-                # 標準資料配置
-                jsondata = {
-                    "manager_id": manager_id,
-                    "channel_id":channel_id,
-                    "type":request.values["type"],
-                    "subject":request.values["subject"],
-                    "need_tags":request.values["need_tags"]
-                }
-                msg.add_once(jsondata,request.values["type"])
-                flash("訊息設定完成 "+subject+" ，請點選操作工具發送","success")
-                
-
+                msg.add_once(request.form.to_dict())
+                flash("訊息設定完成，請點選操作工具發送","success")
             datalist = msg.get_list()
             
             return render_template("msg.html",datalist=datalist)
@@ -189,10 +176,41 @@ def re_url():
                 re_url.add_once(datajson)
                 
             urls = re_url.get_list(channel_id)
-            print(urls)
         return render_template("re_url.html",datalist=urls)
     else:
         return redirect(url_for("login"))
+
+# 轉址動作
+@app.route("/re_url/<link_id>", methods=["GET", "POST"])
+def re_url_go(link_id):
+    re_url = Re_url()
+    tags = Tags()
+    data = re_url.get_once(link_id)
+    if 'user_id' in request.values and 'channel_id' in request.values :
+        channel_id = request.values['channel_id']
+        user_id = request.values['user_id']
+        if 'tags' in data:
+            # 如果是在追蹤清單中
+            tag = data['tags']
+            if tags.chk_once(channel_id,tag) == True:
+                tag_limit = tags.chk_limit(channel_id,user_id,tag)
+                # 如果額度還夠
+                if tag_limit == True:
+                    # 動作
+                    tag_data = tags.get_once(channel_id,tag);
+                    # tags.do_tag_act(channel_id,user_id,tag)
+                    if "act" in tag_data:
+                        for a in tag_data["act"]:
+                            if a["act_key"] == "add_user_point":
+                                user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+
+                    tags.set_tag_log(channel_id, user_id,tag)
+        return redirect(data['target_url'])
+    else:
+        if 'type' in data and data['type'] == 'share':
+            return redirect(data['target_url']+"?link_id="+data["link_id"])
+    
+    return data['target_url']
 
 
 
@@ -223,8 +241,36 @@ def products():
             flash("請先選取要設定的 Channel ","danger")
             return redirect(url_for("channel"))
         else:
+            product = Product()
             channel_id = session.get("channel_id")
-            return render_template("products.html")
+            # 如果是表單送出
+            if request.method == "POST":
+                product_id = request.values['product_id']
+                # 上傳檔案
+                file_name  = product_id+'.jpg'
+                product_file = request.files['product_img']
+                product_file.save(os.path.join('./static/product', file_name));
+                product_img = request.url_root+'static/product/'+file_name;
+
+                datajson = {
+                    "product_id": product_id,
+                    "categories_id":request.values['categories_id'],
+                    "product_name": request.values['product_name'],
+                    "need_points":request.values['need_points'],
+                    "qty":request.values['qty'],
+                    "date_sale":request.values['date_sale'],
+                    "date_close":request.values['date_close'],
+                    "date_send":request.values['date_send'],
+                    "channel_id":channel_id,
+                    "product_img":product_img
+                }
+                
+                product.add_once(datajson)
+
+                flash("商品設定完成 ","success")
+
+            datalist = product.get_list(channel_id)
+            return render_template("products.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 
@@ -277,12 +323,6 @@ def scripts():
 
 
 
-
-
-
-
-
-
 # 單純抓取 webhook 回傳資料
 @app.route("/webhook/<channel_id>", methods=["POST", "GET"])
 def webhook(channel_id):
@@ -307,21 +347,20 @@ def webhook(channel_id):
             user.add_once(user_id,channel_id)
             user.set_user_tag(user_id,channel_id,event['type'])
 
-        # replyToken = event["replyToken"]
-        # 回覆
-        # line_bot_api = LineBotApi(
-        #     'EeW1IZR3U3fYS9rVH1njiVkTlaRUFEvkyXS2xl1swT+p+McTNzdZwZphg1BrjvjTXXcQAlSHK/I2bx2s3Fu8GfUS5tljY2ZO8krNSKgpU6O7GRgwMcxKHfQvp7w4m8PHZZmsGy9C3pf4ifaXws7/+wdB04t89/1O/w1cDnyilFU=')
-        # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
-        # 主動發送
+        # 如果有回覆碼可以用
+        if "replyToken" in event:
+            replyToken = event["replyToken"]
+            # 回覆
+            line_bot_api = LineBotApi(channel_access_token)
+        
+            # 檢查腳本關鍵字觸發
+            msg = Msg()
+            if "message" in event:
+                msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+                if msg_data != False:
+                    msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
         
         
-        
-        
-
-        
-        # line_bot_api = LineBotApi(channel_access_token)
-        # line_bot_api.push_message(jsondata["user_id"], TextSendMessage(text='Hello World!'+jsondata["user_id"]))
-
 
     except (EOFError, KeyboardInterrupt):
 
