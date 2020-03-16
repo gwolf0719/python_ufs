@@ -25,8 +25,10 @@ class Product:
         self.col_product.insert_one(datajson)
         return True
 
-    def get_list(self,channel_id):
+    def get_list(self,channel_id,category_id=""):
         find = {"channel_id":channel_id}
+        if category_id != "":
+            find["category_id"] = category_id
         datalist = []
         for d in self.col_product.find(find):
             del d["_id"]

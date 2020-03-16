@@ -10,6 +10,7 @@ from data_model.user import *
 from data_model.tags import *
 from data_model.msg import *
 from data_model.re_url import *
+from data_model.product import *
 
 
 api = Blueprint('api', __name__)
@@ -323,6 +324,37 @@ def send_message(channel_id, user_id, msg):
     res = line_bot_api.push_message(user_id, TextSendMessage(text=msg))
     return "12345"
 
+
+
+#============================================================================
+    #
+    # 
+    # 商品兌換
+    #
+    # 
+    # =================================================================
+# =================================================================
+
+# 商品清單
+@api.route("/api/v0/products/<channel_id>/")
+def products(channel_id):
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    product = Product()
+    datalist = []
+    for cate in product.product_categories_list(channel_id):
+        cate["products"] = product.get_list(channel_id,cate['category_id'])
+        datalist.append(cate)
+
+    json_data = {
+        "sys_code":"200",
+        "sys_msg": "Success",
+        "datalist":datalist
+    }
+    return json_data
+# 兌換
+# 兌換記錄
 
 
     

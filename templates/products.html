@@ -141,9 +141,9 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="">商品分類<span class="text-danger">*</span></label>
                             <div class="col-10">
-                                <select name="categories_id">
+                                <select name="category_id">
                                     {% for category in product_categories_list %}
-                                    <option value="{{ category.categorie_id }}">{{ category.categorie_name }}</option>
+                                    <option value="{{ category.category_id }}">{{ category.category_name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

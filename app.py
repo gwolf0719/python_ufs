@@ -254,7 +254,7 @@ def products():
 
                 datajson = {
                     "product_id": product_id,
-                    "categories_id":request.values['categories_id'],
+                    "category_id":request.values['category_id'],
                     "product_name": request.values['product_name'],
                     "need_points":request.values['need_points'],
                     "qty":request.values['qty'],
