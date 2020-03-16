@@ -18,6 +18,7 @@ class Product:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
         self.col_product = self.client.ufs.product
+        self.col_product_categories = self.client.ufs.product_categories
 
     
     def add_once(self,datajson):
@@ -31,6 +32,15 @@ class Product:
             del d["_id"]
             datalist.append(d)
         return list(datalist)
+    def product_categories_list(self,channel_id):
+        find = {"channel_id":channel_id}
+        datalist = []
+        for d in self.col_product_categories.find(find):
+            del d["_id"]
+            del d["channel_id"]
+            datalist.append(d)
+        return list(datalist)
+
 
     # def get_once(self,msg_id):
     #     find = {"msg_id": msg_id}

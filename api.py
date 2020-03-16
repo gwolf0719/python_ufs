@@ -184,23 +184,7 @@ def get_share_info(channel_id, user_id, link_id):
         # 設定對應標籤
             tag = re_url_data['tags']
             user.set_user_tag(user_id,channel_id,re_url_data['tags'])
-            # 設定 tag
-            # tags = Tags()
-            # # 如果是在追蹤清單中
-            # if tags.chk_once(channel_id,tag) == True:
-            #     tag_limit = tags.chk_limit(channel_id,user_id,tag)
-            #     # 如果額度還夠
-            #     if tag_limit == True:
-            #         # 動作
-            #         tag_data = tags.get_once(channel_id,tag);
-            #         # tags.do_tag_act(channel_id,user_id,tag)
-            #         if "act" in tag_data:
-            #             for a in tag_data["act"]:
-            #                 if a["act_key"] == "add_user_point":
-            #                     user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
-
-            #         tags.set_tag_log(channel_id, user_id,tag)
-            #         user.set_user_tag(user_id,channel_id,tag)
+            
         json_data = {'sys_code':"200","sys_msg":"Success","desc":re_url_data["desc"]}
         return json_data
     else:

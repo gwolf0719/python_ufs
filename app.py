@@ -264,13 +264,12 @@ def products():
                     "channel_id":channel_id,
                     "product_img":product_img
                 }
-                
                 product.add_once(datajson)
-
                 flash("商品設定完成 ","success")
 
             datalist = product.get_list(channel_id)
-            return render_template("products.html",datalist=datalist)
+            product_categories_list = product.product_categories_list(channel_id)
+            return render_template("products.html",datalist=datalist,product_categories_list=product_categories_list)
     else:
         return redirect(url_for("login"))
 
