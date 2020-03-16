@@ -20,6 +20,7 @@ from data_model.webhook import *
 from data_model.user import *
 from data_model.msg import *
 from data_model.re_url import *
+from data_model.product import *
 
 from api import *
 from api_sys import *
@@ -240,8 +241,36 @@ def products():
             flash("請先選取要設定的 Channel ","danger")
             return redirect(url_for("channel"))
         else:
+            product = Product()
             channel_id = session.get("channel_id")
-            return render_template("products.html")
+            # 如果是表單送出
+            if request.method == "POST":
+                product_id = request.values['product_id']
+                # 上傳檔案
+                file_name  = product_id+'.jpg'
+                product_file = request.files['product_img']
+                product_file.save(os.path.join('./static/product', file_name));
+                product_img = request.url_root+'static/product/'+file_name;
+
+                datajson = {
+                    "product_id": product_id,
+                    "categories_id":request.values['categories_id'],
+                    "product_name": request.values['product_name'],
+                    "need_points":request.values['need_points'],
+                    "qty":request.values['qty'],
+                    "date_sale":request.values['date_sale'],
+                    "date_close":request.values['date_close'],
+                    "date_send":request.values['date_send'],
+                    "channel_id":channel_id,
+                    "product_img":product_img
+                }
+                
+                product.add_once(datajson)
+
+                flash("商品設定完成 ","success")
+
+            datalist = product.get_list(channel_id)
+            return render_template("products.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 
