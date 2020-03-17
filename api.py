@@ -11,6 +11,7 @@ from data_model.tags import *
 from data_model.msg import *
 from data_model.re_url import *
 from data_model.product import *
+from data_model.order import *
 
 
 api = Blueprint('api', __name__)
@@ -357,35 +358,53 @@ def products(channel_id):
     }
     return json_data
 # # 預購
-# @api.route("/api/v0/product_preorder/<channel_id>/<product_id>/<user_id>")
-# def product_preorder(channel_id, product_id, user_id):
-#     # 確認 channel_id
-#     if(channel.chk_once(channel_id) == False):
-#         json_data = {'sys_code':"404","sys_msg":"channel not found"}
-#         return json_data
-#     # 確認 user_id
-#     if(user.chk_once(user_id,channel_id) == False):
-#         json_data = {'sys_code':"404","sys_msg":"user not found"}
-#         return json_data
-#     # 確認商品存量
-#     product = Product()
-#     if product.chk_once(channel_id,product_id) == False :
-#         json_data = {'sys_code':"404","sys_msg":"product not found"}
-#         return json_data
-#     # 確認點數餘額
-#     if product.chk_last(channel_id,product_id) == 0:
-#         json_data = {'sys_code':"404","sys_msg":"商品數量不足"}
-#         return json_data
-#     # 預購
-#     order = Order()
-#     order.applying_preorder(channel_id,product_id,user_id)
-#     json_data = {
-#         "sys_code":"200",
-#         "sys_msg": "Success"
-#     }
-#     return json_data
+@api.route("/api/v0/product_preorder/<channel_id>/<product_id>/<user_id>")
+def product_preorder(channel_id, product_id, user_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    # 確認商品存在
+    product = Product()
+    if product.chk_once(channel_id,product_id) == False :
+        json_data = {'sys_code':"404","sys_msg":"product not found"}
+        return json_data
+    # 確認商品存量
+    if product.chk_last(channel_id,product_id) == 0:
+        json_data = {'sys_code':"404","sys_msg":"商品數量不足"}
+        return json_data
+    # 預購
+    order = Order()
+    order.applying_preorder(channel_id,product_id,user_id)
+    json_data = {
+        "sys_code":"200",
+        "sys_msg": "Success"
+    }
+    return json_data
 
 # # 兌換記錄
+@api.route('/api/v0/get_user_preorder/<channel_id>/<user_id>')
+def get_user_preorder(channel_id,user_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    order = Order()
+    datalist = order.get_user_preorder(channel_id, user_id)
+    json_data = {
+        "sys_code":"200",
+        "sys_msg": "Success",
+        "datalist":datalist
+    }
+    return json_data
 
 
     

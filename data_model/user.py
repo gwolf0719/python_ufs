@@ -189,7 +189,7 @@ class User:
     def deduct_point(self,user_id,channel_id,point,point_note):
         user_data = User.get_once(self,user_id,channel_id)
         old_point = user_data['point']
-        new_point = old_point - point
+        new_point = int(old_point) - int(point)
         # 建立 log
         log_data = {
             "user_id":user_id,

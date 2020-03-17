@@ -2,7 +2,7 @@
 from flask import Flask, jsonify, request, render_template,session
 import pymongo
 import pandas as pd
-from datetime import datetime
+import datetime
 import time
 import numpy as np
 
@@ -15,12 +15,24 @@ from data_model.tags import *
 from data_model.product import *
 
 
-class order:
+class Order:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
         self.col_order = self.client.ufs.order
-        self.col_order_log = self.client.ufs.col_order_log
+        self.col_order_log = self.client.ufs.order_log
     
+    def get_user_preorder(self,channel_id,user_id):
+        find = {
+            "channel_id":channel_id,
+            "user_id":user_id
+        }
+        datalist = []
+        for data in self.col_order.find(find).sort("datetime",-1):
+            del data["_id"]
+            datalist.append(data)
+        return list(datalist)
+
+
     # 申請預購
     def applying_preorder(self,channel_id,product_id,user_id):
         product = Product()
@@ -28,22 +40,26 @@ class order:
         p_data = product.get_once(channel_id,product_id)
         user = User()
         now = datetime.datetime.now();
-        datetime = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
+        date_time = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         
-        point =  p_data['neet_poionts']
+        point =  p_data['need_points']
         # 新增預購單
         pre_order = {
+            "order_id":str(time.time()),
             "channel_id":channel_id,
             "product_id":product_id,
             "product_name":p_data['product_name'],
             "qty":qty,
-            "datetime":datetime,
+            "datetime":date_time,
             "points":point,
             "status":"applying",
             "user_id":user_id
         }
         self.col_order.insert_one(pre_order)
         # 扣除數量
-        
+        product.deduct_qty(channel_id,product_id,qty)
+        # 寫入 log
+        self.col_order_log.insert_one(pre_order)
         # 扣除點數
-        user.deduct_point(user_id,channel_id,point,"預購 {0} ".format(p_data['product_name'])):
+        user.deduct_point(user_id,channel_id,point,"預購 {0} ".format(p_data['product_name']));
+        return True

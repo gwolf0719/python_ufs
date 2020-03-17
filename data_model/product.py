@@ -40,7 +40,7 @@ class Product:
             "channel_id":channel_id,
             "product_id":product_id
         }
-        return self.product.find_one(find)['last_qty']
+        return self.col_product.find_one(find)['last_qty']
 
     def get_list(self,channel_id,category_id=""):
         find = {"channel_id":channel_id}
@@ -61,7 +61,7 @@ class Product:
         return list(datalist)
 
     def deduct_qty(self,channel_id,product_id,qty):
-        last = Product().chk_last(self,channel_id,product_id);
+        last = Product().chk_last(channel_id,product_id);
         last = int(last)-qty
         # 回寫主表
         find = {
