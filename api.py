@@ -68,7 +68,7 @@ def v0_add_user(channel_id, user_id):
         # 取得會員資料
         user_info = user.get_once(user_id,channel_id)
         json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
-    else
+    else:
         json_data = {'sys_code':"500","sys_msg":"id error"}
 
     return json_data
