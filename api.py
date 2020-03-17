@@ -63,10 +63,13 @@ def v0_add_user(channel_id, user_id):
     block = 0;
     if "block" in request.values:
         block = request.values['block']
-    user.add_once(user_id,block,channel_id,channel_access_token)
-    # 取得會員資料
-    user_info = user.get_once(user_id,channel_id)
-    json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
+    
+    if user.add_once(user_id,block,channel_id,channel_access_token) == True:
+        # 取得會員資料
+        user_info = user.get_once(user_id,channel_id)
+        json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
+    else
+        json_data = {'sys_code':"500","sys_msg":"id error"}
 
     return json_data
 # # 設定會員資料 
