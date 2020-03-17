@@ -60,7 +60,10 @@ def v0_add_user(channel_id, user_id):
     
     channel_info = channel.get_channel(channel_id)
     channel_access_token = channel_info['channel_access_token']
-    user.add_once(user_id,channel_id,channel_access_token)
+    block = 0;
+    if "block" in request.values:
+        block = request.values['block']
+    user.add_once(user_id,block,channel_id,channel_access_token)
     # 取得會員資料
     user_info = user.get_once(user_id,channel_id)
     json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
