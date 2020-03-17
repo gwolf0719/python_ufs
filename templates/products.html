@@ -20,10 +20,12 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th>商品編號</th>
                     <th>商品名稱</th>
                     <th>顯示圖</th>
                     <th>兌換點數</th>
                     <th>名額</th>
+                    <th>剩餘</th>
                     <th>時間</th>
                     <th>操作</th>
                 </tr>
@@ -31,10 +33,12 @@
             <tbody>
                 {% for data in datalist %}
                 <tr>
+                    <td>{{ data.product_id}}</td>
                     <td>{{ data.product_name}}</td>
                     <td><img src="{{ data.product_img}}" class="img-fluid border" style="max-width:60px" alt=""></td>
                     <td>{{ data.need_points }}</td>
-                    <td>{{ data.qty }}</td>
+                    <td>{{ data.total_qty }}</td>
+                    <td>{{ data.last_qty }}</td>
                     <td>
                         <p class="m-0"><small>上架時間：{{data.date_sale}}</small></p>
                         <p class="m-0"><small>截止時間：{{data.date_close}}</small></p>
