@@ -16,7 +16,7 @@ from data_model.tags import *
 
 class Product:
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
         self.col_product = self.client.ufs.product
         self.col_product_categories = self.client.ufs.product_categories
 

@@ -15,7 +15,7 @@ from data_model.tags import *
 
 class Manager:
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb://james:wolf0719@cluster0-shard-00-01-oiynz.azure.mongodb.net:27017/?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
     # 確認目前登入狀態
     def chk_now(self):
         if session.get("manager_id") is None:
