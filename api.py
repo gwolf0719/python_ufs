@@ -129,7 +129,7 @@ def v0_set_user_tag(channel_id,user_id,tag):
                     if a["act_key"] == "add_user_point":
                         user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
 
-            tags.set_tag_log(channel_id, user_id,tag)
+            
 
 
     user.set_user_tag(user_id,channel_id,tag)
