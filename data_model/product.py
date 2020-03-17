@@ -25,6 +25,23 @@ class Product:
         self.col_product.insert_one(datajson)
         return True
 
+    def chk_once(self,channel_id,product_id):
+        find = {
+            "channel_id":channel_id,
+            "product_id":product_id
+        }
+        if self.col_product.find(find).count() == 0:
+            return False
+        else:
+            return True
+    # 確認剩餘量
+    def chk_last(self,channel_id,product_id):
+        find = {
+            "channel_id":channel_id,
+            "product_id":product_id
+        }
+        return self.product.find_one(find)['last_qty']
+
     def get_list(self,channel_id,category_id=""):
         find = {"channel_id":channel_id}
         if category_id != "":
@@ -43,10 +60,25 @@ class Product:
             datalist.append(d)
         return list(datalist)
 
+    def deduct_qty(self,channel_id,product_id,qty):
+        last = Product().chk_last(self,channel_id,product_id);
+        last = int(last)-qty
+        # 回寫主表
+        find = {
+            "channel_id":channel_id,
+            "product_id":product_id
+        }
+        self.col_product.update_one(find,{"$set":{"last_qty":last}})
+        return True
 
-    # def get_once(self,msg_id):
-    #     find = {"msg_id": msg_id}
-    #     msg = self.col_msg.find_one(find)
-    #     del msg["_id"]
-    #     return msg
+
+
+    def get_once(self,channel_id,product_id):
+        find = {
+            "channel_id":channel_id,
+            "product_id":product_id
+        }
+        data = self.col_product.find_one(find)
+        del data["_id"]
+        return data
    

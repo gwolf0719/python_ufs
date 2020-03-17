@@ -46,6 +46,7 @@ def v0_get_user_info(channel_id,user_id):
 # # =================================================================    
 @api.route("/api/v0/add_user/<channel_id>/<user_id>", methods=["POST", "GET"])
 def v0_add_user(channel_id, user_id):
+    channel = Channel()
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
@@ -353,8 +354,36 @@ def products(channel_id):
         "datalist":datalist
     }
     return json_data
-# 兌換
-# 兌換記錄
+# # 預購
+# @api.route("/api/v0/product_preorder/<channel_id>/<product_id>/<user_id>")
+# def product_preorder(channel_id, product_id, user_id):
+#     # 確認 channel_id
+#     if(channel.chk_once(channel_id) == False):
+#         json_data = {'sys_code':"404","sys_msg":"channel not found"}
+#         return json_data
+#     # 確認 user_id
+#     if(user.chk_once(user_id,channel_id) == False):
+#         json_data = {'sys_code':"404","sys_msg":"user not found"}
+#         return json_data
+#     # 確認商品存量
+#     product = Product()
+#     if product.chk_once(channel_id,product_id) == False :
+#         json_data = {'sys_code':"404","sys_msg":"product not found"}
+#         return json_data
+#     # 確認點數餘額
+#     if product.chk_last(channel_id,product_id) == 0:
+#         json_data = {'sys_code':"404","sys_msg":"商品數量不足"}
+#         return json_data
+#     # 預購
+#     order = Order()
+#     order.applying_preorder(channel_id,product_id,user_id)
+#     json_data = {
+#         "sys_code":"200",
+#         "sys_msg": "Success"
+#     }
+#     return json_data
+
+# # 兌換記錄
 
 
     
