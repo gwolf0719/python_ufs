@@ -47,7 +47,7 @@ class User:
         else:
             return True
     # 新增使用者
-    def add_once(self,user_id,channel_id):
+    def add_once(self,user_id,channel_id,channel_access_token):
         jsondata = {
             "user_id":user_id,
             "channel_id":channel_id,
@@ -55,9 +55,7 @@ class User:
             "created_datetime":datetime.datetime.now(),
             "last_datetime":datetime.datetime.now()
         }
-        channel = Channel()
-        channel_info = channel.get_channel(channel_id)
-        channel_access_token = channel_info['channel_access_token']
+        
         line_bot_api = LineBotApi(channel_access_token)
         profile = line_bot_api.get_profile(user_id)
         jsondata['name'] = profile.display_name
