@@ -54,7 +54,7 @@ class Product:
     def product_categories_list(self,channel_id):
         find = {"channel_id":channel_id}
         datalist = []
-        for d in self.col_product_categories.find(find):
+        for d in self.col_product_categories.find(find).sort("category_id",1):
             del d["_id"]
             del d["channel_id"]
             datalist.append(d)
