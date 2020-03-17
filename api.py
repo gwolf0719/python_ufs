@@ -358,8 +358,8 @@ def products(channel_id):
     }
     return json_data
 # # 預購
-@api.route("/api/v0/product_preorder/<channel_id>/<product_id>/<user_id>")
-def product_preorder(channel_id, product_id, user_id):
+@api.route("/api/v0/product_preorder/<channel_id>/<product_id>/<user_id>/<qty>")
+def product_preorder(channel_id, product_id, user_id,qty):
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
@@ -377,9 +377,17 @@ def product_preorder(channel_id, product_id, user_id):
     if product.chk_last(channel_id,product_id) == 0:
         json_data = {'sys_code':"404","sys_msg":"商品數量不足"}
         return json_data
+    # 確認需要點數
+    p_data = product.get_once(channel_id,product_id)
+    need = int(p_data['need_points']) * int(qty)
+    u_data = user.get_once(user_id,channel_id)
+    used = u_data['point']
+    if need > used:
+        json_data = {'sys_code':"500","sys_msg":"點數不足"}
+        return json_data
     # 預購
     order = Order()
-    order.applying_preorder(channel_id,product_id,user_id)
+    order.applying_preorder(channel_id,product_id,user_id,qty)
     json_data = {
         "sys_code":"200",
         "sys_msg": "Success"

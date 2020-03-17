@@ -62,7 +62,7 @@ class Product:
 
     def deduct_qty(self,channel_id,product_id,qty):
         last = Product().chk_last(channel_id,product_id);
-        last = int(last)-qty
+        last = int(last)-int(qty)
         # 回寫主表
         find = {
             "channel_id":channel_id,

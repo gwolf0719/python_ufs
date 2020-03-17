@@ -34,9 +34,8 @@ class Order:
 
 
     # 申請預購
-    def applying_preorder(self,channel_id,product_id,user_id):
+    def applying_preorder(self,channel_id,product_id,user_id,qty):
         product = Product()
-        qty = 1
         p_data = product.get_once(channel_id,product_id)
         user = User()
         now = datetime.datetime.now();
