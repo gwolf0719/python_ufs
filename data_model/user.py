@@ -41,6 +41,7 @@ class User:
             "user_id": user_id,
             "channel_id": channel_id
         }
+        # print(find)
         cursor = self.col_user.find(find) 
         if(cursor.count() == 0):
             return False
@@ -90,14 +91,17 @@ class User:
         return True
     # 設定使用者參數
     def set_user_tag(self,user_id,channel_id,tag):
+        now = datetime.datetime.now();
         find = {
             "user_id":user_id,
             "channel_id":channel_id
         }
+        # print(find)
         tag_name = tag
         tag = {
             "tag":tag_name,
-            "date":datetime.datetime.now()
+            "date":datetime.datetime.now(),
+            "datetime":"{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         }
         self.col_user.update_one(find,{"$push":{"tags":tag}})
         # 更新最後操作時間和 log
@@ -107,10 +111,12 @@ class User:
         User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag_name))
 
         # 設定 tag
+        print(tag_name)
         tags = Tags()
         # 如果是在追蹤清單中
         if tags.chk_once(channel_id,tag_name) == True:
             tag_limit = tags.chk_limit(channel_id,user_id,tag_name)
+            print(tag_limit)
             # 如果額度還夠
             if tag_limit == True:
                 # 動作
