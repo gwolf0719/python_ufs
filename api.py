@@ -12,6 +12,7 @@ from data_model.msg import *
 from data_model.re_url import *
 from data_model.product import *
 from data_model.order import *
+from data_model.chat import *
 
 
 api = Blueprint('api', __name__)

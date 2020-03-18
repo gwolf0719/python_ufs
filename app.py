@@ -334,6 +334,8 @@ def chat():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
+            # chat_room = chat.get_chat_room(channel_id)
+            # print(chat_room)
             return render_template("chat.html")
     else:
         return redirect(url_for("login"))
