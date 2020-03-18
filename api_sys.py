@@ -37,7 +37,7 @@ def set_channel(channel_id):
     manager_id = session.get("manager_id")
     channel = Channel()
     channel_info = channel.get_channel_manger(channel_id,manager_id);
-    print(channel_info)
+    # print(channel_info)
     session['level'] = channel_info['level'];
     json_data = {'sys_code':"200","sys_msg":"success",'channel_id':channel_id}
 
@@ -98,7 +98,7 @@ def return_chat_msg(channel_id, user_id, text_info):
     try:
         
         line_bot_api.push_message(user_id, send_message)
-        print("PUSH-----")
+        
         # line_bot_api.reply_message(replyToken, send_message)
         # 寫入記錄
         chat_data = {
@@ -116,8 +116,6 @@ def return_chat_msg(channel_id, user_id, text_info):
         chat.set_read(channel_id,user_id)
 
     except BaseException:
-            print("ERROR")
-            print("REPLY-----")
             line_bot_api.reply_message(replyToken, send_message)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data

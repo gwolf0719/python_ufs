@@ -400,6 +400,7 @@ def webhook(channel_id):
     except (EOFError, KeyboardInterrupt):
 
         print(EOFError)
+        print(KeyboardInterrupt)
         
     # mycol = client.ufs.webhook
     # df = pd.DataFrame(jsondata, index=[0])
