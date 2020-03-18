@@ -57,7 +57,7 @@ class Chat:
 
     def get_user_chat(self, channel_id, user_id):
         find = {'channel_id':channel_id,'user_id':user_id}
-        data = self.col_chat.find(find).sort('_id',-1)
+        data = self.col_chat.find(find).sort('_id',1)
         datalist = []
         for row in data:
             del row['_id']
@@ -71,5 +71,5 @@ class Chat:
         }
         
         self.col_chat.update_many(find,{"$set":{"read_status":1}})
-        print("ok")
+        # print("ok")
         return True

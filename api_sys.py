@@ -91,7 +91,7 @@ def return_chat_msg(channel_id, user_id, text_info):
     channel = Channel()
     channel_access_token = channel.get_channel(channel_id)['channel_access_token']
     # 取得最後一筆資料 ，優先用回覆
-    last_chat = chat.get_user_chat(channel_id, user_id)[0]
+    last_chat = chat.get_user_chat(channel_id, user_id)[-1]
     replyToken = last_chat['replyToken']
     send_message = TextSendMessage(text=text_info)
     line_bot_api = LineBotApi(channel_access_token)
