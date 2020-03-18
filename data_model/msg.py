@@ -124,5 +124,15 @@ class Msg:
         line_bot_api.reply_message(replyToken, send_message)
         return True
 
+    def reply_message(self,channel_id,msg,replyToken,user_id):
+
+        channel = Channel()
+        channel_info = channel.get_channel(channel_id)
+        channel_access_token = channel_info['channel_access_token']
+        send_message = Msg().set_msg_format(msg_id,channel_id,user_id)
+        line_bot_api = LineBotApi(channel_access_token)
+        line_bot_api.reply_message(replyToken, send_message)
+        return True
+
 
 

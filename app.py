@@ -334,8 +334,6 @@ def chat():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            # chat_room = chat.get_chat_room(channel_id)
-            # print(chat_room)
             return render_template("chat.html")
     else:
         return redirect(url_for("login"))
@@ -348,6 +346,7 @@ def webhook(channel_id):
     webhook = Webhook()
     user = User()
     jsondata = request.get_json()
+    print("Webhook")
     try:
         
         jsondata["channel_id"] = channel_id
@@ -391,16 +390,18 @@ def webhook(channel_id):
                         "replyToken":replyToken,
                         "read_status":0,
                         "name":user_data['name'],
-                        "avator":user_data['avator']
+                        "avator":user_data['avator'],
+                        "originator":"user"
                     }
                     chat.add_chat(chat_data)
-
-        
+        print("OK")
+        # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         
 
     except (EOFError, KeyboardInterrupt):
 
         print(EOFError)
+        print(KeyboardInterrupt)
         
     # mycol = client.ufs.webhook
     # df = pd.DataFrame(jsondata, index=[0])

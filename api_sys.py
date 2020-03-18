@@ -37,7 +37,7 @@ def set_channel(channel_id):
     manager_id = session.get("manager_id")
     channel = Channel()
     channel_info = channel.get_channel_manger(channel_id,manager_id);
-    print(channel_info)
+    # print(channel_info)
     session['level'] = channel_info['level'];
     json_data = {'sys_code':"200","sys_msg":"success",'channel_id':channel_id}
 
@@ -82,4 +82,40 @@ def get_chat_msg(channel_id, user_id):
     chat = Chat()
     datalist = chat.get_user_chat(channel_id, user_id)
     json_data = {'sys_code':"200","sys_msg":"success","datalist":datalist}
+    return json_data
+
+@api_sys.route('/api_sys/return_chat_msg/<channel_id>/<user_id>/<text_info>')
+def return_chat_msg(channel_id, user_id, text_info):
+    chat = Chat()
+    msg = Msg()
+    channel = Channel()
+    channel_access_token = channel.get_channel(channel_id)['channel_access_token']
+    # 取得最後一筆資料 ，優先用回覆
+    last_chat = chat.get_user_chat(channel_id, user_id)[-1]
+    replyToken = last_chat['replyToken']
+    send_message = TextSendMessage(text=text_info)
+    line_bot_api = LineBotApi(channel_access_token)
+    try:
+        
+        line_bot_api.push_message(user_id, send_message)
+        
+        # line_bot_api.reply_message(replyToken, send_message)
+        # 寫入記錄
+        chat_data = {
+                        "user_id":user_id,
+                        "channel_id":channel_id,
+                        "text":text_info,
+                        "replyToken":"",
+                        "read_status":1,
+                        "name":last_chat['name'],
+                        "avator":last_chat['avator'],
+                        "originator":"admin"
+                    }
+        chat.add_chat(chat_data)
+        # 設定已讀
+        chat.set_read(channel_id,user_id)
+
+    except BaseException:
+            line_bot_api.reply_message(replyToken, send_message)
+    json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data

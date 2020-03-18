@@ -111,12 +111,12 @@ class User:
         User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag_name))
 
         # 設定 tag
-        print(tag_name)
+        # print(tag_name)
         tags = Tags()
         # 如果是在追蹤清單中
         if tags.chk_once(channel_id,tag_name) == True:
             tag_limit = tags.chk_limit(channel_id,user_id,tag_name)
-            print(tag_limit)
+            # print(tag_limit)
             # 如果額度還夠
             if tag_limit == True:
                 # 動作
@@ -259,9 +259,9 @@ class User:
             return 0
         else :
             res = self.col_point_logs.aggregate(pipeline)
-            for data in res:
-                print(data)
-            return data['point']
+            for data,value in res:
+                return value['point']
+        # return res[1]['point']
 
     def set_user_log(self, user_id,channel_id,log_msg):
         log_data = {}

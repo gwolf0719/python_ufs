@@ -57,9 +57,19 @@ class Chat:
 
     def get_user_chat(self, channel_id, user_id):
         find = {'channel_id':channel_id,'user_id':user_id}
-        data = self.col_chat.find(find).sort('_id',-1)
+        data = self.col_chat.find(find).sort('_id',1)
         datalist = []
         for row in data:
             del row['_id']
             datalist.append(row)
         return list(datalist)
+
+    def set_read(self,channel_id,user_id):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id
+        }
+        
+        self.col_chat.update_many(find,{"$set":{"read_status":1}})
+        # print("ok")
+        return True
