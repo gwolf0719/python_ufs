@@ -23,7 +23,7 @@ class Chat:
         now = datetime.datetime.now();
         chat_data['datetime'] = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         self.col_chat.insert_one(chat_data)
-        return True
+        return chat_data['datetime']
     # 取得所有聊天室
     def get_chat_room(self,channel_id):
         
