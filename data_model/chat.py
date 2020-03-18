@@ -26,6 +26,8 @@ class Chat:
         return True
     # 取得所有聊天室
     def get_chat_room(self,channel_id):
+        
+        user = User()
         match = {'channel_id':channel_id}
         group = {
             '_id': {'user_id':'$user_id','name':'$name','avatar':'$avatar'},
@@ -35,5 +37,29 @@ class Chat:
         collection = self.col_chat.aggregate([{'$match': match},{'$group': group}])
         datalist = []
         for row in collection:
-            datalist.append(row["_id"])
+            user_id = row["_id"]['user_id']
+            not_read_count = Chat().get_not_read(channel_id,user_id)
+            user_chat = Chat().get_user_chat(channel_id,user_id)
+            room = {
+                'user_id':user_id,
+                'name':user_chat[0]['name'],
+                'not_read_count':not_read_count,
+                'avator':user_chat[0]['avator'],
+                'datetime':user_chat[0]['datetime'],
+            }
+
+            datalist.append(room)
+        return datalist
+    def get_not_read(self,channel_id,user_id):
+        match = {'channel_id':channel_id,'user_id':user_id,'read_status':0}
+        count = self.col_chat.find(match).count()
+        return count
+
+    def get_user_chat(self, channel_id, user_id):
+        find = {'channel_id':channel_id,'user_id':user_id}
+        data = self.col_chat.find(find).sort('_id',-1)
+        datalist = []
+        for row in data:
+            del row['_id']
+            datalist.append(row)
         return list(datalist)

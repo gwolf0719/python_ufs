@@ -12,6 +12,7 @@ from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
 from data_model.msg import *
+from data_model.chat import *
 
 
 api_sys = Blueprint('api_sys', __name__)
@@ -70,3 +71,15 @@ def send_message(channel_id,msg_id):
 
     return json_data
 
+@api_sys.route('/api_sys/get_chat_room/<channel_id>')
+def get_chat_room(channel_id):
+    chat = Chat()
+    room_list = chat.get_chat_room(channel_id)
+    json_data = {'sys_code':"200","sys_msg":"success","room_list":room_list}
+    return json_data
+@api_sys.route('/api_sys/get_chat_msg/<channel_id>/<user_id>')
+def get_chat_msg(channel_id, user_id):
+    chat = Chat()
+    datalist = chat.get_user_chat(channel_id, user_id)
+    json_data = {'sys_code':"200","sys_msg":"success","datalist":datalist}
+    return json_data
