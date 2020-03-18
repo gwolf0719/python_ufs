@@ -346,6 +346,7 @@ def webhook(channel_id):
     webhook = Webhook()
     user = User()
     jsondata = request.get_json()
+    print("Webhook")
     try:
         
         jsondata["channel_id"] = channel_id
@@ -393,7 +394,7 @@ def webhook(channel_id):
                         "originator":"user"
                     }
                     chat.add_chat(chat_data)
-
+        print("OK")
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         
 
