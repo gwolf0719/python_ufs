@@ -99,23 +99,25 @@ def return_chat_msg(channel_id, user_id, text_info):
         
         line_bot_api.push_message(user_id, send_message)
         
-        # line_bot_api.reply_message(replyToken, send_message)
-        # 寫入記錄
-        chat_data = {
-                        "user_id":user_id,
-                        "channel_id":channel_id,
-                        "text":text_info,
-                        "replyToken":"",
-                        "read_status":1,
-                        "name":last_chat['name'],
-                        "avator":last_chat['avator'],
-                        "originator":"admin"
-                    }
-        chat.add_chat(chat_data)
-        # 設定已讀
-        chat.set_read(channel_id,user_id)
+        
 
     except BaseException:
             line_bot_api.reply_message(replyToken, send_message)
-    json_data = {'sys_code':"200","sys_msg":"success"}
+    
+    # line_bot_api.reply_message(replyToken, send_message)
+        # 寫入記錄
+    chat_data = {
+                    "user_id":user_id,
+                    "channel_id":channel_id,
+                    "text":text_info,
+                    "replyToken":"",
+                    "read_status":1,
+                    "name":last_chat['name'],
+                    "avator":last_chat['avator'],
+                    "originator":"admin"
+                }
+    datetime = chat.add_chat(chat_data)
+    # 設定已讀
+    chat.set_read(channel_id,user_id)
+    json_data = {'sys_code':"200","sys_msg":"success",'datetime':datetime}
     return json_data
