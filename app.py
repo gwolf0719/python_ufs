@@ -350,7 +350,7 @@ def webhook(channel_id):
         if(user.chk_once(user_id,channel_id) == True):
             user.set_user_tag(user_id,channel_id,event['type'])
         else :
-            user.add_once(user_id,channel_id)
+            user.add_once(user_id,0,channel_id,channel_access_token)
             user.set_user_tag(user_id,channel_id,event['type'])
 
         # 如果有回覆碼可以用
