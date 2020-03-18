@@ -69,8 +69,7 @@ class Chat:
             "user_id":user_id,
             "channel_id":channel_id
         }
-        # data = {"read_status":1}
         
-        
-        self.col_chat.update_one(find,{"$set":{"read_status":1}})
+        self.col_chat.update_many(find,{"$set":{"read_status":1}})
+        print("ok")
         return True
