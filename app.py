@@ -368,12 +368,15 @@ def webhook(channel_id):
                 else:
                     # 如果不是腳本文字就送去聊天
                     chat = Chat()
+                    user_data = user.get_once(user_id,channel_id)
                     chat_data = {
                         "user_id":user_id,
                         "channel_id":channel_id,
                         "text":event['message']['text'],
                         "replyToken":replyToken,
-                        "read_status":0
+                        "read_status":0,
+                        "name":user_data['name'],
+                        "avator":user_data['avator']
                     }
                     chat.add_chat(chat_data)
 
