@@ -6,22 +6,11 @@
     <div class="row no-gutters">
         <div class="col fox-chatbar">
             <div class="chat-list">
-                <a href="#" data-toggle="modal" data-target="#chatModal" class="list-group-item list-group-item-action d-flex flex-nowrap list-group-item-chat active">
-                    <div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 align-self-center avatars-sm">
-                        <div class="avatars-one">
-                            <img src="https://profile.line-scdn.net/0hyIyUrLJuJmZELA5ondZZMXhpKAszAiAuPB9hCGguKwFqGGExcB07CWgqfVJqFWUzKx9pUmJ7cAI7/preview" width=48 class="rounded-circle" alt="">
-                        </div>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
-                    <div class="flex-1 align-self-center w-min-0">
-                        <div class="d-flex align-items-center mb-1">
-                            <h6 class="mb-0 text-truncate mr-1">Elli-林°</h6>
-                        </div>
-                        <div class="small text-muted">2/21</div>
-                    <div>
-                            
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="col fox-content position-relative bg-light pt-5 pb-5 text-center">
@@ -34,7 +23,7 @@
         <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="chatModalLabel">Elli-林</h5>
+            <h5 class="modal-title" id="chatModalLabel"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -43,6 +32,9 @@
                 <!-- chat area -->
                 <div class="mesgs">
                     <div class="msg_history pt-4 pl-3 pr-3 pb-2">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div><!-- msg area -->
                 </div>
             </div>
@@ -59,37 +51,58 @@
     $(function(){
         var _channelId = "{{ session.get('channel_id')}}"
         var _singleRoomuserId = '';
+        var _leftlength = ''
         // alert(_channelId)
-        $.ajax({
-            url : './api_sys/get_chat_room/' + _channelId,
-            dataType : "json",
-        }).done(function(data){
-            var _html = ''
-            for(var i=0 ; i < data.room_list.length; i++ ){
-                
-                _html += '<a href="#" data-userid="' + data.room_list[i].user_id + '" data-toggle="modal" data-target="#chatModal" class="list-group-item list-group-item-action d-flex flex-nowrap list-group-item-chat">';
-                    _html += '<div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 align-self-center avatars-sm">';
-                        _html += '<div class="avatars-one">';
-                            _html += '<img src="' + data.room_list[i].avator + '" width=48 class="rounded-circle" alt="">';
-                        _html += '</div>';
-                    _html += '</div>';
-                    _html += '<div class="flex-1 align-self-center w-min-0">';
-                        _html += '<div class="d-flex align-items-center mb-1">';
-                            _html += '<h6 class="mb-0 text-truncate mr-1">' + data.room_list[i].name + '</h6>';
-                                var _unreadShow = '';
-                                if( data.room_list[i].not_read_count > 0 ){
-                                    _unreadShow = 'd-none'
-                                }
-                                _html += '<div class="' + _unreadShow + 'flex-shrink-0 flex-grow-0 ml-2 d-flex flex-column justify-content-between">';
-                                    _html += '<div class="text-right"><span class="unreaddot"></span></div>';
-                                _html += '</div>';
-                        _html += '</div>';
-                        _html += '<div class="small text-muted">' + data.room_list[i].datetime + '</div>';
-                    _html += '<div>';
-                _html += '</a>';
-            }
-            $(".chat-list").html(_html)
-        })
+        left();
+        var lefttimer = setInterval(function(){
+            left()
+        },10000)
+        function left(){
+            $.ajax({
+                url : './api_sys/get_chat_room/' + _channelId,
+                dataType : "json",
+            }).done(function(data){
+                var _html = ''
+                for(var i=0 ; i < data.room_list.length; i++ ){
+                    var _unreadShow = '';
+                    if( data.room_list[i].not_read_count > 0 ){
+                        _unreadShow = 'd-none'
+                    }
+                    var foto = data.room_list[i].avator
+                    if( data.room_list[i].avator == null ){
+                        foto = 'static/assets/images/n_foto_0.jpg'
+                    }
+                    _html+= '<a data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" href="#" data-toggle="modal" data-target="#chatModal" class="media mb-3 pb-2 border-bottom">';
+                        _html+= '<img src="' + foto + '" width=48 class="rounded-circle mr-2" alt="">';
+                        _html+= '<div class="media-body">';
+                            _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="' + _unreadShow + 'unreaddot ml-1"></span>' +'</h5>';
+                            _html+= '<small class="text-gray">' + data.room_list[i].datetime + '</small>';
+                        _html+= '</div>';
+                    _html+= '</a>';
+                    // _html += '<a href="#" data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" data-toggle="modal" data-target="#chatModal" class="list-group-item list-group-item-action d-flex flex-nowrap list-group-item-chat">';
+                    //     _html += '<div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 align-self-center avatars-sm">';
+                    //         _html += '<div class="avatars-one">';
+                    //             _html += '<img src="' + data.room_list[i].avator + '" width=48 class="rounded-circle" alt="">';
+                    //         _html += '</div>';
+                    //     _html += '</div>';
+                    //     _html += '<div class="flex-1 align-self-center w-min-0">';
+                    //         _html += '<div class="d-flex align-items-center mb-1">';
+                    //             _html += '<h6 class="mb-0 text-truncate mr-1">' + data.room_list[i].name + '</h6>';
+                    //                 var _unreadShow = '';
+                    //                 if( data.room_list[i].not_read_count > 0 ){
+                    //                     _unreadShow = 'd-none'
+                    //                 }
+                    //                 _html += '<div class="' + _unreadShow + 'flex-shrink-0 flex-grow-0 ml-2 d-flex flex-column justify-content-between">';
+                    //                     _html += '<div class="text-right"><span class="unreaddot"></span></div>';
+                    //                 _html += '</div>';
+                    //         _html += '</div>';
+                    //         _html += '<div class="small text-muted">' + data.room_list[i].datetime + '</div>';
+                    //     _html += '<div>';
+                    // _html += '</a>';
+                }
+                $(".chat-list").html(_html)
+            })
+        }
         $("form").submit(function(e){
             console.log(e)
             e.preventDefault()
@@ -110,69 +123,71 @@
         $('#chatModal').on('shown.bs.modal', function (e) {
             // 開啟對話視窗時
             _singleRoomuserId = $(e.relatedTarget).attr('data-userid');
+            _singleRoomName = $(e.relatedTarget).attr('data-name');
+            var _title = _singleRoomName + "<small class='ml-1'>(USER ID : " + _singleRoomuserId + ")</small>"
+            $("#chatModalLabel").html(_title)
             var _alllength = ''; //對話有幾則
             getChat()
+            timer = setInterval(function(){
+                getChat()
+            },1000)
             function getChat(){
-                timer = setInterval(function(){
-                $.ajax({
-                    url : "./api_sys/get_chat_msg/" + _channelId + "/" + _singleRoomuserId,
-                    dataType : "json",
-                }).done(function(data){
-                    if( _alllength == "" ){
-                        // 第一次進來，必須全體資料each一遍
-                        $(".msg_history").html("")
-                        var _chat = data.datalist;
-                        _alllength = data.datalist.length;
-                        for( var j=0 ; j < _alllength ; j++ ){
-                            var _dialogHtml = ''
-                            if( _chat[j].originator == "user"){
-                                _dialogHtml = dialog_user(_chat[j])
-                            }else{
-                                _dialogHtml = dialog_admin(_chat[j])
-                            }
-                            $(".msg_history").append(_dialogHtml)
-                            scrollOnBottom()
-                        }
-                    }else{
-                        // 再次訪問，比對是否有新資料
-                        if( data.datalist.length > _alllength){
-                            //append新對話+1
+                    $.ajax({
+                        url : "./api_sys/get_chat_msg/" + _channelId + "/" + _singleRoomuserId,
+                        dataType : "json",
+                    }).done(function(data){
+                        if( _alllength == "" ){
+                            // 第一次進來，必須全體資料each一遍
+                            $(".msg_history").html("")
+                            var _chat = data.datalist;
                             _alllength = data.datalist.length;
-                            var _chat = data.datalist[(data.datalist.length-1)];
-                            var _dialogHtml = '';
-                            if( _chat.originator == "user"){
-                                _dialogHtml = dialog_user(_chat)
-                            }else{
-                                _dialogHtml = dialog_admin(_chat)
+                            for( var j=0 ; j < _alllength ; j++ ){
+                                var _dialogHtml = ''
+                                if( _chat[j].originator == "user"){
+                                    _dialogHtml = dialog_user(_chat[j])
+                                }else{
+                                    _dialogHtml = dialog_admin(_chat[j])
+                                }
+                                $(".msg_history").append(_dialogHtml)
+                                scrollOnBottom()
                             }
-                            $(".msg_history").append(_dialogHtml)
-                            scrollOnBottom()
                         }else{
-                            // console.log("no")
+                            // 再次訪問，比對是否有新資料
+                            if( data.datalist.length > _alllength){
+                                //append新對話+1
+                                _alllength = data.datalist.length;
+                                var _chat = data.datalist[(data.datalist.length-1)];
+                                var _dialogHtml = '';
+                                if( _chat.originator == "user"){
+                                    _dialogHtml = dialog_user(_chat)
+                                }else{
+                                    _dialogHtml = dialog_admin(_chat)
+                                }
+                                $(".msg_history").append(_dialogHtml)
+                                scrollOnBottom()
+                            }else{
+                                // console.log("no")
+                            }
                         }
-                    }
-                    // console.log(data)
-                })
-                },1000)
-            }
+                        // console.log(data)
+                    })
+                }
         })
         
         
         $('#chatModal').on('hide.bs.modal', function (e) {
             clearInterval(timer);
+            var _htmlclose = '<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>'
+            $(".msg_history").html(_htmlclose)
         })
         function dialog_user(dialog){
-            var isRead = '未讀'
-            if( dialog.read_status == 1 ){
-                isRead = '已讀'
+            var foto = dialog.avator
+            if( dialog.avator == null ){
+                foto = 'static/assets/images/n_foto_0.jpg'
             }
-            return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + dialog.avator + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<p>' + dialog.text + '</p>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
+            return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<p>' + dialog.text + '</p>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
         }
         function dialog_admin(dialog){
-            var isRead = '未讀'
-            if( dialog.read_status == 1 ){
-                isRead = '已讀'
-            }
             return '<div class="outgoing_msg">' + '<div class="sent_msg">' + '<p>' + dialog.text + '</p><span class="time_date">' + dialog.datetime + '</span></div></div>';
         }
         //將捲軸拉到最底下
