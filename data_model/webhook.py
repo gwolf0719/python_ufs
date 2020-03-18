@@ -20,9 +20,7 @@ class Webhook:
     def add_log(self,jsondata):
         # 記錄原始得到資料
         webhook_log = self.client.ufs.webhook_log
-        # print(jsondata)
         df = pd.DataFrame(jsondata, index=[0])
-        
         webhook_log.insert_many(df.to_dict('records'))
         # 整理資料
         # newjson = {

@@ -33,6 +33,11 @@ def set_msg():
 @api_sys.route('/api_sys/set_channel/<channel_id>')
 def set_channel(channel_id):
     session["channel_id"] = channel_id
+    manager_id = session.get("manager_id")
+    channel = Channel()
+    channel_info = channel.get_channel_manger(channel_id,manager_id);
+    print(channel_info)
+    session['level'] = channel_info['level'];
     json_data = {'sys_code':"200","sys_msg":"success",'channel_id':channel_id}
 
     return json_data
@@ -43,9 +48,9 @@ def send_message(channel_id,msg_id):
     msg = Msg()
     channel = Channel()
     user = User()
-    user_id = "Ufd5d3bb5d828bfcef65344c0bd5b5c07"
+    # user_id = "Ufd5d3bb5d828bfcef65344c0bd5b5c07"
     msg_data = msg.get_once(msg_id)
-   
+    msg.send_message(channel_id,msg_id,"U7e053ed8fcca7e8bf4b82ac79accf8cc")
 
     # # # 整理會員名單
     users = []
@@ -55,11 +60,11 @@ def send_message(channel_id,msg_id):
     # # # U7e053ed8fcca7e8bf4b82ac79accf8cc
     # # # res = line_bot_api.push_message('U7e053ed8fcca7e8bf4b82ac79accf8cc', send_message)
     # # # 發送訊息
-    for user_data in users:
+    # for user_data in users:
         
-        # 設定log
-        user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
-        msg.send_message(channel_id,msg_id,user_data['user_id'])
+    #     # 設定log
+    #     user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
+    #     msg.send_message(channel_id,msg_id,user_data['user_id'])
 
     json_data = {'sys_code':"200","sys_msg":"success"}
 

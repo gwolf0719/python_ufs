@@ -46,8 +46,10 @@ def login():
             return redirect(url_for("channel"))
         else:
             # 如果未登入就去驗證
+            print(manager_id)
             if(manager.chk_id_pw(manager_id,manager_pwd) == True):
                 # 登入 manager_id
+                print(manager_id)
                 manager.login(manager_id)
                 return redirect(url_for("channel"))
             else:
@@ -69,7 +71,8 @@ def channel():
     if(manager.chk_now() == True):
         channel = Channel()
         manager_id = session.get("manager_id")
-
+        print(session.get("manager_id"))
+        
         if(request.method == "POST"):
             jsondata = {
                 "manager_id": manager_id,
@@ -80,6 +83,7 @@ def channel():
             }
             channel.add_once(jsondata)
         datalist = channel.get_list(manager_id)
+        print(datalist)
         return render_template("channel.html",datalist=datalist)
     else:
         return redirect(url_for("login"))

@@ -39,6 +39,7 @@ class Manager:
     # 登入
     def login(self,manager_id):
         session["manager_id"] = manager_id
+        print(session.get("manager_id"))
     # 登出
     def logout(self):
-        session['manager_id'] = False
+        session.clear()

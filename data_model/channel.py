@@ -21,7 +21,7 @@ class Channel:
     def get_list(self,manager_id):
         mycol = self.client.ufs.channel
         find = {"manager_id":manager_id}
-        
+        print(find)
         # datas = mycol.find(find).sort("create_datetime",-1)
         datas = mycol.find(find)
         datalist = []
@@ -44,6 +44,12 @@ class Channel:
     def get_channel(self, channel_id):
         mycol = self.client.ufs.channel
         find = {"channel_id":channel_id}
+        data = mycol.find_one(find)
+        return data
+    # 取得單一 channel 資料
+    def get_channel_manger(self, channel_id,manager_id):
+        mycol = self.client.ufs.channel
+        find = {"channel_id":channel_id,"manager_id":manager_id}
         data = mycol.find_one(find)
         return data
 
