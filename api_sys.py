@@ -98,6 +98,7 @@ def return_chat_msg(channel_id, user_id, text_info):
     try:
         
         line_bot_api.push_message(user_id, send_message)
+        print("PUSH-----")
         # line_bot_api.reply_message(replyToken, send_message)
         # 寫入記錄
         chat_data = {
@@ -116,5 +117,7 @@ def return_chat_msg(channel_id, user_id, text_info):
 
     except BaseException:
             print("ERROR")
+            print("REPLY-----")
+            line_bot_api.reply_message(replyToken, send_message)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data

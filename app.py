@@ -394,7 +394,7 @@ def webhook(channel_id):
                     }
                     chat.add_chat(chat_data)
 
-        line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
+        # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         
 
     except (EOFError, KeyboardInterrupt):
