@@ -449,4 +449,10 @@ a {
   height: 600px;
   overflow-y: auto; }
 
+.unreaddot {
+  width: 8px;
+  height: 8px;
+  background: #79ff2f;
+  border-radius: 100%; }
+
 /*# sourceMappingURL=layout.css.map */
