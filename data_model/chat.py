@@ -63,3 +63,14 @@ class Chat:
             del row['_id']
             datalist.append(row)
         return list(datalist)
+
+    def set_read(self,channel_id,user_id):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id
+        }
+        # data = {"read_status":1}
+        
+        
+        self.col_chat.update_one(find,{"$set":{"read_status":1}})
+        return True
