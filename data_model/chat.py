@@ -24,3 +24,16 @@ class Chat:
         chat_data['datetime'] = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         self.col_chat.insert_one(chat_data)
         return True
+    # 取得所有聊天室
+    def get_chat_room(self,channel_id):
+        match = {'channel_id':channel_id}
+        group = {
+            '_id': {'user_id':'$user_id','name':'$name','avatar':'$avatar'},
+            # 'user_id':{'user_id':'$user_id'}
+        }
+       
+        collection = self.col_chat.aggregate([{'$match': match},{'$group': group}])
+        datalist = []
+        for row in collection:
+            datalist.append(row["_id"])
+        return list(datalist)

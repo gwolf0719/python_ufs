@@ -324,6 +324,19 @@ def scripts():
 
 
 
+@app.route("/chat")
+def chat():
+    chat = Chat()
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            return render_template("chat.html")
+    else:
+        return redirect(url_for("login"))
 
 
 # 單純抓取 webhook 回傳資料

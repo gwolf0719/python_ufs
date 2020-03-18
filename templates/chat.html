@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Userflow</title>
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="./static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/assets/css/layout.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" id="foxconn_nav">
+        <a class="navbar-brand h1logo" href="#">Userflow 後台</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        
+            <ul class="navbar-nav mr-auto">
+                <!-- <li><h3 class="m-0">Farm Diary</h3></li> -->
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="想執行某個功能" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="row no-gutters">
+            <div class="col fox-chatbar">
+                <div class="container">
+                    <div class="row no-gutters mt-4 mb-4">
+                        <div class="col-7 chart-type pr-2">
+                            <select class="form-control" id="">
+                                <option value="all" selected>全部</option>
+                                <option>未讀</option>
+                                <option>待處理</option>
+                                <option>處理完畢</option>
+                            </select>
+                        </div>
+                        <div class="col-5 chart-search">
+                            <input type="text" class="form-control" id="search_texting" placeholder="搜尋">
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-list">
+                    <a href="#" class="list-group-item list-group-item-action d-flex flex-nowrap list-group-item-chat active">
+                            <div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 align-self-center avatars-sm">
+                                <div class="avatars-one">
+                                    <img src="https://profile.line-scdn.net/0hyIyUrLJuJmZELA5ondZZMXhpKAszAiAuPB9hCGguKwFqGGExcB07CWgqfVJqFWUzKx9pUmJ7cAI7/preview" width=48 class="rounded-circle" alt="">
+                                </div>
+                            </div>
+                            <div class="flex-1 align-self-center w-min-0">
+                                <div class="d-flex align-items-center mb-1">
+                                    <h6 class="mb-0 text-truncate">Elli-林°</h6>
+                                </div>
+                                <div class="text-muted small text-truncate">
+                                    新光2020 Q1 demo
+                                line://app/1653559812-KMve70Vq
+                            </div>
+                            <div>
+                                
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 flex-grow-0 ml-2 d-flex flex-column justify-content-between">
+                            <div class="text-right small text-muted">2/21</div> <div class="text-right">
+                                
+                            </div>
+                            <div class="text-right small invisible">
+                                      &nbsp;
+                            </div>
+                        </div>
+                        <div class="vue-portal-target ">
+
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex flex-nowrap list-group-item-chat">
+                            <div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 align-self-center avatars-sm">
+                                <div class="avatars-one">
+                                    <img src="https://profile.line-scdn.net/0hyIyUrLJuJmZELA5ondZZMXhpKAszAiAuPB9hCGguKwFqGGExcB07CWgqfVJqFWUzKx9pUmJ7cAI7/preview" width=48 class="rounded-circle" alt="">
+                                </div>
+                            </div>
+                            <div class="flex-1 align-self-center w-min-0">
+                                <div class="d-flex align-items-center mb-1">
+                                    <h6 class="mb-0 text-truncate">Elli-林°</h6>
+                                </div>
+                                <div class="text-muted small text-truncate">
+                                    新光2020 Q1 demo
+                                line://app/1653559812-KMve70Vq
+                            </div>
+                            <div>
+                                
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 flex-grow-0 ml-2 d-flex flex-column justify-content-between">
+                            <div class="text-right small text-muted">2/21</div> <div class="text-right">
+                                
+                            </div>
+                            <div class="text-right small invisible">
+                                      &nbsp;
+                            </div>
+                        </div>
+                        <div class="vue-portal-target ">
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col fox-content position-relative">
+                <div class="p-2 border-bottom flex-grow-0 flex-shrink-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="w-50 d-flex align-items-center">
+                            <div class="avatars rounded-circle flex-shrink-0 mr-2 avatars-xs">
+                                <div class="avatars-one">
+                                    <img src="https://profile.line-scdn.net/0hyIyUrLJuJmZELA5ondZZMXhpKAszAiAuPB9hCGguKwFqGGExcB07CWgqfVJqFWUzKx9pUmJ7cAI7/preview" width=48 class="rounded-circle" alt="">
+                                </div>
+                            </div>
+                            <h4 class="mb-0 text-truncate">A-GiL</h4>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <a href="#" class="btn btn-sm mr-2 btn-outline-secondary">
+                                <span>待處理</span>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary mr-2">
+                                <span>處理完畢</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- chat area -->
+                <div class="mesgs">
+                    <div class="msg_history pt-4 pl-3 pr-3 pb-2">
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <img class="img-fluid" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                    solutionsnn</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <img class="img-fluid" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                    solutionsnn</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <img class="img-fluid" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                    solutionsnn</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <img class="img-fluid" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                    solutionsnn</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <img class="img-fluid" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                    solutionsnn</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>Test which is a new approach to have all
+                                solutions</p>
+                                <span class="time_date"> 11:01 AM    |    June 9</span>
+                            </div>
+                        </div>
+                        <div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>Test which is a new approach to have all
+                                solutions</p>
+                                <span class="time_date"> 11:01 AM    |    June 9</span>
+                            </div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img">
+                                <img class="img-fluid" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                    solutionsnnTest which is a new approach to have all
+                                    solutionsnnTest which is a new approach to have all
+                                    solutionsnnTest which is a new approach to have all
+                                    solutionsnn</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>Test which is a new approach to have all
+                                solutions</p>
+                                <span class="time_date"> 11:01 AM    |    June 9</span>
+                            </div>
+                        </div>
+                    </div><!-- msg area -->
+                    <div class="type_msg pl-2 pr-2">
+                        <div class="input_msg_write">
+                        <input type="text" class="write_msg" placeholder="Type a message" />
+                        <button class="msg_send_btn btn btn-success" type="button">回覆</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+    <script src="./static/assets/js/jquery-3.4.1.min.js"></script>
+    <script src="./static/assets/js/popper.min.js"></script>
+    <script src="./static/assets/js/bootstrap.min.js"></script>
+    <script>
+    $(function(){
+        $("body").on("click",".openSecond",function(){
+            $(this).parents(".first").next(".second").toggleClass("d-none")
+        })
+        $("#search_texting").change(function(){
+            // 美輸入一個字進行搜尋
+
+        })
+    })
+    </script>
+</body>
+</html>
