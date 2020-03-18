@@ -259,9 +259,9 @@ class User:
             return 0
         else :
             res = self.col_point_logs.aggregate(pipeline)
-            for data in res:
-                # print(data)
-            return data['point']
+            for data,value in res:
+                return value['point']
+        # return res[1]['point']
 
     def set_user_log(self, user_id,channel_id,log_msg):
         log_data = {}
