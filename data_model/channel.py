@@ -21,7 +21,6 @@ class Channel:
     def get_list(self,manager_id):
         mycol = self.client.ufs.channel
         find = {"manager_id":manager_id}
-        print(find)
         # datas = mycol.find(find).sort("create_datetime",-1)
         datas = mycol.find(find)
         datalist = []

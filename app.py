@@ -21,6 +21,7 @@ from data_model.user import *
 from data_model.msg import *
 from data_model.re_url import *
 from data_model.product import *
+from data_model.chat import *
 
 from api import *
 from api_sys import *
@@ -46,10 +47,8 @@ def login():
             return redirect(url_for("channel"))
         else:
             # 如果未登入就去驗證
-            print(manager_id)
             if(manager.chk_id_pw(manager_id,manager_pwd) == True):
                 # 登入 manager_id
-                print(manager_id)
                 manager.login(manager_id)
                 return redirect(url_for("channel"))
             else:
@@ -71,7 +70,7 @@ def channel():
     if(manager.chk_now() == True):
         channel = Channel()
         manager_id = session.get("manager_id")
-        print(session.get("manager_id"))
+        
         
         if(request.method == "POST"):
             jsondata = {
@@ -79,11 +78,11 @@ def channel():
                 "channel_id":request.values["channel_id"],
                 "channel_name":request.values["channel_name"],
                 "channel_secret":request.values["channel_secret"],
-                "channel_access_token":request.values["channel_access_token"]
+                "channel_access_token":request.values["channel_access_token"],
+                "level":"superadmin"
             }
             channel.add_once(jsondata)
         datalist = channel.get_list(manager_id)
-        print(datalist)
         return render_template("channel.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
@@ -344,6 +343,9 @@ def webhook(channel_id):
         jsondata["user_id"] = user_id
         webhook.add_log(jsondata)
 
+
+        
+
         # 使用者紀錄
         if(user.chk_once(user_id,channel_id) == True):
             user.set_user_tag(user_id,channel_id,event['type'])
@@ -363,6 +365,18 @@ def webhook(channel_id):
                 msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
                 if msg_data != False:
                     msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
+                else:
+                    # 如果不是腳本文字就送去聊天
+                    chat = Chat()
+                    chat_data = {
+                        "user_id":user_id,
+                        "channel_id":channel_id,
+                        "text":event['message']['text'],
+                        "replyToken":replyToken,
+                        "read_status":0
+                    }
+                    chat.add_chat(chat_data)
+
         
         
 

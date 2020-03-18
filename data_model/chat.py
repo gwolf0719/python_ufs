@@ -13,15 +13,14 @@ from data_model.webhook import *
 from data_model.user import *
 from data_model.tags import *
 
-class Webhook:
+class Chat:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+        self.col_chat = self.client.ufs.chat
     
-    def add_log(self,jsondata):
-        # 記錄原始得到資料
-        webhook_log = self.client.ufs.webhook_log
-        df = pd.DataFrame(jsondata, index=[0])
-        webhook_log.insert_many(df.to_dict('records'))
-        
-
+    # 寫入 chat
+    def add_chat(self,chat_data):
+        now = datetime.datetime.now();
+        chat_data['datetime'] = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
+        self.col_chat.insert_one(chat_data)
         return True
