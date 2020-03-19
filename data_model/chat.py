@@ -42,10 +42,10 @@ class Chat:
             user_chat = Chat().get_user_chat(channel_id,user_id)
             room = {
                 'user_id':user_id,
-                'name':user_chat[0]['name'],
+                'name':user_chat[-1]['name'],
                 'not_read_count':not_read_count,
-                'avator':user_chat[0]['avator'],
-                'datetime':user_chat[0]['datetime'],
+                'avator':user_chat[-1]['avator'],
+                'datetime':user_chat[-1]['datetime'],
             }
 
             datalist.append(room)
