@@ -384,15 +384,23 @@ def webhook(channel_id):
                     chat = Chat()
                     user_data = user.get_once(user_id,channel_id)
                     chat_data = {
-                        "user_id":user_id,
-                        "channel_id":channel_id,
-                        "text":event['message']['text'],
-                        "replyToken":replyToken,
-                        "read_status":0,
-                        "name":user_data['name'],
-                        "avator":user_data['avator'],
-                        "originator":"user"
-                    }
+                            "user_id":user_id,
+                            "channel_id":channel_id,
+                            "replyToken":replyToken,
+                            "read_status":0,
+                            "name":user_data['name'],
+                            "avator":user_data['avator'],
+                            "originator":"user",
+                            "id":event['message']['id']
+                        }
+                    if event['message']['type'] == 'text':
+                        chat_data['text'] = event['message']['text']
+                        chat_data['type'] = event['message']['type']
+                    elif event['message']['type'] == 'image':
+                        chat_data['type'] = event['message']['type']
+                        message_content = line_bot_api.get_message_content(event['message']['id'])
+                        print(message_content)
+                        
                     chat.add_chat(chat_data)
         print("OK")
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
