@@ -23,26 +23,19 @@ api_sys = Blueprint('api_sys', __name__)
 def set_msg():
     # 取得輸入資料
     jsondata = request.get_json()
-    # print(jsondata)
-    # msg = Msg()
-    # msg.add_once(jsondata)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
         
 
-
+# 設定後台 session channel
 @api_sys.route('/api_sys/set_channel/<channel_id>')
 def set_channel(channel_id):
     session["channel_id"] = channel_id
     manager_id = session.get("manager_id")
     channel = Channel()
-
     channel_info = channel.get_channel_manger(channel_id,manager_id)
-    print(channel_info)
-    # print(channel_info)
     session['level'] = channel_info['level'];
     json_data = {'sys_code':"200","sys_msg":"success",'channel_id':channel_id}
-
     return json_data
 
 # 發送
@@ -80,6 +73,13 @@ def get_chat_room(channel_id):
     chat = Chat()
     room_list = chat.get_chat_room(channel_id)
     json_data = {'sys_code':"200","sys_msg":"success","room_list":room_list}
+    return json_data
+# 刪除聊天室
+@api_sys.route('/api_sys/remove_chat_room/<channel_id>/<user_id>')
+def remove_chat_room(channel_id, user_id):
+    chat = Chat()
+    chat.remove_chat_room(channel_id,user_id)
+    json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
 @api_sys.route('/api_sys/get_chat_msg/<channel_id>/<user_id>')
 def get_chat_msg(channel_id, user_id):
