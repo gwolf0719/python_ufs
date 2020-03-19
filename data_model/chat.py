@@ -39,8 +39,9 @@ class Chat:
         # 否則直接建立
         else:
             room_data = {
+                'channel_id':chat_data['channel_id'],
                 'user_id':chat_data['user_id'],
-                'name':chat_data['user_id'],
+                'name':chat_data['name'],
                 'read_status':0,
                 'avator':chat_data['avator']
             }
@@ -79,11 +80,12 @@ class Chat:
     #######################
     # 取得所有聊天室
     def get_chat_room(self,channel_id):
-        data = self.col_chat_room.find({"channel_id":channel_id}).sort("_id",1)
+        data = self.col_chat_room.find({"channel_id":channel_id})
+        
         datalist = []
         for row in data:
-            del row["_id"]
-            datalist.append(data)
+            del row['_id']
+            datalist.append(row)
         return list(datalist)
     
     
