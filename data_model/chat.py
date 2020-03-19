@@ -21,6 +21,8 @@ class Chat:
     
     # 寫入 chat
     def add_chat(self,chat_data):
+        print(chat_data['channel_id'])
+        print(chat_data['user_id'])
         now = datetime.datetime.now();
         chat_data['datetime'] = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         self.col_chat.insert_one(chat_data)
