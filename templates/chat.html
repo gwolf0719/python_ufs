@@ -65,7 +65,7 @@
                 var _html = ''
                 for(var i=0 ; i < data.room_list.length; i++ ){
                     var _unreadShow = '';
-                    if( data.room_list[i].not_read_count > 0 ){
+                    if( data.room_list[i].not_read_count == 0 ){
                         _unreadShow = 'd-none'
                     }
                     var foto = data.room_list[i].avator
@@ -75,7 +75,8 @@
                     _html+= '<a data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" href="#" data-toggle="modal" data-target="#chatModal" class="media mb-3 pb-2 border-bottom">';
                         _html+= '<img src="' + foto + '" width=48 class="rounded-circle mr-2" alt="">';
                         _html+= '<div class="media-body">';
-                            _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="' + _unreadShow + 'unreaddot ml-1"></span>' +'</h5>';
+                            // _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="' + _unreadShow + 'unreaddot ml-1"></span>' +'</h5>';
+                            _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="badge badge-info ml-2' + _unreadShow + '">未讀</span></h5>';
                             _html+= '<small class="text-gray">' + data.room_list[i].datetime + '</small>';
                         _html+= '</div>';
                     _html+= '</a>';
