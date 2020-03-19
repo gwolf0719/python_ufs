@@ -36,7 +36,9 @@ def set_channel(channel_id):
     session["channel_id"] = channel_id
     manager_id = session.get("manager_id")
     channel = Channel()
-    channel_info = channel.get_channel_manger(channel_id,manager_id);
+
+    channel_info = channel.get_channel_manger(channel_id,manager_id)
+    print(channel_info)
     # print(channel_info)
     session['level'] = channel_info['level'];
     json_data = {'sys_code':"200","sys_msg":"success",'channel_id':channel_id}
@@ -71,6 +73,8 @@ def send_message(channel_id,msg_id):
 
     return json_data
 
+
+# 取得聊天室清單
 @api_sys.route('/api_sys/get_chat_room/<channel_id>')
 def get_chat_room(channel_id):
     chat = Chat()
