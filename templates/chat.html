@@ -164,7 +164,13 @@
             if( dialog.avator == null ){
                 foto = 'static/assets/images/n_foto_0.jpg'
             }
-            return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<p>' + dialog.text + '</p>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
+            if( dialog.type == undefined || dialog.type == "text" ){
+                // 訊息是文字
+                return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<p>' + dialog.text + '</p>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
+            }else{
+                // 訊息是圖
+                return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<img src="' + dialog.src + '" class="img-fluid border d-block">' + '<a href="' + dialog.src + '" target="_blank" class="badge badge-light border">看大圖</a>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
+            }
         }
         function dialog_admin(dialog){
             return '<div class="outgoing_msg">' + '<div class="sent_msg">' + '<p>' + dialog.text + '</p><span class="time_date">' + dialog.datetime + '</span></div></div>';
