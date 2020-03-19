@@ -65,7 +65,7 @@
                 var _html = ''
                 for(var i=0 ; i < data.room_list.length; i++ ){
                     var _unreadShow = '';
-                    if( data.room_list[i].not_read_count > 0 ){
+                    if( data.room_list[i].not_read_count == 0 ){
                         _unreadShow = 'd-none'
                     }
                     var foto = data.room_list[i].avator
