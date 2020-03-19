@@ -401,6 +401,8 @@ def webhook(channel_id):
                     chat_data['type'] = event['message']['type']
                     message_content = line_bot_api.get_message_content(event['message']['id'])
                     print(message_content)
+                    for d in message_content:
+                        print(d)
                     chat.add_chat(chat_data)
         print("OK")
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
