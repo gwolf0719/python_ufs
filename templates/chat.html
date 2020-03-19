@@ -54,9 +54,9 @@
         var _leftlength = ''
         // alert(_channelId)
         left();
-        // var lefttimer = setInterval(function(){
-        //     left()
-        // },10000)
+        var lefttimer = setInterval(function(){
+            left()
+        },10000)
         function left(){
             $.ajax({
                 url : './api_sys/get_chat_room/' + _channelId,
