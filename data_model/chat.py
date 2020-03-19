@@ -106,6 +106,6 @@ class Chat:
     def set_chat_room_read(self,channel_id,user_id,read_status):
         match = {'channel_id':channel_id,'user_id':user_id}
         set_data = {"$set":{'read_status':read_status}}
-        self.col_chat_room.find(match,set_data)
+        self.col_chat_room.update_one(match,set_data)
         return True
     
