@@ -26,7 +26,7 @@ class Chat:
         self.col_chat.insert_one(chat_data)
 
         # 判斷聊天室存在
-        if Chat.chk_chat_room(chat_data['channel_id'],chat_data['user_id']) == True:
+        if Chat().chk_chat_room(chat_data['channel_id'],chat_data['user_id']) == True:
             # 如果發話者是 user 則設定未讀
             if chat_data['originator'] == 'user':
                 print("如果發話者是 user 則設定未讀")
