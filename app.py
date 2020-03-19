@@ -348,7 +348,6 @@ def webhook(channel_id):
     jsondata = request.get_json()
     print("Webhook")
     try:
-        
         jsondata["channel_id"] = channel_id
         channel_data = channel.get_channel(channel_id)
         channel_access_token = channel_data["channel_access_token"]
@@ -357,8 +356,6 @@ def webhook(channel_id):
         jsondata["user_id"] = user_id
         webhook.add_log(jsondata)
 
-
-        
 
         # 使用者紀錄
         if(user.chk_once(user_id,channel_id) == True):
