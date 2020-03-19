@@ -23,12 +23,18 @@
         <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="chatModalLabel"></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+                <h5 class="modal-title m-0 mr-2" id="chatModalLabel">
+                    <span></span>
+                    <form class="form-inline">
+                        <input type="text" value ="" id="show_userid" class="form-control form-control-sm mr-1">
+                        <button class="btn-sm btn-light" id="copy">複製USER ID</button>
+                    </form>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"><form class="form-inline">
                 <!-- chat area -->
                 <div class="mesgs">
                     <div class="msg_history pt-4 pl-3 pr-3 pb-2">
@@ -38,10 +44,12 @@
                     </div><!-- msg area -->
                 </div>
             </div>
-            <div class="type_msg pl-2 pr-2">
+            <div class="type_msg p-2">
                 <form class="input_msg_write">
-                    <input type="text" name="out_msg" class="write_msg" placeholder="Type a message" />
-                    <button class="msg_send_btn btn btn-success" type="submit">回覆</button>
+                    <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" />
+                    <div class="text-center">
+                        <button class="msg_send_btn btn btn-success mt-2" type="submit">回覆</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -105,8 +113,10 @@
             // 開啟對話視窗時
             _singleRoomuserId = $(e.relatedTarget).attr('data-userid');
             _singleRoomName = $(e.relatedTarget).attr('data-name');
-            var _title = _singleRoomName + "<small class='ml-1'>(USER ID : " + _singleRoomuserId + ")</small>"
-            $("#chatModalLabel").html(_title)
+            var _title = _singleRoomName ;
+            var _userid = _singleRoomuserId
+            $("#chatModalLabel").find("span").html(_title)
+            $("#show_userid").val(_userid)
             var _alllength = ''; //對話有幾則
             getChat()
             timer = setInterval(function(){
@@ -181,7 +191,17 @@
             var _height = messageBody.outerHeight();
             messageBody.scrollTop(_height*100);
         }
-        
+        // 複製user id 
+        $("#copy").click(function(){
+            copyText()
+        })
+        function copyText() { 
+            var input = document.getElementById("show_userid");
+            input.select(); // 選中文本 
+            document.execCommand("copy"); // 執行瀏覽器複製命令 
+            alert("複製成功"); 
+        }
+
     })
     </script>
     {# 燈箱組建結束#}
