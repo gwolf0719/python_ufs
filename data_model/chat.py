@@ -88,7 +88,7 @@ class Chat:
         
     # 確認聊天室
     def chk_chat_room(self,channel_id,user_id):
-        find = {'channel_id':channel_id,'user_id'}
+        find = {'channel_id':channel_id,'user_id':user_id}
         if self.col_chat_room.find(find).count() == 0:
             return False
         else:
@@ -96,7 +96,7 @@ class Chat:
     # 刪除聊天室
     # 設定聊天室已讀狀態
     def set_chat_room_read(self,channel_id,user_id,read_status):
-        match = {'channel_id':channel_id,'user_id'}
+        match = {'channel_id':channel_id,'user_id':user_id}
         set_data = {"$set":{'read_status':read_status}}
         self.col_chat_room.find(match,set_data)
         return True
