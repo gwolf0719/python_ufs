@@ -98,34 +98,14 @@ class Chat:
         else:
             return True
     # 刪除聊天室
+    def remove_chat_room(self,channel_id,user_id):
+        find = {'channel_id':channel_id,'user_id':user_id}
+        self.col_chat_room.delete_one(find)
+        return True
     # 設定聊天室已讀狀態
     def set_chat_room_read(self,channel_id,user_id,read_status):
         match = {'channel_id':channel_id,'user_id':user_id}
         set_data = {"$set":{'read_status':read_status}}
-        self.col_chat_room.find(match,set_data)
+        self.col_chat_room.update_one(match,set_data)
         return True
-    # def get_chat_room(self,channel_id):
-        
-    #     user = User()
-    #     match = {'channel_id':channel_id}
-    #     group = {
-    #         '_id': {'user_id':'$user_id','name':'$name','avatar':'$avatar'},
-    #         # 'user_id':{'user_id':'$user_id'}
-    #     }
-       
-    #     collection = self.col_chat.aggregate([{'$match': match},{'$group': group}])
-    #     datalist = []
-    #     for row in collection:
-    #         user_id = row["_id"]['user_id']
-    #         not_read_count = Chat().get_not_read(channel_id,user_id)
-    #         user_chat = Chat().get_user_chat(channel_id,user_id)
-    #         room = {
-    #             'user_id':user_id,
-    #             'name':user_chat[-1]['name'],
-    #             'not_read_count':not_read_count,
-    #             'avator':user_chat[-1]['avator'],
-    #             'datetime':user_chat[-1]['datetime'],
-    #         }
-
-    #         datalist.append(room)
-        # return datalist
+    

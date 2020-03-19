@@ -370,11 +370,12 @@ def webhook(channel_id):
             # 回覆
             line_bot_api = LineBotApi(channel_access_token)
         
-            # 檢查腳本關鍵字觸發
+            
             msg = Msg()
             chat = Chat()
             user_data = user.get_once(user_id,channel_id)
-
+            # 取得腳本關鍵字觸發
+            msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
             chat_data = {
                             "user_id":user_id,
                             "channel_id":channel_id,
@@ -385,18 +386,27 @@ def webhook(channel_id):
                             "originator":"user",
                             "id":event['message']['id']
                         }
+
+            # 判斷不是腳本
+            # 無人值守
+            rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
+            line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
+
             if "message" in event:
+                # 如果對方傳純文字訊息
                 if event['message']['type'] == "text":
-                    msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+                    # 判斷不是腳本
                     if msg_data != False:
                         msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
                     else:
                         chat_data['text'] = event['message']['text']
                         chat_data['type'] = event['message']['type']
                         chat.add_chat(chat_data)
-                else:
+                else: 
+                    # 如果是圖片
                     chat_data['type'] = event['message']['type']
                     message_content = line_bot_api.get_message_content(event['message']['id'])
+                    # 把資料檔案從 line 取回
                     file_name  = event['message']['id']+'.jpg'
                     image_data = request.url_root+'static/'+file_name;
 
