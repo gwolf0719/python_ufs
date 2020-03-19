@@ -73,10 +73,8 @@
                 var _html = ''
                 for(var i=0 ; i < data.room_list.length; i++ ){
                     var _unreadShow = '';
-                    if( data.room_list[i].read_status == 0 ){
+                    if( data.room_list[i].read_status == 1 ){
                         _unreadShow = 'd-none';
-                    }else{
-                        _unreadShow = '';
                     }
                     var foto = data.room_list[i].avator
                     if( data.room_list[i].avator == null ){
