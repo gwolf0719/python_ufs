@@ -400,7 +400,6 @@ def webhook(channel_id):
                 else:
                     chat_data['type'] = event['message']['type']
                     message_content = line_bot_api.get_message_content(event['message']['id'])
-                    print(message_content)
                     file_name  = event['message']['id']+'.jpg'
                     # product_file = request.files['product_img']
                     # product_file.save(os.path.join('./static/product', file_name));
@@ -409,7 +408,7 @@ def webhook(channel_id):
                     with open('./static/'+file_name, 'wb') as fd:
                         for chunk in message_content.iter_content():
                             fd.write(chunk)
-                            print(image_data)
+                    chat_data['image_src'] = image_data
                     chat.add_chat(chat_data)
         print("OK")
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
