@@ -75,6 +75,8 @@
                     var _unreadShow = '';
                     if( data.room_list[i].read_status == 0 ){
                         _unreadShow = 'd-none';
+                    }else{
+                        _unreadShow = '';
                     }
                     var foto = data.room_list[i].avator
                     if( data.room_list[i].avator == null ){
@@ -85,7 +87,7 @@
                         _html+= '<div class="media-body">';
                             // _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="' + _unreadShow + 'unreaddot ml-1"></span>' +'</h5>';
                             _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '</h5>';
-                            _html += '<span class="badge badge-info ml-2' + _unreadShow + '">未讀</span>'
+                            _html += '<span class="badge badge-info ml-2 ' + _unreadShow + '">未讀</span>'
                             // _html+= '<small class="text-gray">' + data.room_list[i].datetime + '</small>';
                         _html+= '</div>';
                     _html+= '</a>';
