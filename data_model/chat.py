@@ -39,8 +39,9 @@ class Chat:
         # 否則直接建立
         else:
             room_data = {
+                'channel_id':chat_data['channel_id'],
                 'user_id':chat_data['user_id'],
-                'name':chat_data['user_id'],
+                'name':chat_data['name'],
                 'read_status':0,
                 'avator':chat_data['avator']
             }
