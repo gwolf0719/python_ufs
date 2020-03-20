@@ -147,7 +147,7 @@ def return_chat_msg(channel_id, user_id, text_info):
 ##############################################
 ## 自動回覆 
 ##############################################
-@api_sys.route('/api_sys/set_auto_reply/', methods=["POST"])
+@api_sys.route('/api_sys/set_auto_reply/', methods=["GET","POST"])
 def set_auto_reply():
     jsondata = request.get_json()
     json_data = {'sys_code':"200","sys_msg":"success"}
