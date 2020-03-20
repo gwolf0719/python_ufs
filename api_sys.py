@@ -19,12 +19,12 @@ api_sys = Blueprint('api_sys', __name__)
 
 # 設定腳本
 # 2020-03-09 改成 script 和 msg 共用設定和資廖庫
-@api_sys.route('/api_sys/set_msg/', methods=["POST"])
-def set_msg():
-    # 取得輸入資料
-    jsondata = request.get_json()
-    json_data = {'sys_code':"200","sys_msg":"success"}
-    return json_data
+# @api_sys.route('/api_sys/set_msg/', methods=["POST"])
+# def set_msg():
+#     # 取得輸入資料
+#     jsondata = request.get_json()
+#     json_data = {'sys_code':"200","sys_msg":"success"}
+#     return json_data
         
 
 # 設定後台 session channel
@@ -98,6 +98,7 @@ def open_chat_room(channel_id, user_id):
 
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
+# 取得個人訊息內容列
 @api_sys.route('/api_sys/get_chat_msg/<channel_id>/<user_id>')
 def get_chat_msg(channel_id, user_id):
     chat = Chat()
@@ -105,6 +106,8 @@ def get_chat_msg(channel_id, user_id):
     json_data = {'sys_code':"200","sys_msg":"success","datalist":datalist}
     return json_data
 
+
+# 後台回覆私訊
 @api_sys.route('/api_sys/return_chat_msg/<channel_id>/<user_id>/<text_info>')
 def return_chat_msg(channel_id, user_id, text_info):
     chat = Chat()
@@ -120,12 +123,10 @@ def return_chat_msg(channel_id, user_id, text_info):
         
         line_bot_api.push_message(user_id, send_message)
         
-        
-
     except BaseException:
             line_bot_api.reply_message(replyToken, send_message)
     
-    # line_bot_api.reply_message(replyToken, send_message)
+    
         # 寫入記錄
     chat_data = {
                     "user_id":user_id,
@@ -142,3 +143,13 @@ def return_chat_msg(channel_id, user_id, text_info):
     chat.set_read(channel_id,user_id)
     json_data = {'sys_code':"200","sys_msg":"success",'datetime':datetime}
     return json_data
+
+##############################################
+## 自動回覆 
+##############################################
+@api_sys.route('/api_sys/set_auto_reply/', methods=["POST"])
+def set_auto_reply():
+    jsondata = request.get_json()
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
+        
