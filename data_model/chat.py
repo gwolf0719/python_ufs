@@ -18,6 +18,7 @@ class Chat:
         self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
         self.col_chat = self.client.ufs.chat
         self.col_chat_room = self.client.ufs.chat_room
+        self.col_auto_reply = self.client.ufs.auto_reply
     
     # 寫入 chat
     def add_chat(self,chat_data):
@@ -114,3 +115,30 @@ class Chat:
         self.col_chat_room.update_one(match,set_data)
         return True
     
+##############################################
+## 自動回覆 
+##############################################
+    # 確認自動回覆存在
+    def chk_auto_reply(self,channel_id):
+        find = {"channel_id":channel_id}
+        if self.col_auto_reply.find(find).count() == 0:
+            return False
+        else :
+            return True
+    # 更新自動回覆
+    def update_auto_reply(self,channel_id,json_data):
+        find = {"channel_id":channel_id}
+        set_data = {"$set":json_data}
+        self.col_auto_reply.update_one(find,set_data)
+        return True
+    # 新增自動回覆
+    def add_auto_reply(self,json_data):
+        self.col_auto_reply.insert_one(json_data)
+        return True
+    # 取得自動回覆
+    def get_auto_reply(self,channel_id):
+        find = {"channel_id":channel_id}
+        data = self.col_auto_reply.find_one(find)
+        print(data)
+        del data["_id"]
+        return data

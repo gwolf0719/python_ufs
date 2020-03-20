@@ -150,6 +150,26 @@ def return_chat_msg(channel_id, user_id, text_info):
 @api_sys.route('/api_sys/set_auto_reply/', methods=["GET","POST"])
 def set_auto_reply():
     jsondata = request.get_json()
+    channel_id = jsondata['channel_id']
+    chat = Chat()
+    if chat.chk_auto_reply(channel_id) == True:
+        chat.update_auto_reply(channel_id,jsondata)
+    else:
+        chat.add_auto_reply(jsondata)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
+@api_sys.route('/api_sys/get_auto_reply/<channel_id>')
+def get_auto_reply(channel_id):
+    channel = Channel()
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    chat = Chat()
+    if chat.chk_auto_reply(channel_id) == False:
+        json_data = {'sys_code':"404","sys_msg":"auto_reply not found"}
+        return json_data
+    else:
+        auto_reply = chat.get_auto_reply(channel_id)
+        json_data = {'sys_code':"200","sys_msg":"Success","auto_reply":auto_reply}
+        return json_data
         
