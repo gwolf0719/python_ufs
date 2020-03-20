@@ -1,10 +1,9 @@
 {% extends 'layout.html'%}
 {% block title %}
 <h2>私訊</h2>
-<!-- <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    <i class="material-icons">add</i>
+<a href="" class="btn btn-primary" data-toggle="modal" data-target="#workModal">
     回應設定
-</a> -->
+</a>
 {% endblock title%}
 {% block content %}
     <div class="container-fluid">
@@ -21,55 +20,142 @@
         </div>
     </div>
     {# 燈箱組件 #}
-  <!-- Modal -->
-    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="chatModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+<!-- Modal -->
+<div class="modal fade" id="workModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="workModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title m-0 mr-2" id="chatModalLabel">
-                    <span></span>
-                    <form class="form-inline">
-                        <input type="text" value ="" id="show_userid" class="form-control form-control-sm mr-1" hidden>
-                        <button class="btn-sm btn-outline-info mr-2" id="copy">複製USER ID</button>
-                        <button class="btn-sm btn-outline-danger" id="delete">結案</button>
-                    </form>
+                <h5 class="modal-title m-0 mr-2" id="workModalLabel">
+                    <span>回應設定</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body"><form class="form-inline">
-                <!-- chat area -->
-                <div class="mesgs">
-                    <div class="msg_history pt-4 pl-3 pr-3 pb-2">
-                        <div class="spinner-border text-info" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div><!-- msg area -->
+            <div class="modal-body">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="auto_replyRadios" id="auto_replyRadios1" value="auto" checked>
+                    <label class="form-check-label" for="auto_replyRadios1">
+                        自動回應
+                    </label>
                 </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="auto_replyRadios" id="auto_replyRadios2" value="chat">
+                    <label class="form-check-label" for="auto_replyRadios2">
+                        聊天
+                    </label>
+                </div>
+                <div class="reply_note reply_note_1 pt-3">
+                    <h3 class="mt-2">上下班時間設定</h3>
+                    <form action="" class="text-center">
+                        <table class="table table-border">
+                            <tr>
+                                <th>星期</th>
+                                <th>上班</th>
+                                <th>下班</th>
+                            </tr>
+                            <tr>
+                                <td>一</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                            </tr>
+                            <tr>
+                                <td>二</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                            </tr>
+                            <tr>
+                                <td>三</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                            </tr>
+                            <tr>
+                                <td>四</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                            </tr>
+                            <tr>
+                                <td>五</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                            </tr>
+                            <tr>
+                                <td>六</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="00:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="23:59"></td>
+                            </tr>
+                            <tr>
+                                <td>日</td>
+                                <td><input class="form-control" type="time" name="appt-time" value="00:00"></td>
+                                <td><input class="form-control" type="time" name="appt-time" value="23:59"></td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="btn btn-primary">設定</button>
+                    </form>
+                </div>
+                <div class="reply_note reply_note_2"></div>
             </div>
-            <div class="type_msg p-2">
-                <form id="input_msg_write">
-                    <small><b>enter會發送</b></small>
-                    <!-- 、換行請用shift + enter -->
-                    <div class="row no-gutters">
-                        <div class="col-10">
-                            <textarea type="text" cols="50" rows="5" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"></textarea>
-                        </div>
-                        <div class="col-2 text-center">
-                            <button type="button" class="msg_send_btn btn btn-success" >回覆</button>
-                        </div>
-                    </div>
-                    <!-- <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"> -->
-                    <div class="text-center">
-                    </div>
-                </form>
-            </div>
-        </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title m-0 mr-2" id="chatModalLabel">
+                <span></span>
+                <form class="form-inline">
+                    <input type="text" value ="" id="show_userid" class="form-control form-control-sm mr-1" hidden>
+                    <button class="btn-sm btn-outline-info mr-2" id="copy">複製USER ID</button>
+                    <button class="btn-sm btn-outline-danger" id="delete">結案</button>
+                </form>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body"><form class="form-inline">
+            <!-- chat area -->
+            <div class="mesgs">
+                <div class="msg_history pt-4 pl-3 pr-3 pb-2">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div><!-- msg area -->
+            </div>
+        </div>
+        <div class="type_msg p-2">
+            <form id="input_msg_write">
+                <small><b>enter會發送</b></small>
+                <!-- 、換行請用shift + enter -->
+                <div class="row no-gutters">
+                    <div class="col-10">
+                        <textarea type="text" cols="50" rows="5" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"></textarea>
+                    </div>
+                    <div class="col-2 text-center">
+                        <button type="button" class="msg_send_btn btn btn-success" >回覆</button>
+                    </div>
+                </div>
+                <!-- <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"> -->
+                <div class="text-center">
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
     <script>
     $(function(){
+        $('input:radio[name=auto_replyRadios]').change(function() {
+            if (this.value == 'auto') {
+                $(".reply_note_2").css({"display":"none"})
+                $(".reply_note_1").css({"display":"block"})
+            }
+            else if (this.value == 'chat') {
+                $(".reply_note_1").css({"display":"none"})
+                $(".reply_note_2").css({"display":"block"})
+            }
+        });
         $.valHooks.textarea = {
             get: function(elem) {
                 return elem.value.replace(/\r?\n/g, "\r\n");
@@ -81,7 +167,7 @@
         // alert(_channelId)
         left();
         var lefttimer = setInterval(function(){
-            left()
+            // left()
         },10000)
         function left(){
             $.ajax({
