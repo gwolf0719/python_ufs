@@ -45,7 +45,8 @@ class Chat:
                 'read_status':0,
                 'avator':chat_data['avator']
             }
-            self.col_chat_room.insert_one(room_data)
+            # self.col_chat_room.insert_one(room_data)
+            Chat().open_chat_room(room_data)
 
 
         return chat_data['datetime']
@@ -88,8 +89,12 @@ class Chat:
             datalist.append(row)
         return list(datalist)
     
+    # 打開聊天室
+    def open_chat_room(self,room_data):
+        self.col_chat_room.insert_one(room_data)
+        return True
+
     
-        
     # 確認聊天室
     def chk_chat_room(self,channel_id,user_id):
         find = {'channel_id':channel_id,'user_id':user_id}

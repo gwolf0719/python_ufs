@@ -81,6 +81,23 @@ def remove_chat_room(channel_id, user_id):
     chat.remove_chat_room(channel_id,user_id)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
+@api_sys.route('/api_sys/open_chat_room/<channel_id>/<user_id>')
+def open_chat_room(channel_id, user_id):
+    chat = Chat()
+    user = User()
+    user_data = user.get_once(user_id,channel_id)
+    room_data = {
+                'channel_id':channel_id,
+                'user_id':user_id,
+                'name':user_data['name'],
+                'read_status':0,
+                'avator':user_data['avator']
+            }
+            # self.col_chat_room.insert_one(room_data)
+    chat.open_chat_room(room_data)
+
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
 @api_sys.route('/api_sys/get_chat_msg/<channel_id>/<user_id>')
 def get_chat_msg(channel_id, user_id):
     chat = Chat()
