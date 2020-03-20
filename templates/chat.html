@@ -1,6 +1,10 @@
 {% extends 'layout.html'%}
 {% block title %}
 <h2>私訊</h2>
+<!-- <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <i class="material-icons">add</i>
+    回應設定
+</a> -->
 {% endblock title%}
 {% block content %}
     <div class="container-fluid">
@@ -46,13 +50,14 @@
             </div>
             <div class="type_msg p-2">
                 <form id="input_msg_write">
-                    <small><b>enter會發送</b>、換行請用shift + enter</small>
+                    <small><b>enter會發送</b></small>
+                    <!-- 、換行請用shift + enter -->
                     <div class="row no-gutters">
                         <div class="col-10">
                             <textarea type="text" cols="50" rows="5" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"></textarea>
                         </div>
                         <div class="col-2 text-center">
-                            <button class="msg_send_btn btn btn-success" >回覆</button>
+                            <button type="button" class="msg_send_btn btn btn-success" >回覆</button>
                         </div>
                     </div>
                     <!-- <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"> -->
@@ -65,14 +70,19 @@
     </div>
     <script>
     $(function(){
+        $.valHooks.textarea = {
+            get: function(elem) {
+                return elem.value.replace(/\r?\n/g, "\r\n");
+            }
+        };
         var _channelId = "{{ session.get('channel_id')}}"
         var _singleRoomuserId = '';
         var _leftlength = ''
         // alert(_channelId)
         left();
-        // var lefttimer = setInterval(function(){
-        //     left()
-        // },10000)
+        var lefttimer = setInterval(function(){
+            left()
+        },10000)
         function left(){
             $.ajax({
                 url : './api_sys/get_chat_room/' + _channelId,
@@ -103,7 +113,7 @@
         }
 
         $("#out_msg").keypress(function (e) {
-            if(e.which == 13) {
+            if(e.which == 13 && !e.shiftKey) {
                 e.preventDefault();
                 var _value = $(this).val();
                 $(this).val("")
@@ -118,6 +128,20 @@
                 })
             }
         });
+        $(".msg_send_btn").click(function(e){
+            e.preventDefault();
+            var _value = $("#out_msg").val();
+            $("#out_msg").val("")
+            $.ajax({
+                url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
+                dataType : "json",
+            }).done(function(data){
+                console.log(data)
+                // dialog_admin(_chat)
+                scrollOnBottom()
+            // <channel_id>/<user_id>/<文字內容>
+            })
+        })
         var _timer = ''
         $('#chatModal').on('shown.bs.modal', function (e) {
             // 開啟對話視窗時
@@ -248,7 +272,8 @@
                     "url" : '/api_sys/remove_chat_room/' + _gotChannel + "/" + _gotUserid,
                     dataType : "json"
                 }).done(function(data){
-                    alert("ok")
+                    alert("完成結案")
+                    $('#chatModal').modal('hide')
                     // return false; 
                 })
             }else{ 
