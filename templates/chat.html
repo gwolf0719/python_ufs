@@ -3,18 +3,17 @@
 <h2>私訊</h2>
 {% endblock title%}
 {% block content %}
-    <div class="row no-gutters">
-        <div class="col fox-chatbar">
-            <div class="chat-list">
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border text-info" role="status">
-                        <span class="sr-only">Loading...</span>
+    <div class="container-fluid">
+        <div class="row chat-list">
+            <!-- <div class="col">
+                <div class="">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col fox-content position-relative bg-light pt-5 pb-5 text-center">
-            請點選左邊開始對話
+            </div> -->
         </div>
     </div>
     {# 燈箱組件 #}
@@ -26,8 +25,9 @@
                 <h5 class="modal-title m-0 mr-2" id="chatModalLabel">
                     <span></span>
                     <form class="form-inline">
-                        <input type="text" value ="" id="show_userid" class="form-control form-control-sm mr-1">
-                        <button class="btn-sm btn-light" id="copy">複製USER ID</button>
+                        <input type="text" value ="" id="show_userid" class="form-control form-control-sm mr-1" hidden>
+                        <button class="btn-sm btn-outline-info mr-2" id="copy">複製USER ID</button>
+                        <button class="btn-sm btn-outline-danger" id="delete">結案</button>
                     </form>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -45,10 +45,18 @@
                 </div>
             </div>
             <div class="type_msg p-2">
-                <form class="input_msg_write">
-                    <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" />
+                <form id="input_msg_write">
+                    <small><b>enter會發送</b>、換行請用shift + enter</small>
+                    <div class="row no-gutters">
+                        <div class="col-10">
+                            <textarea type="text" cols="50" rows="5" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"></textarea>
+                        </div>
+                        <div class="col-2 text-center">
+                            <button class="msg_send_btn btn btn-success" >回覆</button>
+                        </div>
+                    </div>
+                    <!-- <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"> -->
                     <div class="text-center">
-                        <button class="msg_send_btn btn btn-success mt-2" type="submit">回覆</button>
                     </div>
                 </form>
             </div>
@@ -62,9 +70,9 @@
         var _leftlength = ''
         // alert(_channelId)
         left();
-        var lefttimer = setInterval(function(){
-            left()
-        },10000)
+        // var lefttimer = setInterval(function(){
+        //     left()
+        // },10000)
         function left(){
             $.ajax({
                 url : './api_sys/get_chat_room/' + _channelId,
@@ -80,35 +88,36 @@
                     if( data.room_list[i].avator == null ){
                         foto = 'static/assets/images/n_foto_0.jpg'
                     }
-                    _html+= '<a data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" href="#" data-toggle="modal" data-target="#chatModal" class="media mb-3 pb-2 border-bottom">';
+                    _html+= '<div class="col-3"><a data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" href="#" data-toggle="modal" data-target="#chatModal" class="media border p-1">';
                         _html+= '<img src="' + foto + '" width=48 class="rounded-circle mr-2" alt="">';
                         _html+= '<div class="media-body">';
                             // _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="' + _unreadShow + 'unreaddot ml-1"></span>' +'</h5>';
                             _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '</h5>';
-                            _html += '<span class="badge badge-info ml-2 ' + _unreadShow + '">未讀</span>'
+                            _html += '<span class="badge badge-info ' + _unreadShow + '">未讀</span>'
                             // _html+= '<small class="text-gray">' + data.room_list[i].datetime + '</small>';
                         _html+= '</div>';
-                    _html+= '</a>';
+                    _html+= '</a></div>';
                 }
                 $(".chat-list").html(_html)
             })
         }
-        $("form").submit(function(e){
-            console.log(e)
-            e.preventDefault()
-            var _form = $(this).serializeArray()
-            // 輸入一句話後
-            $(".write_msg").val("")
-            $.ajax({
-                url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _form[0].value ,
-                dataType : "json",
-            }).done(function(data){
-                console.log(data)
-                // dialog_admin(_chat)
-                scrollOnBottom()
-            // <channel_id>/<user_id>/<文字內容>
-            })
-        })
+
+        $("#out_msg").keypress(function (e) {
+            if(e.which == 13) {
+                e.preventDefault();
+                var _value = $(this).val();
+                $(this).val("")
+                $.ajax({
+                    url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
+                    dataType : "json",
+                }).done(function(data){
+                    console.log(data)
+                    // dialog_admin(_chat)
+                    scrollOnBottom()
+                // <channel_id>/<user_id>/<文字內容>
+                })
+            }
+        });
         var _timer = ''
         $('#chatModal').on('shown.bs.modal', function (e) {
             // 開啟對話視窗時
@@ -116,8 +125,15 @@
             _singleRoomName = $(e.relatedTarget).attr('data-name');
             var _title = _singleRoomName ;
             var _userid = _singleRoomuserId
-            $("#chatModalLabel").find("span").html(_title)
+            // 標題
+            $("#chatModalLabel").find("span").html(_title + " <small class='text-info'>" + _singleRoomuserId + "</small>")
+            // 複製用
             $("#show_userid").val(_userid)
+            // 結案鈕
+            $("#delete").attr({
+                'data-userid' : _userid ,
+                'data-channel' : _channelId,
+            })
             var _alllength = ''; //對話有幾則
             getChat()
             timer = setInterval(function(){
@@ -147,6 +163,8 @@
                             // 再次訪問，比對是否有新資料
                             if( data.datalist.length > _alllength){
                                 //append新對話+1
+                                console.log("paiki")
+                                readRefresh(data.datalist,-1)
                                 _alllength = data.datalist.length;
                                 var _chat = data.datalist[(data.datalist.length-1)];
                                 var _dialogHtml = '';
@@ -159,6 +177,7 @@
                                 scrollOnBottom()
                             }else{
                                 // console.log("no")
+                                readRefresh(data.datalist,0)
                             }
                         }
                         // console.log(data)
@@ -170,21 +189,38 @@
             var _htmlclose = '<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>'
             $(".msg_history").html(_htmlclose)
         })
+        function readRefresh(dialog,hasNew){
+            for(var k = 0; k < (dialog.length + hasNew) ; k++ ){
+                var _origRead = $(".msg_idx").eq(k).find(".isread").attr("data-status")
+                if( dialog[k].read_status != _origRead ){
+                    var _newreadStatus = ''
+                    if( dialog[k].read_status == 0 ){
+                        _newreadStatus = '未讀'
+                    }else{
+                        _newreadStatus = '已讀'
+                    }
+                    $(".msg_idx").eq(k).find(".isread").attr("data-status",dialog[k].read_status)
+                    $(".msg_idx").eq(k).find(".isread").text(_newreadStatus)
+                }
+            }
+        }
         function dialog_user(dialog){
             var foto = dialog.avator
+            var _read = dialog.read_status?"已讀":"未讀"
             if( dialog.avator == null ){
                 foto = 'static/assets/images/n_foto_0.jpg'
             }
             if( dialog.type == undefined || dialog.type == "text" ){
                 // 訊息是文字
-                return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<p>' + dialog.text + '</p>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
+                return '<div class="incoming_msg mb-1 msg_idx">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<p>' + dialog.text + '</p>' + '<span class="time_date mt-0">' + dialog.datetime +  '<span class="isread" data-status="' + dialog.read_status + '">' + _read + '</span></span></div></div></div>';
             }else{
                 // 訊息是圖
-                return '<div class="incoming_msg">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<img src="' + dialog.src + '" class="img-fluid border d-block">' + '<a href="' + dialog.src + '" target="_blank" class="badge badge-light border">看大圖</a>' + '<span class="time_date">' + dialog.datetime +  '</span></div></div></div>';
+                return '<div class="incoming_msg msg_idx">' + '<div class="incoming_msg_img">' + '<img class="img-fluid rounded-circle" src="' + foto + '" alt="sunil">' + '</div>' + '<div class="received_msg">' + '<div class="received_withd_msg">' + '<img src="' + dialog.src + '" class="img-fluid border d-block">' + '<a href="' + dialog.src + '" target="_blank" class="badge badge-light border">看大圖</a>' + '<span class="time_date mt-1 ml-1">' + dialog.datetime +  '</span><span class="isread" data-status="' + dialog.read_status + '">' + _read + '</span></div></div></div>';
             }
         }
         function dialog_admin(dialog){
-            return '<div class="outgoing_msg">' + '<div class="sent_msg">' + '<p>' + dialog.text + '</p><span class="time_date">' + dialog.datetime + '</span></div></div>';
+            var _read = dialog.read_status?"已讀":"未讀"
+            return '<div class="outgoing_msg msg_idx">' + '<div class="sent_msg">' + '<p>' + dialog.text + '</p><span class="time_date mt-1">' + dialog.datetime + '<span class="isread" data-status="' + dialog.read_status + '">' + _read + '</span></span></div></div>';
         }
         //將捲軸拉到最底下
         function scrollOnBottom(){
@@ -202,7 +238,23 @@
             document.execCommand("copy"); // 執行瀏覽器複製命令 
             alert("複製成功"); 
         }
-
+        $("#delete").click(function(e){
+            e.preventDefault()
+            var _gotUserid = $(this).attr("data-userid");
+            var _gotChannel = $(this).attr("data-channel")
+            var msg = "結案會在畫面上隱藏對話框，直到使用者再次來訊"; 
+            if (confirm(msg) == true){
+                $.ajax({
+                    "url" : '/api_sys/remove_chat_room/' + _gotChannel + "/" + _gotUserid,
+                    dataType : "json"
+                }).done(function(data){
+                    alert("ok")
+                    // return false; 
+                })
+            }else{ 
+                return false; 
+            } 
+        })
     })
     </script>
     {# 燈箱組建結束#}
