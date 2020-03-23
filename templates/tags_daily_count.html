@@ -3,9 +3,50 @@
 {% block title %}
 <h2>單日統計</h2>
 {% endblock title%}
-{{ session.get('channel_id')}}
-    {% for data in datalist %}
-        {{data.tag_desc}}
-    {% endfor%}
 {% block content %}
+<form action="" class="form-inline" id="date_form">
+    <input type="date" name="" id="date_select" value="" class="form-control mr-2">
+    <button class="btn btn-success" type="submit">選擇</button>
+</form>
+<table class="table table-border table-hover mt-4">
+    <tr>
+        <th>標籤標題</th>
+        <th>標籤</th>
+        <th>單次次數</th>
+    </tr>
+    {% for data in datalist %}
+    <tr>
+        <td>{{data.tag_desc}}</td>
+        <td><span class="badge badge-light">x{{data.tag}}</span></td>
+        <td>{{data.count}}</td>
+    </tr>
+    {% endfor%}
+</table>
+
+<!-- {{ session.get('channel_id')}} -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <script>
+        var _nowday = getUrlParam("day");
+        var _today = ''
+        if( _nowday == undefined ){
+            _today = moment().format("YYYY-MM-DD")
+        }else{
+            _today = _nowday
+            _today = moment(_today).format("YYYY-MM-DD")
+        }
+        $("#date_select").val(_today)
+        $("#date_form").submit(function(e){
+            e.preventDefault();
+            var _date1 = $("#date_select").val()
+            var _date = moment(_date1).format("YYYY-M-D")
+            location.href = "tags_daily_count/?day=" + _date
+        })
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+                return unescape(r[2]);
+            return null;
+        }
+    </script>
 {% endblock content %}
