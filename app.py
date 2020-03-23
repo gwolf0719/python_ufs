@@ -375,7 +375,8 @@ def webhook(channel_id):
             chat = Chat()
             user_data = user.get_once(user_id,channel_id)
             # 取得腳本關鍵字觸發
-            msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+            if event['message']['type'] == "text":
+                msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
             chat_data = {
                             "user_id":user_id,
                             "channel_id":channel_id,
