@@ -193,7 +193,7 @@
         left();
         var lefttimer = setInterval(function(){
             // left()
-        },10000)
+        },10000000)
         function left(){
             $.ajax({
                 url : './api_sys/get_chat_room/' + _channelId,
@@ -227,6 +227,9 @@
             if(e.which == 13 && !e.shiftKey) {
                 e.preventDefault();
                 var _value = $(this).val();
+                // 先強制把要送出的值換行符改為BR，再交給 後端處理
+                _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
+                console.log(_value);
                 $(this).val("")
                 $.ajax({
                     url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
