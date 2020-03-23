@@ -243,7 +243,24 @@ def tags_daily_count():
         else:
             channel_id = session.get("channel_id")
             
-        return render_template("tags_daily_count.html")
+            if "date" not in request.values:
+                now = datetime.datetime.now()
+                daily = "{0}-{1}-{2}".format(now.year, now.month, now.day)
+            else:
+                daily = request.values['date']
+            tags = Tags()
+            # 取得需要追蹤的 tag 
+            tag_list = tags.get_tag_list(channel_id)
+            datalist = []
+            # 取得單日數量
+            for td in tag_list:
+                datalist.append({
+                    "tag_desc": td['tag_desc'],
+                    "tag":td['tag'],
+                    "count":tags.tags_daily_count(channel_id,td['tag'],daily)
+                })
+            print(datalist)
+        return render_template("tags_daily_count.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 
@@ -404,9 +421,9 @@ def webhook(channel_id):
 
             # 判斷不是腳本
             # 無人值守
-            # rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
-            # line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
-            print(event['message']['type'])
+            rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
+            line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
+            # print(event['message']['type'])
             if "message" in event:
                 # 如果對方傳純文字訊息
                 if event['message']['type'] == "text":
