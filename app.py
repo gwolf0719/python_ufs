@@ -232,7 +232,7 @@ def tags():
         return redirect(url_for("login"))
 
     
-
+# 單日統計
 @app.route("/tags_daily_count/")
 def tags_daily_count():
     if(manager.chk_now() == True):
