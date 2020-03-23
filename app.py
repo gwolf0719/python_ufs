@@ -227,9 +227,23 @@ def tags():
         else:
             channel_id = session.get("channel_id")
             
-                
-            
         return render_template("tags.html")
+    else:
+        return redirect(url_for("login"))
+
+    
+# 單日統計
+@app.route("/tags_daily_count/")
+def tags_daily_count():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            
+        return render_template("tags_daily_count.html")
     else:
         return redirect(url_for("login"))
 
