@@ -391,7 +391,7 @@ def webhook(channel_id):
             # 無人值守
             # rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
             # line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
-
+            print(event['message']['type'])
             if "message" in event:
                 # 如果對方傳純文字訊息
                 if event['message']['type'] == "text":
@@ -405,6 +405,7 @@ def webhook(channel_id):
                 else: 
                     # 如果是圖片
                     chat_data['type'] = event['message']['type']
+                    
                     message_content = line_bot_api.get_message_content(event['message']['id'])
                     # 把資料檔案從 line 取回
                     file_name  = event['message']['id']+'.jpg'
