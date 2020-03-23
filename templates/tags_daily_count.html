@@ -3,6 +3,9 @@
 {% block title %}
 <h2>單日統計</h2>
 {% endblock title%}
-
+{{ session.get('channel_id')}}
+    {% for data in datalist %}
+        {{data.tag_desc}}
+    {% endfor%}
 {% block content %}
 {% endblock content %}
