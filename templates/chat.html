@@ -47,51 +47,63 @@
                 </div>
                 <div class="reply_note reply_note_1 pt-3">
                     <h3 class="mt-2">上下班時間設定</h3>
-                    <form action="" class="text-center">
                         <table class="table table-border">
                             <tr>
-                                <th>星期</th>
+                                <th style="width:10%">星期</th>
                                 <th>上班</th>
                                 <th>下班</th>
                             </tr>
                             <tr>
-                                <td>一</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="0">一</td>
+                                    <td><input class="form-control" type="time" name="start" value="10:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="17:00"></td>
+                                </form>
                             </tr>
                             <tr>
-                                <td>二</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="1">二</td>
+                                    <td><input class="form-control" type="time" name="start" value="10:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="17:00"></td>
+                                </form>
                             </tr>
                             <tr>
-                                <td>三</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="2">三</td>
+                                    <td><input class="form-control" type="time" name="start" value="10:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="17:00"></td>
+                                </form>
                             </tr>
                             <tr>
-                                <td>四</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="3">四</td>
+                                    <td><input class="form-control" type="time" name="start" value="10:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="17:00"></td>
+                                </form>
                             </tr>
                             <tr>
-                                <td>五</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="10:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="17:00"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="4">五</td>
+                                    <td><input class="form-control" type="time" name="start" value="10:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="17:00"></td>
+                                </form>
                             </tr>
                             <tr>
-                                <td>六</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="00:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="23:59"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="5">六</td>
+                                    <td><input class="form-control" type="time" name="start" value="00:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="23:59"></td>
+                                </form>
                             </tr>
                             <tr>
-                                <td>日</td>
-                                <td><input class="form-control" type="time" name="appt-time" value="00:00"></td>
-                                <td><input class="form-control" type="time" name="appt-time" value="23:59"></td>
+                                <form class="weekday_form" action="">
+                                    <td><input class="form-control" type="text" hidden name="week_day" value="6">日</td>
+                                    <td><input class="form-control" type="time" name="start" value="00:00"></td>
+                                    <td><input class="form-control" type="time" name="end" value="23:59"></td>
+                                </form>
                             </tr>
                         </table>
-                        <button type="submit" class="btn btn-primary">設定</button>
-                    </form>
+                        <button type="button" class="btn btn-primary" id="get_weekday">設定</button>
                 </div>
                 <div class="reply_note reply_note_2"></div>
             </div>
@@ -105,8 +117,6 @@
             <h5 class="modal-title m-0 mr-2" id="chatModalLabel">
                 <span></span>
                 <form class="form-inline">
-                    <input type="text" value ="" id="show_userid" class="form-control form-control-sm mr-1" hidden>
-                    <button class="btn-sm btn-outline-info mr-2" id="copy">複製USER ID</button>
                     <button class="btn-sm btn-outline-danger" id="delete">結案</button>
                 </form>
             </h5>
@@ -133,7 +143,7 @@
                         <textarea type="text" cols="50" rows="5" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"></textarea>
                     </div>
                     <div class="col-2 text-center">
-                        <button type="button" class="msg_send_btn btn btn-success" >回覆</button>
+                        <button type="button" class="msg_send_btn btn btn-success">回覆</button>
                     </div>
                 </div>
                 <!-- <input type="text" name="out_msg" class="write_msg form-control d-block" placeholder="Type a message" id="out_msg"> -->
@@ -146,6 +156,20 @@
 </div>
     <script>
     $(function(){
+        // $("#form_workday").submit(function(e){
+        //     e.preventDefault()
+        //     var _circle = []
+        //     var _data = $(this).serializeArray()
+        //     $.each(_data,function(k,v){
+        //         if( v.name == "weekday" ){
+        //             var _obj = {}
+        //             console.log(k)
+        //             _obj[v.name] = v.value
+        //             _circle.push(_obj)
+        //         }
+        //     })
+        //     console.log(_circle)
+        // })
         $('input:radio[name=auto_replyRadios]').change(function() {
             if (this.value == 'auto') {
                 $(".reply_note_2").css({"display":"none"})
@@ -156,11 +180,6 @@
                 $(".reply_note_2").css({"display":"block"})
             }
         });
-        $.valHooks.textarea = {
-            get: function(elem) {
-                return elem.value.replace(/\r?\n/g, "\r\n");
-            }
-        };
         var _channelId = "{{ session.get('channel_id')}}"
         var _singleRoomuserId = '';
         var _leftlength = ''
@@ -184,7 +203,7 @@
                     if( data.room_list[i].avator == null ){
                         foto = 'static/assets/images/n_foto_0.jpg'
                     }
-                    _html+= '<div class="col-3"><a data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" href="#" data-toggle="modal" data-target="#chatModal" class="media border p-1">';
+                    _html+= '<div class="col-3 mb-2"><a data-name="' + data.room_list[i].name + '" data-userid="' + data.room_list[i].user_id + '" href="#" data-toggle="modal" data-target="#chatModal" class="media border p-1">';
                         _html+= '<img src="' + foto + '" width=48 class="rounded-circle mr-2" alt="">';
                         _html+= '<div class="media-body">';
                             // _html+= '<h5 class="m-0 text-dark">' + data.room_list[i].name + '<span class="' + _unreadShow + 'unreaddot ml-1"></span>' +'</h5>';
@@ -299,6 +318,43 @@
             var _htmlclose = '<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>'
             $(".msg_history").html(_htmlclose)
         })
+        $("#get_weekday").click(function(e){
+            // 設定上班日
+            var _forCircle = []
+            e.preventDefault()
+            $(".weekday_form").each(function(){
+                var _data = $(this).serializeArray()
+                var _obj = {}
+                $.each(_data,function(i,j){
+                    _obj[j.name] = j.value
+                })
+                _forCircle.push(_obj)
+            console.log(_forCircle)
+            $.ajax({
+                url : "api_sys/set_auto_reply",
+                data : JSON.stringify({
+                    channel_id : _channelId,
+                    switch : 1,
+                    cycle : _forCircle
+                }),
+                type : "post",
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                dataType : "json"
+            }).done(function(data){
+                console.log(data)
+            })
+        })
+        $.ajax({
+            url : "api_sys/get_auto_reply/" + _channelId,
+            // data : {
+            //     channel_id : _channelId,
+            // },
+            dataType : "json"
+        }).done(function(data){
+            console.log(data)
+        })
         function readRefresh(dialog,hasNew){
             for(var k = 0; k < (dialog.length + hasNew) ; k++ ){
                 var _origRead = $(".msg_idx").eq(k).find(".isread").attr("data-status")
@@ -337,16 +393,6 @@
             var messageBody = $('.msg_history');
             var _height = messageBody.outerHeight();
             messageBody.scrollTop(_height*100);
-        }
-        // 複製user id 
-        $("#copy").click(function(){
-            copyText()
-        })
-        function copyText() { 
-            var input = document.getElementById("show_userid");
-            input.select(); // 選中文本 
-            document.execCommand("copy"); // 執行瀏覽器複製命令 
-            alert("複製成功"); 
         }
         $("#delete").click(function(e){
             e.preventDefault()
