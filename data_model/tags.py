@@ -135,11 +135,22 @@ class Tags:
             datalist.append(row['tag'])
         return list(datalist)
     
+    
     def track_types_count(self,channel_id,user_id,t_tags):
         find = {
             "channel_id": channel_id,
             "user_id":user_id,
             "tag":{"$in":t_tags}
         }
+        return self.col_tag_log.find(find).count()
+    
+    # 取得單一日期單一tag用量
+    def tags_daily_count(self,channel_id,tag,date):
+        find = {
+            "channel_id": channel_id,
+            "tag":tag,
+            "datetime":date
+        }
+        print(find)
         return self.col_tag_log.find(find).count()
 

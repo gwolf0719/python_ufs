@@ -243,7 +243,24 @@ def tags_daily_count():
         else:
             channel_id = session.get("channel_id")
             
-        return render_template("tags_daily_count.html")
+            if "date" not in request.values:
+                now = datetime.datetime.now()
+                daily = "{0}-{1}-{2}".format(now.year, now.month, now.day)
+            else:
+                daily = request.values['date']
+            tags = Tags()
+            # 取得需要追蹤的 tag 
+            tag_list = tags.get_tag_list(channel_id)
+            datalist = []
+            # 取得單日數量
+            for td in tag_list:
+                datalist.append({
+                    "tag_desc": td['tag_desc'],
+                    "tag":td['tag'],
+                    "count":tags.tags_daily_count(channel_id,td['tag'],daily)
+                })
+            print(datalist)
+        return render_template("tags_daily_count.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 
