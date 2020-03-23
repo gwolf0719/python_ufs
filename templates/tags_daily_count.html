@@ -17,7 +17,7 @@
     {% for data in datalist %}
     <tr>
         <td>{{data.tag_desc}}</td>
-        <td><span class="badge badge-light">x{{data.tag}}</span></td>
+        <td><span class="badge badge-light">{{data.tag}}</span></td>
         <td>{{data.count}}</td>
     </tr>
     {% endfor%}
@@ -26,6 +26,7 @@
 <!-- {{ session.get('channel_id')}} -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
     <script>
+        // 給後端的日期格式 YYYY-M-D
         var _nowday = getUrlParam("day");
         var _today = ''
         if( _nowday == undefined ){
