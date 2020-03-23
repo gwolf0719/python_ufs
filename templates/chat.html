@@ -331,21 +331,34 @@
                 _forCircle.push(_obj)
             })
             console.log(_forCircle)
-            $.ajax({
-                url : "api_sys/set_auto_reply",
-                data : JSON.stringify({
-                    channel_id : _channelId,
-                    switch : 1,
-                    cycle : _forCircle
-                }),
-                type : "post",
+            var settings = {
+                "url": "http://127.0.0.1:5000/api_sys/set_auto_reply/",
+                "method": "POST",
+                "timeout": 0,
                 "headers": {
                     "Content-Type": "application/json"
                 },
-                dataType : "json"
-            }).done(function(data){
-                console.log(data)
-            })
+                "data": JSON.stringify({ "channel_id": "1653559812", "switch": 0, "cycle": [{ "week_day": 0, "start": "09:00", "end": "17:00" }, { "week_day": 1, "start": "10:00", "end": "17:00" }] }),
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+            });
+            // $.ajax({
+            //     url : "api_sys/set_auto_reply",
+            //     data : JSON.stringify({
+            //         channel_id : _channelId,
+            //         switch : 1,
+            //         cycle : _forCircle
+            //     }),
+            //     type : "post",
+            //     "headers": {
+            //         "Content-Type": "application/json"
+            //     },
+            //     dataType : "json"
+            // }).done(function(data){
+            //     console.log(data)
+            // })
         })
         $.ajax({
             url : "api_sys/get_auto_reply/" + _channelId,
