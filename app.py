@@ -233,8 +233,8 @@ def tags():
 
     
 
-@app.route("/tags_daily_count/<channel_id>/<date>")
-def tags_daily_count(channel_id,date):
+@app.route("/tags_daily_count/")
+def tags_daily_count():
     if(manager.chk_now() == True):
         manager_id = session.get("manager_id")
         if session.get("channel_id") is None:
