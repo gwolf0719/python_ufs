@@ -31,7 +31,7 @@ from api_sys import *
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'redis'  # session类型为redis
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = 'jameswolf'
 app.config['PERMANENT_SESSION_LIFETIME'] = 7200
 app.config['SESSION_REDIS'] = redis.Redis(host='127.0.0.1', port='6379', db=4) 
 app.register_blueprint(api)
