@@ -243,11 +243,12 @@ def tags_daily_count():
         else:
             channel_id = session.get("channel_id")
             
-            if "date" not in request.values:
+            if "day" not in request.values:
+                
                 now = datetime.datetime.now()
                 daily = "{0}-{1}-{2}".format(now.year, now.month, now.day)
             else:
-                daily = request.values['date']
+                daily = request.values['day']
             tags = Tags()
             # 取得需要追蹤的 tag 
             tag_list = tags.get_tag_list(channel_id)
