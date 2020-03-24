@@ -113,10 +113,9 @@ def return_chat_msg(channel_id, user_id, text_info):
     chat = Chat()
     msg = Msg()
     channel = Channel()
-    print(text_info_br)
-    text_info_br = text_info
+    
+    
     text_info = text_info.replace('<br>','\n')
-    print(text_info)
     channel_access_token = channel.get_channel(channel_id)['channel_access_token']
     # 取得最後一筆資料 ，優先用回覆
     last_chat = chat.get_user_chat(channel_id, user_id)[-1]
@@ -135,7 +134,7 @@ def return_chat_msg(channel_id, user_id, text_info):
     chat_data = {
                     "user_id":user_id,
                     "channel_id":channel_id,
-                    "text":text_info_br,
+                    "text":text_info,
                     "replyToken":"",
                     "read_status":1,
                     "name":last_chat['name'],

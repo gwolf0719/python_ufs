@@ -63,6 +63,9 @@ class Chat:
         datalist = []
         for row in data:
             del row['_id']
+            
+            if 'text' in row:
+                row['text'] = row['text'].replace('\n','<br>')
             datalist.append(row)
         return list(datalist)
 
