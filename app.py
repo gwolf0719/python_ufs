@@ -1,5 +1,6 @@
 #系統元件
 from flask import Flask, jsonify, request, render_template,session,redirect,url_for,flash,Blueprint
+import redis
 import os
 import json
 import pymongo
@@ -29,9 +30,10 @@ from api_sys import *
 
 
 app = Flask(__name__)
-
+app.config['SESSION_TYPE'] = 'redis'  # session类型为redis
 app.config['SECRET_KEY'] = os.urandom(24)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+app.config['PERMANENT_SESSION_LIFETIME'] = 7200
+app.config['SESSION_REDIS'] = redis.Redis(host='127.0.0.1', port='6379', db=4) 
 app.register_blueprint(api)
 app.register_blueprint(api_sys)
 manager = Manager()
