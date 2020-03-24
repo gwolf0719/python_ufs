@@ -328,13 +328,23 @@
             $(".msg_history").html(_htmlclose)
         })
         $("#set_chat").click(function(e){
+            // 改人工聊天
+            var _forCircle = []
             e.preventDefault()
+            $(".weekday_form").each(function(){
+                var _data = $(this).serializeArray()
+                var _obj = {}
+                $.each(_data,function(i,j){
+                    _obj[j.name] = j.value
+                })
+                _forCircle.push(_obj)
+            })
             $.ajax({
                 url : "api_sys/set_auto_reply/",
                 data : JSON.stringify({
                     channel_id : _channelId,
                     switch : 0,
-                    cycle : ''
+                    cycle : _forCircle
                 }),
                 type : "post",
                 "headers": {
@@ -374,7 +384,8 @@
                 alert("完成")
             })
         })
-
+        // 0 off 人工
+        // 1 on 機器人
         $('#workModal').on('shown.bs.modal', function (e) {
             $.ajax({
                 url : "api_sys/get_auto_reply/" + _channelId,
