@@ -142,7 +142,6 @@
         </div>
         <div class="type_msg p-2">
             <form id="input_msg_write">
-                <small><b>enter會發送</b></small>
                 <!-- 、換行請用shift + enter -->
                 <div class="row no-gutters">
                     <div class="col-10">
@@ -192,8 +191,8 @@
         // alert(_channelId)
         left();
         var lefttimer = setInterval(function(){
-            // left()
-        },10000000)
+            left()
+        },10000)
         function left(){
             $.ajax({
                 url : './api_sys/get_chat_room/' + _channelId,
@@ -223,28 +222,33 @@
             })
         }
 
-        $("#out_msg").keypress(function (e) {
-            if(e.which == 13 && !e.shiftKey) {
-                e.preventDefault();
-                var _value = $(this).val();
-                // 先強制把要送出的值換行符改為BR，再交給 後端處理
-                _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
-                console.log(_value);
-                $(this).val("")
-                $.ajax({
-                    url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
-                    dataType : "json",
-                }).done(function(data){
-                    console.log(data)
-                    // dialog_admin(_chat)
-                    scrollOnBottom()
-                // <channel_id>/<user_id>/<文字內容>
-                })
-            }
-        });
+        // $("#out_msg").keypress(function (e) {
+        //     if(e.which == 13 && !e.shiftKey) {
+        //         e.preventDefault();
+        //         var _value = $(this).val();
+        //         // 先強制把要送出的值換行符改為BR，再交給 後端處理
+        //         _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
+        //         console.log(_value);
+        //         $(this).val("")
+        //         $.ajax({
+        //             url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
+        //             dataType : "json",
+        //         }).done(function(data){
+        //             console.log(data)
+        //             // dialog_admin(_chat)
+        //             scrollOnBottom()
+        //         // <channel_id>/<user_id>/<文字內容>
+        //         })
+        //     }
+        // });
+        // $("#input_msg_write").submit(function(e){
+        //     e.preventDefault()
+        // })
         $(".msg_send_btn").click(function(e){
             e.preventDefault();
             var _value = $("#out_msg").val();
+            // 先強制把要送出的值換行符改為BR，再交給 後端處理
+            _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
             $("#out_msg").val("")
             $.ajax({
                 url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
@@ -328,13 +332,23 @@
             $(".msg_history").html(_htmlclose)
         })
         $("#set_chat").click(function(e){
+            // 改人工聊天
+            var _forCircle = []
             e.preventDefault()
+            $(".weekday_form").each(function(){
+                var _data = $(this).serializeArray()
+                var _obj = {}
+                $.each(_data,function(i,j){
+                    _obj[j.name] = j.value
+                })
+                _forCircle.push(_obj)
+            })
             $.ajax({
                 url : "api_sys/set_auto_reply/",
                 data : JSON.stringify({
                     channel_id : _channelId,
                     switch : 0,
-                    cycle : ''
+                    cycle : _forCircle
                 }),
                 type : "post",
                 "headers": {
@@ -374,7 +388,8 @@
                 alert("完成")
             })
         })
-
+        // 0 off 人工
+        // 1 on 機器人
         $('#workModal').on('shown.bs.modal', function (e) {
             $.ajax({
                 url : "api_sys/get_auto_reply/" + _channelId,
@@ -450,6 +465,7 @@
             messageBody.scrollTop(_height*100);
         }
         $("#delete").click(function(e){
+            // 結案
             e.preventDefault()
             var _gotUserid = $(this).attr("data-userid");
             var _gotChannel = $(this).attr("data-channel")
@@ -461,6 +477,7 @@
                 }).done(function(data){
                     alert("完成結案")
                     $('#chatModal').modal('hide')
+                    location.reload()
                     // return false; 
                 })
             }else{ 
