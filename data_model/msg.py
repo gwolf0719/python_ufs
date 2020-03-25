@@ -135,5 +135,7 @@ class Msg:
         line_bot_api.reply_message(replyToken, send_message)
         return True
 
+    
+
 
 
