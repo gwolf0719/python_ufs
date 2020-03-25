@@ -431,10 +431,11 @@ def webhook(channel_id):
                 if event['message']['type'] == "text":
                     
                     msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
-                    print(msg_data['msg_id'])
-                    msg_id = msg_data['msg_id']
+                    
+                    
                     # 判斷不是腳本
                     if msg_data != False:
+                        msg_id = msg_data['msg_id']
                         msg.reply_message(channel_id,msg_id,replyToken,user_id)
                     else:
                         chat_data['text'] = event['message']['text']
