@@ -58,7 +58,7 @@ class Msg:
             return False
         else :
             res = self.col_msg.find_one(find)
-            print(res['msg_id'])
+            
             del res["_id"]
             return res
 
