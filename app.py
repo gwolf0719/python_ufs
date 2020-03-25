@@ -408,9 +408,8 @@ def webhook(channel_id):
             msg = Msg()
             chat = Chat()
             user_data = user.get_once(user_id,channel_id)
-            # 取得腳本關鍵字觸發
-            if event['message']['type'] == "text":
-                msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+            
+            
             chat_data = {
                             "user_id":user_id,
                             "channel_id":channel_id,
@@ -430,6 +429,10 @@ def webhook(channel_id):
             if "message" in event:
                 # 如果對方傳純文字訊息
                 if event['message']['type'] == "text":
+                    
+                    msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
+                    print(msg_data)
+
                     # 判斷不是腳本
                     if msg_data != False:
                         msg.reply_message(channel_id,msg_data['msg_id'],replyToken,user_id)
