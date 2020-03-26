@@ -1,8 +1,16 @@
 #!/bin/bash
-echo '歡迎使用重新啟動腳本'
+echo '＝＝＝＝＝＝歡迎使用重新啟動腳本＝＝＝＝＝＝＝＝'
+echo "更新原始碼(Y/N):"
+read Code
+if [ $Code = 'Y' ] 
+  echo '開始更新.....'
+  git pull
+fi
+
 # 刪除舊行程
+echo '＝＝＝＝＝＝刪除舊行程＝＝＝＝＝＝＝＝'
 kill `ps aux |grep gunicorn | awk '{ print $2 }'`
-echo "是否工程模式(Y/N):"
+echo "是否進入工程模式(Y/N):"
 read Debug
 if [ $Debug = 'Y' ]
   then 
