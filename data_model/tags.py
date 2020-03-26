@@ -27,17 +27,7 @@ class Tags:
 
     # 新增標籤主表資料
     # ===============================
-    # tag_data = {
-    #    channel_id:
-    #    tag:
-    #    tag_desc:
-    #    limit_cycle:
-    #    limit_qty:
-    #    act:{
-    #            act_key:
-    #            act_value:
-    #       }    
-    # }
+  
     def set_tag_main(self,tag_data):
         self.col_tag_main.insert_one(tag_data)
         return True
@@ -107,7 +97,8 @@ class Tags:
             "channel_id":channel_id,
             "user_id":user_id,
             'tag':tag,
-            "datetime":"{0}-{1}-{2}".format(now.year, now.month, now.day)
+            "datetime":"{0}-{1}-{2}".format(now.year, now.month, now.day),
+            "time":now
         }
         self.col_tag_log.insert_one(data)
         return True
@@ -141,6 +132,5 @@ class Tags:
             "tag":tag,
             "datetime":date
         }
-        print(find)
         return self.col_tag_log.find(find).count()
 
