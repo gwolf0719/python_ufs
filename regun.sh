@@ -3,6 +3,7 @@ echo '＝＝＝＝＝＝歡迎使用重新啟動腳本＝＝＝＝＝＝＝＝'
 echo "更新原始碼(Y/N):"
 read Code
 if [ $Code = 'Y' ] 
+  then 
   echo '開始更新.....'
   git pull
 fi
