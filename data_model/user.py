@@ -176,12 +176,12 @@ class User:
         log_data = {
             "user_id":user_id,
             "channel_id":channel_id,
-            'original':old_point,
-            "point":point,
+            'original':int(old_point),
+            "point":int(point),
             "act":"add",
             "update_datetime":datetime.datetime.now(),
-            "balance_point":new_point,
-            "point_note":point_note
+            "balance_point":int(new_point),
+            "point_note":int(point_note)
         }
         self.col_point_logs.insert_one(log_data)
         # 回寫主表
@@ -210,11 +210,11 @@ class User:
             "user_id":user_id,
             "channel_id":channel_id,
             'original':old_point,
-            "point":point,
+            "point":int(point),
             "act":"deduct",
             "update_datetime":datetime.datetime.now(),
-            "balance_point":new_point,
-            "point_note":point_note
+            "balance_point":int(new_point),
+            "point_note":int(point_note)
         }
         self.col_point_logs.insert_one(log_data)
         # 回寫主表
@@ -259,7 +259,6 @@ class User:
             return 0
         else :
             res = self.col_point_logs.aggregate(pipeline)
-            
             for data in res:
                 print(data)
         return data['point']
