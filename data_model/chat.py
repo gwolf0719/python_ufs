@@ -148,25 +148,26 @@ class Chat:
     # 判斷無人執守時間
     # 回傳 False 表示不做動
     def chk_auto_reply_time(self,channel_id):
+        # 確認規則存在
         if Chat().chk_auto_reply(channel_id) == False:
             return False
+        # 確認啟動狀態
         auto_reply = Chat().get_auto_reply(channel_id)
         if auto_reply['switch'] == 0:
             return False
         
         today_week_day = datetime.date.today().weekday()
         today_cycle = auto_reply['cycle'][today_week_day]
-        print(today_cycle)
 
 
         n_time = datetime.datetime.now()
         start_time = datetime.datetime.strptime(str(datetime.datetime.now().date())+today_cycle['start'], '%Y-%m-%d%H:%M')
         end_time1 =  datetime.datetime.strptime(str(datetime.datetime.now().date())+today_cycle['end'], '%Y-%m-%d%H:%M')
-        print(n_time)
-        print(start_time)
-        print(end_time1)
+        
         if n_time > start_time and n_time < end_time1:
-            print("YES")
+            # 聊天時間
+            return False
         else:
-            print("No")
+            # 機器人時間
+            return auto_reply['text_info']
 

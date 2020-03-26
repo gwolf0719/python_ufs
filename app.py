@@ -379,37 +379,35 @@ def webhook(channel_id):
     channel = Channel()
     webhook = Webhook()
     user = User()
+    msg = Msg()
+    chat = Chat()
     jsondata = request.get_json()
     print("Webhook")
+    jsondata["channel_id"] = channel_id
+    channel_data = channel.get_channel(channel_id)
+    channel_access_token = channel_data["channel_access_token"]
+    event = jsondata["events"][0]
+    user_id = event["source"]["userId"]
+    jsondata["user_id"] = user_id
+    webhook.add_log(jsondata)
+
+
+    # 使用者紀錄
+    if(user.chk_once(user_id,channel_id) == True):
+        user.set_user_tag(user_id,channel_id,event['type'])
+    else :
+        user.add_once(user_id,0,channel_id,channel_access_token)
+        user.set_user_tag(user_id,channel_id,event['type'])
+    
+    # 如果有回覆碼可以用 開始自動處理判斷
     try:
-        jsondata["channel_id"] = channel_id
-        channel_data = channel.get_channel(channel_id)
-        channel_access_token = channel_data["channel_access_token"]
-        event = jsondata["events"][0]
-        user_id = event["source"]["userId"]
-        jsondata["user_id"] = user_id
-        webhook.add_log(jsondata)
-
-
-        # 使用者紀錄
-        if(user.chk_once(user_id,channel_id) == True):
-            user.set_user_tag(user_id,channel_id,event['type'])
-        else :
-            user.add_once(user_id,0,channel_id,channel_access_token)
-            user.set_user_tag(user_id,channel_id,event['type'])
-
         # 如果有回覆碼可以用
         if "replyToken" in event:
             replyToken = event["replyToken"]
-            # 回覆
             line_bot_api = LineBotApi(channel_access_token)
-        
-            
-            msg = Msg()
-            chat = Chat()
             user_data = user.get_once(user_id,channel_id)
             
-            
+            # 整理聊天室需要的基本資料格式
             chat_data = {
                             "user_id":user_id,
                             "channel_id":channel_id,
@@ -421,33 +419,27 @@ def webhook(channel_id):
                             "id":event['message']['id']
                         }
 
-            
-            # 無人值守
-
-
-            # print(event['message']['type'])
             if "message" in event:
                 # 如果對方傳純文字訊息
                 if event['message']['type'] == "text":
                     
                     msg_data = msg.chk_listen_keyword(channel_id,event['message']['text'])
-                    
-                    
-                    # 判斷不是腳本
+                    # 判斷腳本
                     if msg_data != False:
                         msg_id = msg_data['msg_id']
                         msg.reply_message(channel_id,msg_id,replyToken,user_id)
                     else:
-
-                        rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
-                        line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
+                        # 判斷自動回應時間
+                        # rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
+                        rebot_text = chat.chk_auto_reply_time(channel_id)
+                        if rebot_text != False:
+                            line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
 
                         chat_data['text'] = event['message']['text']
                         chat_data['type'] = event['message']['type']
                         chat.add_chat(chat_data)
                 else: 
-                    rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
-                    line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
+                    
                     # 如果是圖片
                     chat_data['type'] = event['message']['type']
                     
