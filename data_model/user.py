@@ -111,21 +111,19 @@ class User:
         User().set_user_log(user_id,channel_id,"設定 Tag:{}".format(tag_name))
 
         # 設定 tag
-        # print(tag_name)
         tags = Tags()
         # 如果是在追蹤清單中
         if tags.chk_once(channel_id,tag_name) == True:
             tag_limit = tags.chk_limit(channel_id,user_id,tag_name)
-            # print(tag_limit)
+            
             # 如果額度還夠
             if tag_limit == True:
                 # 動作
-                tag_data = tags.get_once(channel_id,tag_name);
-                # tags.do_tag_act(channel_id,user_id,tag)
+                tag_data = tags.get_once(channel_id,tag_name)
                 if "act" in tag_data:
                     for a in tag_data["act"]:
                         if a["act_key"] == "add_user_point":
-                            User().add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
+                            User().add_point(user_id,channel_id,a["act_value"],int(tag_data["tag_desc"]))
 
                 tags.set_tag_log(channel_id, user_id,tag_name)
 
