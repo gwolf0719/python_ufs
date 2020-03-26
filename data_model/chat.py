@@ -150,10 +150,12 @@ class Chat:
     def chk_auto_reply_time(self,channel_id):
         # 確認規則存在
         if Chat().chk_auto_reply(channel_id) == False:
+            print("a1")
             return False
         # 確認啟動狀態
         auto_reply = Chat().get_auto_reply(channel_id)
         if auto_reply['switch'] == 0:
+            print("a2")
             return False
         
         print("a")
