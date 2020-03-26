@@ -180,7 +180,7 @@ class User:
             "act":"add",
             "update_datetime":datetime.datetime.now(),
             "balance_point":int(new_point),
-            "point_note":int(point_note)
+            "point_note":point_note
         }
         self.col_point_logs.insert_one(log_data)
         # 回寫主表
@@ -213,7 +213,7 @@ class User:
             "act":"deduct",
             "update_datetime":datetime.datetime.now(),
             "balance_point":int(new_point),
-            "point_note":int(point_note)
+            "point_note":point_note
         }
         self.col_point_logs.insert_one(log_data)
         # 回寫主表
