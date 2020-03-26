@@ -270,7 +270,7 @@ def get_user_points(channel_id, user_id):
     json_data = {
         "sys_code": "200",
         "sys_msg": "Success",
-        "canuse_point": point,
+        "canuse_point": lifetime_record,
         "used_point": lifetime_record-point,
         "lifetime_record":lifetime_record
     }
