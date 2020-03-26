@@ -66,6 +66,15 @@ def send_message(channel_id,msg_id,user_id):
 
     return json_data
 
+# 2020-03-26 修補任務
+    # 取得今日遊戲次數
+@api_sys.route('/api_sys/get_game_today_count/<user_id>')
+def get_game_today_count(user_id):
+    tags = Tags()
+    count = tags.get_game_today_count(user_id)
+    json_data = {'sys_code':"200","sys_msg":"success","count":count}
+
+    return json_data
 
 # 取得聊天室清單
 @api_sys.route('/api_sys/get_chat_room/<channel_id>')
