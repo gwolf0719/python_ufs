@@ -65,6 +65,7 @@ class Msg:
     # 設定發送內容
     def set_msg_format(self,msg_id,channel_id,user_id):
         msg_data = Msg().get_once(msg_id)
+        print(msg_data)
         # 純文字訊息
         if msg_data["msg_type"] == "text":
             send_message = TextSendMessage(text=msg_data["text"])
@@ -93,6 +94,7 @@ class Msg:
                                         x=action_item['x'], y=action_item['y'], width=action_item['width'], height=action_item['height']
                                     )
                                 ))
+            
             
             send_message = ImagemapSendMessage(
                 base_url=msg_data['base_url'],
