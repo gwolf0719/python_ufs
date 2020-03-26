@@ -432,7 +432,7 @@ def webhook(channel_id):
                         # 判斷自動回應時間
                         # rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
                         rebot_text = chat.chk_auto_reply_time(channel_id)
-                        print(rebot_text)
+                        # print(rebot_text)
                         if rebot_text != False:
                             line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
 
@@ -440,7 +440,12 @@ def webhook(channel_id):
                         chat_data['type'] = event['message']['type']
                         chat.add_chat(chat_data)
                 else: 
-                    
+                    # 判斷自動回應時間
+                        # rebot_text = "{0}感謝您的來訊👋\n但現在是瓜兒的耍廢時間，無法及時回覆您，等到瓜兒上工後會速速回應der，也請耐心等候唷😎\n❤️溫馨小提醒❤️瓜兒回訊時間為週一至週五 10:00am~5:00pm（國定假日除外）".format(user_data['name'])
+                    rebot_text = chat.chk_auto_reply_time(channel_id)
+                    # print(rebot_text)
+                    if rebot_text != False:
+                        line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
                     # 如果是圖片
                     chat_data['type'] = event['message']['type']
                     

@@ -176,8 +176,3 @@ def get_auto_reply(channel_id):
         json_data = {'sys_code':"200","sys_msg":"Success","auto_reply":auto_reply}
         return json_data
 
-@api_sys.route('/api_sys/chk_auto_reply_time/<channel_id>')
-def chk_auto_reply_time(channel_id):
-    chat = Chat()
-    chat.chk_auto_reply_time(channel_id)
-    return '111'
