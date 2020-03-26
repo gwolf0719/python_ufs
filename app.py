@@ -215,7 +215,7 @@ def re_url_go(link_id):
         if 'type' in data and data['type'] == 'share':
             return redirect(data['target_url']+"?link_id="+data["link_id"])
     
-    return data['target_url']
+    return redirect(data['target_url'])
 
 
 
