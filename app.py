@@ -407,8 +407,11 @@ def webhook(channel_id):
             line_bot_api = LineBotApi(channel_access_token)
             user_data = user.get_once(user_id,channel_id)
             
-            # 整理聊天室需要的基本資料格式
-            chat_data = {
+            
+
+            if "message" in event:
+                # 整理聊天室需要的基本資料格式
+                chat_data = {
                             "user_id":user_id,
                             "channel_id":channel_id,
                             "replyToken":replyToken,
@@ -418,8 +421,6 @@ def webhook(channel_id):
                             "originator":"user",
                             "id":event['message']['id']
                         }
-
-            if "message" in event:
                 # 如果對方傳純文字訊息
                 if event['message']['type'] == "text":
                     
