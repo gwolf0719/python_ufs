@@ -156,6 +156,7 @@ class Chat:
         if auto_reply['switch'] == 0:
             return False
         
+        print("a")
         today_week_day = datetime.date.today().weekday()
         today_cycle = auto_reply['cycle'][today_week_day]
 
