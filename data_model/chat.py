@@ -124,6 +124,7 @@ class Chat:
     # 確認自動回覆存在
     def chk_auto_reply(self,channel_id):
         find = {"channel_id":channel_id}
+        print(find)
         if self.col_auto_reply.find(find).count() == 0:
             return False
         else :
