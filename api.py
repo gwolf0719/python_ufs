@@ -199,7 +199,8 @@ def get_share_info(channel_id, user_id, link_id):
             tag = re_url_data['tags']
             user.set_user_tag(user_id,channel_id,re_url_data['tags'])
             
-        json_data = {'sys_code':"200","sys_msg":"Success","desc":re_url_data["desc"]}
+        # json_data = {'sys_code':"200","sys_msg":"Success","desc":re_url_data["desc"]}
+        json_data = {'sys_code':"200","sys_msg":"Success","desc":"#地球一小時EarthHour 3/28(六)晚間8:30~9:30\n 瓜寶邀請你關燈一小時⚡️\n 一起關一波作伙愛地球🌎\n \n 💝快閃小活動：關燈可以幹嘛？\n 快來發揮創意留言抽小禮物👉\n"}
         return json_data
     else:
         json_data = {'sys_code':"404","sys_msg":"查無資料"}
