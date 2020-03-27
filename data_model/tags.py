@@ -135,15 +135,15 @@ class Tags:
         return self.col_tag_log.find(find).count()
 
 
-    # 2020-03-26 修補任務
-    # 取得今日遊戲次數
-    def get_game_today_count(self,user_id):
-        find = {
-            "channel_id": '1653459101',
-            "tag":'2020q1_game',
-            "datetime":'2020-3-26',
-            "user_id":user_id
-        }
-        print(find)
-        return self.col_tag_log.find(find).count()
+    # # 2020-03-26 修補任務
+    # # 取得今日遊戲次數
+    # def get_game_today_count(self,user_id):
+    #     find = {
+    #         "channel_id": '1653459101',
+    #         "tag":'2020q1_game',
+    #         "datetime":'2020-3-26',
+    #         "user_id":user_id
+    #     }
+    #     print(find)
+    #     return self.col_tag_log.find(find).count()
 
