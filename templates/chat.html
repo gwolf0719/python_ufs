@@ -64,55 +64,7 @@
                                 <td><input class="form-control end" type="time" name="end" value=""></td>
                             </tr>
                             {% endfor %}
-                            <!-- <tr>
-                                <div class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="0">一</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </div>
-                            </tr>
-                            <tr>
-                                <div class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="1">二</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </div>
-                            </tr>
-                            <tr>
-                                <div class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="2">三</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </div>
-                            </tr>
-                            <tr>
-                                <div class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="3">四</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </div>
-                            </tr>
-                            <tr>
-                                <div class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="4">五</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
-                            </tr>
-                            <tr>
-                                <form class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="5">六</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </div>
-                            </tr>
-                            <tr>
-                                <div class="weekday_form" >
-                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="6">日</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </div>
-                            </tr> -->
+                            
                             <tr>
                                 <td colspan="3">
                                     <div class="form-group">
@@ -122,7 +74,6 @@
                                 </td>
                             </tr>
                         </table>
-                        <!-- <button type="button" class="btn btn-primary mx-auto" id="get_weekday">設定</button> -->
                 </div>
                 <div class="reply_note  text-center">
                     <button type="button" class="btn btn-primary" id="set_chat">設定</button>
@@ -176,46 +127,12 @@
 </div>
     <script>
     $(function(){
-        // $("#form_workday").submit(function(e){
-        //     e.preventDefault()
-        //     var _circle = []
-        //     var _data = $(this).serializeArray()
-        //     $.each(_data,function(k,v){
-        //         if( v.name == "weekday" ){
-        //             var _obj = {}
-        //             console.log(k)
-        //             _obj[v.name] = v.value
-        //             _circle.push(_obj)
-        //         }
-        //     })
-        //     console.log(_circle)
-        // })
-
-
-        // JAMES MARK START //////////////////////////////////
-        // $('input:radio[name=auto_replyRadios]').change(function() {
-        //     if (this.value == '1') {
-        //         $(".reply_note_2").css({"display":"none"})
-        //         $(".reply_note_1").css({"display":"block"})
-        //     }
-        //     else if (this.value == '0') {
-        //         $(".reply_note_1").css({"display":"none"})
-        //         $(".reply_note_2").css({"display":"block"})
-        //     }
-        // });
-        // JAMES MARK END //////////////////////////////////
-        // set_chat
-        $("body").on("click","#set_chat",function(){
-            var _week_set = []
-            $(".week_day").each(function(k,v){
-                 console.log($(this).val())
-            })
-        })
+        
 
         var _channelId = "{{ session.get('channel_id')}}"
         var _singleRoomuserId = '';
         var _leftlength = ''
-        // alert(_channelId)
+        
         left();
         var lefttimer = setInterval(function(){
             left()
@@ -335,65 +252,13 @@
             var _htmlclose = '<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>'
             $(".msg_history").html(_htmlclose)
         })
-        // $("#set_chat").click(function(e){
-        //     // 改人工聊天
-        //     var _forCircle = []
-        //     e.preventDefault()
-        //     $(".weekday_form").each(function(){
-        //         console.log($(this).children("td").children("input").val())
-        //         var _data = $(this).serializeArray()
-        //         var _obj = {}
-        //         $.each(_data,function(i,j){
-        //             _obj[j.name] = j.value
-        //         })
-        //         _forCircle.push(_obj)
-        //     })
-        //     $.ajax({
-        //         url : "api_sys/set_auto_reply/",
-        //         data : JSON.stringify({
-        //             channel_id : _channelId,
-        //             switch : 0,
-        //             cycle : _forCircle
-        //         }),
-        //         type : "post",
-        //         "headers": {
-        //             "Content-Type": "application/json"
-        //         },
-        //         dataType : "json"
-        //     }).done(function(data){
-        //         alert("完成")
-        //     })
-        // })
-        // $("#get_weekday").click(function(e){
-        //     // 設定上班日
-        //     var _forCircle = []
-        //     e.preventDefault()
-        //     $(".weekday_form").each(function(){
-        //         var _data = $(this).serializeArray()
-        //         console.log(_data)
-        //         var _obj = {}
-        //         $.each(_data,function(i,j){
-        //             _obj[j.name] = j.value
-        //         })
-        //         _forCircle.push(_obj)
-        //     })
-        //     console.log(_forCircle)
-        //     $.ajax({
-        //         url : "api_sys/set_auto_reply/",
-        //         data : JSON.stringify({
-        //             channel_id : _channelId,
-        //             switch : 1,
-        //             cycle : _forCircle
-        //         }),
-        //         type : "post",
-        //         "headers": {
-        //             "Content-Type": "application/json"
-        //         },
-        //         dataType : "json"
-        //     }).done(function(data){
-        //         alert("完成")
-        //     })
-        // })
+        
+
+
+        /***************************************************************************************************
+        * 自動回覆設定相關開始  
+        ********************************
+        *************************************************************************************************/
         // 0 off 人工
         // 1 on 機器人
         $('#workModal').on('shown.bs.modal', function (e) {
@@ -410,12 +275,6 @@
                         $(".start").eq(k).val(data.auto_reply.cycle[k]['start'])
                         $(".end").eq(k).val(data.auto_reply.cycle[k]['end'])
                     })
-                    // $.each(data.auto_reply.cycle,function(k,v){
-                    //     console.log(v)
-                    //     $(".week_day_text").eq(k).text(array_week[k]);
-                    //     $(".start").eq(k).val(v.start)
-                    //     $(".end").eq(k).val(v.end)
-                    // })
                     $("#text_info").val(data.auto_reply.text_info)
                     
                     $("input[name='auto_replyRadios'][value='" + data.auto_reply.switch + "']").prop("checked", true);
@@ -469,7 +328,10 @@
                 alert("完成")
             })
         })
-        
+        /***************************************************************************************************
+        * 自動回覆設定相關 結束
+        ********************************
+        *************************************************************************************************/
         function readRefresh(dialog,hasNew){
             for(var k = 0; k < (dialog.length + hasNew) ; k++ ){
                 var _origRead = $(".msg_idx").eq(k).find(".isread").attr("data-status")
