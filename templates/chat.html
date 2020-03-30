@@ -57,59 +57,74 @@
                                 <th>上班</th>
                                 <th>下班</th>
                             </tr>
+                            {% for i in range(0,7)%}
+                            <tr class="week_setting_tr">
+                                <td><input class="form-control week_day" type="text" hidden name="week_day" value="{{ i }}"><span class="week_day_text"></span></td>
+                                <td><input class="form-control start" type="time" name="start" value=""></td>
+                                <td><input class="form-control end" type="time" name="end" value=""></td>
+                            </tr>
+                            {% endfor %}
+                            <!-- <tr>
+                                <div class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="0">一</td>
+                                    <td><input class="form-control" type="time" name="start" value=""></td>
+                                    <td><input class="form-control" type="time" name="end" value=""></td>
+                                </div>
+                            </tr>
                             <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="0">一</td>
+                                <div class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="1">二</td>
+                                    <td><input class="form-control" type="time" name="start" value=""></td>
+                                    <td><input class="form-control" type="time" name="end" value=""></td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="2">三</td>
+                                    <td><input class="form-control" type="time" name="start" value=""></td>
+                                    <td><input class="form-control" type="time" name="end" value=""></td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="3">四</td>
+                                    <td><input class="form-control" type="time" name="start" value=""></td>
+                                    <td><input class="form-control" type="time" name="end" value=""></td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="4">五</td>
                                     <td><input class="form-control" type="time" name="start" value=""></td>
                                     <td><input class="form-control" type="time" name="end" value=""></td>
                                 </form>
                             </tr>
                             <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="1">二</td>
+                                <form class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="5">六</td>
                                     <td><input class="form-control" type="time" name="start" value=""></td>
                                     <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
+                                </div>
                             </tr>
                             <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="2">三</td>
+                                <div class="weekday_form" >
+                                    <td><input class="form-control week_day" type="text" hidden name="week_day" value="6">日</td>
                                     <td><input class="form-control" type="time" name="start" value=""></td>
                                     <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
-                            </tr>
+                                </div>
+                            </tr> -->
                             <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="3">四</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
-                            </tr>
-                            <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="4">五</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
-                            </tr>
-                            <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="5">六</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
-                            </tr>
-                            <tr>
-                                <form class="weekday_form" action="">
-                                    <td><input class="form-control" type="text" hidden name="week_day" value="6">日</td>
-                                    <td><input class="form-control" type="time" name="start" value=""></td>
-                                    <td><input class="form-control" type="time" name="end" value=""></td>
-                                </form>
+                                <td colspan="3">
+                                    <div class="form-group">
+                                      <label for=""></label>
+                                      <textarea class="form-control" name="" id="text_info" rows="3"></textarea>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
-                        <button type="button" class="btn btn-primary mx-auto" id="get_weekday">設定</button>
+                        <!-- <button type="button" class="btn btn-primary mx-auto" id="get_weekday">設定</button> -->
                 </div>
-                <div class="reply_note reply_note_2 text-center">
+                <div class="reply_note  text-center">
                     <button type="button" class="btn btn-primary" id="set_chat">設定</button>
                 </div>
             </div>
@@ -175,16 +190,28 @@
         //     })
         //     console.log(_circle)
         // })
-        $('input:radio[name=auto_replyRadios]').change(function() {
-            if (this.value == '1') {
-                $(".reply_note_2").css({"display":"none"})
-                $(".reply_note_1").css({"display":"block"})
-            }
-            else if (this.value == '0') {
-                $(".reply_note_1").css({"display":"none"})
-                $(".reply_note_2").css({"display":"block"})
-            }
-        });
+
+
+        // JAMES MARK START //////////////////////////////////
+        // $('input:radio[name=auto_replyRadios]').change(function() {
+        //     if (this.value == '1') {
+        //         $(".reply_note_2").css({"display":"none"})
+        //         $(".reply_note_1").css({"display":"block"})
+        //     }
+        //     else if (this.value == '0') {
+        //         $(".reply_note_1").css({"display":"none"})
+        //         $(".reply_note_2").css({"display":"block"})
+        //     }
+        // });
+        // JAMES MARK END //////////////////////////////////
+        // set_chat
+        $("body").on("click","#set_chat",function(){
+            var _week_set = []
+            $(".week_day").each(function(k,v){
+                 console.log($(this).val())
+            })
+        })
+
         var _channelId = "{{ session.get('channel_id')}}"
         var _singleRoomuserId = '';
         var _leftlength = ''
@@ -222,28 +249,7 @@
             })
         }
 
-        // $("#out_msg").keypress(function (e) {
-        //     if(e.which == 13 && !e.shiftKey) {
-        //         e.preventDefault();
-        //         var _value = $(this).val();
-        //         // 先強制把要送出的值換行符改為BR，再交給 後端處理
-        //         _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
-        //         console.log(_value);
-        //         $(this).val("")
-        //         $.ajax({
-        //             url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
-        //             dataType : "json",
-        //         }).done(function(data){
-        //             console.log(data)
-        //             // dialog_admin(_chat)
-        //             scrollOnBottom()
-        //         // <channel_id>/<user_id>/<文字內容>
-        //         })
-        //     }
-        // });
-        // $("#input_msg_write").submit(function(e){
-        //     e.preventDefault()
-        // })
+
         $(".msg_send_btn").click(function(e){
             e.preventDefault();
             var _value = $("#out_msg").val();
@@ -255,9 +261,7 @@
                 dataType : "json",
             }).done(function(data){
                 console.log(data)
-                // dialog_admin(_chat)
                 scrollOnBottom()
-            // <channel_id>/<user_id>/<文字內容>
             })
         })
         var _timer = ''
@@ -331,97 +335,138 @@
             var _htmlclose = '<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>'
             $(".msg_history").html(_htmlclose)
         })
-        $("#set_chat").click(function(e){
-            // 改人工聊天
-            var _forCircle = []
-            e.preventDefault()
-            $(".weekday_form").each(function(){
-                var _data = $(this).serializeArray()
-                var _obj = {}
-                $.each(_data,function(i,j){
-                    _obj[j.name] = j.value
-                })
-                _forCircle.push(_obj)
-            })
-            $.ajax({
-                url : "api_sys/set_auto_reply/",
-                data : JSON.stringify({
-                    channel_id : _channelId,
-                    switch : 0,
-                    cycle : _forCircle
-                }),
-                type : "post",
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                dataType : "json"
-            }).done(function(data){
-                alert("完成")
-            })
-        })
-        $("#get_weekday").click(function(e){
-            // 設定上班日
-            var _forCircle = []
-            e.preventDefault()
-            $(".weekday_form").each(function(){
-                var _data = $(this).serializeArray()
-                var _obj = {}
-                $.each(_data,function(i,j){
-                    _obj[j.name] = j.value
-                })
-                _forCircle.push(_obj)
-            })
-            console.log(_forCircle)
-            $.ajax({
-                url : "api_sys/set_auto_reply/",
-                data : JSON.stringify({
-                    channel_id : _channelId,
-                    switch : 1,
-                    cycle : _forCircle
-                }),
-                type : "post",
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                dataType : "json"
-            }).done(function(data){
-                alert("完成")
-            })
-        })
+        // $("#set_chat").click(function(e){
+        //     // 改人工聊天
+        //     var _forCircle = []
+        //     e.preventDefault()
+        //     $(".weekday_form").each(function(){
+        //         console.log($(this).children("td").children("input").val())
+        //         var _data = $(this).serializeArray()
+        //         var _obj = {}
+        //         $.each(_data,function(i,j){
+        //             _obj[j.name] = j.value
+        //         })
+        //         _forCircle.push(_obj)
+        //     })
+        //     $.ajax({
+        //         url : "api_sys/set_auto_reply/",
+        //         data : JSON.stringify({
+        //             channel_id : _channelId,
+        //             switch : 0,
+        //             cycle : _forCircle
+        //         }),
+        //         type : "post",
+        //         "headers": {
+        //             "Content-Type": "application/json"
+        //         },
+        //         dataType : "json"
+        //     }).done(function(data){
+        //         alert("完成")
+        //     })
+        // })
+        // $("#get_weekday").click(function(e){
+        //     // 設定上班日
+        //     var _forCircle = []
+        //     e.preventDefault()
+        //     $(".weekday_form").each(function(){
+        //         var _data = $(this).serializeArray()
+        //         console.log(_data)
+        //         var _obj = {}
+        //         $.each(_data,function(i,j){
+        //             _obj[j.name] = j.value
+        //         })
+        //         _forCircle.push(_obj)
+        //     })
+        //     console.log(_forCircle)
+        //     $.ajax({
+        //         url : "api_sys/set_auto_reply/",
+        //         data : JSON.stringify({
+        //             channel_id : _channelId,
+        //             switch : 1,
+        //             cycle : _forCircle
+        //         }),
+        //         type : "post",
+        //         "headers": {
+        //             "Content-Type": "application/json"
+        //         },
+        //         dataType : "json"
+        //     }).done(function(data){
+        //         alert("完成")
+        //     })
+        // })
         // 0 off 人工
         // 1 on 機器人
         $('#workModal').on('shown.bs.modal', function (e) {
             $.ajax({
-                url : "api_sys/get_auto_reply/" + _channelId,
+                url : "./api_sys/get_auto_reply/" + _channelId,
                 dataType : "json"
             }).done(function(data){
-                console.log(data.auto_reply.switch)
-                $("#date_loading").hide()
-                $("input[name='auto_replyRadios'][value='" + data.auto_reply.switch + "']").prop("checked", true);
-                if (data.auto_reply.switch == '1') {
-                    $(".reply_note_2").css({"display":"none"})
-                    $(".reply_note_1").css({"display":"block"})
-                }
-                else if (data.auto_reply.switch == '0') {
-                    $(".reply_note_1").css({"display":"none"})
-                    $(".reply_note_2").css({"display":"block"})
-                }
-                $.each(data.auto_reply.cycle,function(l,m){
-                    console.log(m.start)
-                    console.log($(".weekday_form").eq(l).find("input[name='start']"))
-                    $("input[name='start']").eq(l).val(m.start)
-                    $("input[name='end']").eq(l).val(m.end)
-                    // $(".weekday_form").eq(l).find("input[name='start']").val(m.start)
-                    // $(".weekday_form").eq(l).find("input[name='end']").val(m.end)
+                array_week = ["一","二","三","四","五","六","日"]
+                $.each(array_week, function (k, v) {
+                    $(".week_day_text").eq(k).text(v);
                 })
-                // $(".weekday_form").each(function(){
-                //     var _data = $(this).serializeArray()
-                //     var _obj = {}
-                //     $.each(_data,function(i,j){
-                //         _obj[j.name] = j.value
-                //     })
-                //     _forCircle.push(_obj)
-                // })
+                if (typeof data.auto_reply !== 'undefined') {
+                    $.each(array_week, function (k, v) {
+                        $(".start").eq(k).val(data.auto_reply.cycle[k]['start'])
+                        $(".end").eq(k).val(data.auto_reply.cycle[k]['end'])
+                    })
+                    // $.each(data.auto_reply.cycle,function(k,v){
+                    //     console.log(v)
+                    //     $(".week_day_text").eq(k).text(array_week[k]);
+                    //     $(".start").eq(k).val(v.start)
+                    //     $(".end").eq(k).val(v.end)
+                    // })
+                    $("#text_info").val(data.auto_reply.text_info)
+                    
+                    $("input[name='auto_replyRadios'][value='" + data.auto_reply.switch + "']").prop("checked", true);
+                    switch_auto_reply_status(data.auto_reply.switch)
+                }
+                $("#date_loading").hide()
+            })
+        })
+         $('input:radio[name=auto_replyRadios]').change(function() {
+            switch_auto_reply_status(this.value)
+        });
+        // 切換 自動回覆顯示狀態
+        function switch_auto_reply_status(status){
+            if (status == '1') {
+                $(".start").attr('readonly', false);
+                $(".end").attr('readonly', false);
+                $("#text_info").attr('readonly', false);
+            }else{
+                $(".start").attr('readonly', true);
+                $(".end").attr('readonly', true);
+                $("#text_info").attr('readonly', true);
+            }
+        }
+        // 送出自動回覆設定
+        $("body").on("click", "#set_chat", function () {
+            var _week_set = []
+            var _obj = {}
+            $(".week_day").each(function (k, v) {
+                console.log($(this).val())
+                _week_set.push({
+                    "week_day": $(".week_setting_tr").eq(k).find(".week_day").val(),
+                    "start": $(".week_setting_tr").eq(k).find(".start").val(),
+                    "end": $(".week_setting_tr").eq(k).find(".end").val(),
+                })
+            })
+            console.log($('input:radio[name=auto_replyRadios]').val())
+            $.ajax({
+                url : "./api_sys/set_auto_reply/",
+                data : JSON.stringify({
+                    channel_id : _channelId,
+                    switch : $('input:radio[name=auto_replyRadios]:checked').val(),
+                    cycle : _week_set,
+                    text_info:$("#text_info").val()
+                }),
+                type : "post",
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                dataType : "json"
+            }).done(function(data){
+                alert("完成")
             })
         })
         
