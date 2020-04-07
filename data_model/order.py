@@ -93,3 +93,37 @@ class Order:
         # 扣除點數
         user.deduct_point(user_id,channel_id,point,"預購 {0} ".format(p_data['product_name']));
         return True
+
+    def get_once(self,channel_id,order_id):
+        find = {
+            "channel_id":channel_id,
+            "order_id":order_id
+        }
+        data = self.col_order.find_one(find)
+        del data["_id"]
+        return data
+
+    def chk_once(self,channel_id,order_id):
+        find = {
+            "channel_id":channel_id,
+            "order_id":order_id
+        }
+        if self.col_order.find(find).count() == 0:
+            return False
+        else :
+            return True
+
+    def pass_one(self,channel_id,order_id,data):
+        
+        # 回寫主表
+        find = {
+            "channel_id":channel_id,
+            "order_id":order_id
+        }
+        now = datetime.datetime.now();
+        date_time = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
+        data['pass_datetime'] = date_time
+        
+        self.col_order.update_one(find,{"$set":data})
+
+        return True

@@ -13,18 +13,12 @@ from data_model.webhook import *
 from data_model.user import *
 from data_model.msg import *
 from data_model.chat import *
+from data_model.order import *
 
 
 api_sys = Blueprint('api_sys', __name__)
 
-# 設定腳本
-# 2020-03-09 改成 script 和 msg 共用設定和資廖庫
-# @api_sys.route('/api_sys/set_msg/', methods=["POST"])
-# def set_msg():
-#     # 取得輸入資料
-#     jsondata = request.get_json()
-#     json_data = {'sys_code':"200","sys_msg":"success"}
-#     return json_data
+
         
 
 # 設定後台 session channel
@@ -39,42 +33,34 @@ def set_channel(channel_id):
     return json_data
 
 # 發送
-@api_sys.route('/api_sys/send_message/<channel_id>/<msg_id>/<user_id>')
-def send_message(channel_id,msg_id,user_id):
-    msg = Msg()
-    channel = Channel()
-    user = User()
-    # user_id = "Ufd5d3bb5d828bfcef65344c0bd5b5c07"
-    msg_data = msg.get_once(msg_id)
-    msg.send_message(channel_id,msg_id,user_id)
+# @api_sys.route('/api_sys/send_message/<channel_id>/<msg_id>/<user_id>')
+# def send_message(channel_id,msg_id,user_id):
+#     msg = Msg()
+#     channel = Channel()
+#     user = User()
+#     # user_id = "Ufd5d3bb5d828bfcef65344c0bd5b5c07"
+#     msg_data = msg.get_once(msg_id)
+#     msg.send_message(channel_id,msg_id,user_id)
 
-    # # # 整理會員名單
-    # users = []
-    # user_ids = []
-    # users = user.get_all_users(channel_id)
-    # # line_bot_api = LineBotApi(channel_access_token)
-    # # # U7e053ed8fcca7e8bf4b82ac79accf8cc
-    # # # res = line_bot_api.push_message('U7e053ed8fcca7e8bf4b82ac79accf8cc', send_message)
-    # # # 發送訊息
-    # for user_data in users:
+#     # # # 整理會員名單
+#     # users = []
+#     # user_ids = []
+#     # users = user.get_all_users(channel_id)
+#     # # line_bot_api = LineBotApi(channel_access_token)
+#     # # # U7e053ed8fcca7e8bf4b82ac79accf8cc
+#     # # # res = line_bot_api.push_message('U7e053ed8fcca7e8bf4b82ac79accf8cc', send_message)
+#     # # # 發送訊息
+#     # for user_data in users:
         
-    #     # 設定log
-    #     user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
-    #     msg.send_message(channel_id,msg_id,user_data['user_id'])
+#     #     # 設定log
+#     #     user.set_user_log(user_data['user_id'],channel_id,"發送訊息"+msg_data['subject'])
+#     #     msg.send_message(channel_id,msg_id,user_data['user_id'])
 
-    json_data = {'sys_code':"200","sys_msg":"success"}
-
-    return json_data
-
-# 2020-03-26 修補任務
-    # 取得今日遊戲次數
-# @api_sys.route('/api_sys/get_game_today_count/<user_id>')
-# def get_game_today_count(user_id):
-#     tags = Tags()
-#     count = tags.get_game_today_count(user_id)
-#     json_data = {'sys_code':"200","sys_msg":"success","count":count}
+#     json_data = {'sys_code':"200","sys_msg":"success"}
 
 #     return json_data
+
+
 
 # 取得聊天室清單
 @api_sys.route('/api_sys/get_chat_room/<channel_id>')
@@ -185,3 +171,31 @@ def get_auto_reply(channel_id):
         json_data = {'sys_code':"200","sys_msg":"Success","auto_reply":auto_reply}
         return json_data
 
+
+##############################################
+## 訂單 
+##############################################
+# channel_id,order_id,exchange_link,exchange_code
+@api_sys.route('/api_sys/order_set_exchange')
+def order_exchange():
+    channel = Channel()
+    order = Order()
+    channel_id = request.values['channel_id']
+    order_id = request.values['order_id']
+    exchange_link = request.values['exchange_link']
+    exchange_code = request.values['exchange_code']
+    
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    if order.chk_once(channel_id,order_id) == False:
+        json_data = {'sys_code':"404","sys_msg":"order not found"}
+        return json_data
+    order_info = order.get_once(channel_id,order_id)
+    if order_info['status'] == 'applying':
+        json_data = {'sys_code':"200","sys_msg":"Success"}
+        order.pass_one(channel_id,order_id,{"exchange_link":exchange_link,"exchange_code":exchange_code,"status":"pass"})
+    else:
+        json_data = {'sys_code':"500","sys_msg":"status fail"}
+    json_data['info'] = order_info;
+    return json_data
