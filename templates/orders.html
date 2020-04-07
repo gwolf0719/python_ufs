@@ -4,12 +4,12 @@
 {% endblock title%}
 
 {% block content %}
-<nav>
+<!-- <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-1-tab" data-toggle="tab" href="#nav-1" role="tab" aria-controls="nav-1" aria-selected="true">等待派發</a>
         <a class="nav-item nav-link" id="nav-2-tab" data-toggle="tab" href="#nav-2" role="tab" aria-controls="nav-2" aria-selected="false">派發完成</a>
     </div>
-</nav>
+</nav> -->
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active pt-3" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
         <table class="table table-hover">
@@ -29,47 +29,17 @@
                     <td>{{ data.product_name}}</td>
                     <td><img src="{{ data.product_img }}" class="img-fluid border" style="max-width:60px" alt=""></td>
                     <td>{{ data.need_points }}</td>
-                    <td>{{ data.last_qty }}/{{ data.total_qty }}</td>
+                    <td>count(data.total_qty-data.last_qty) <br>{{ data.last_qty }}/{{ data.total_qty }}</td>
                     <td>
                         <p class="m-0"><small>上架時間：{{ data.date_sale }}</small></p>
                         <p class="m-0"><small>截止時間：{{ data.date_close }}</small></p>
                         <p class="m-0"><small>派發時間：{{ data.date_send }}</small></p>
                     </td>
                     <td>
-                        <a href="order_info/{{ data.product_id }}" class="btn btn-primary btn-sm">詳情</a>
+                        <a href="order_info/{{ data.product_id }}" class="btn btn-primary btn-sm">派發序號</a>
                     </td>
                 </tr>
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="tab-pane fade pt-3" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>商品名稱</th>
-                    <th>顯示圖</th>
-                    <th>兌換點數</th>
-                    <th>名額</th>
-                    <th>時間</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>全家小熱美</td>
-                    <td><img src="./static/assets/images/gift-4.png" class="img-fluid border" style="max-width:60px" alt=""></td>
-                    <td>100</td>
-                    <td>15</td>
-                    <td>
-                        <p class="m-0"><small>上架時間：2020/03/06</small></p>
-                        <p class="m-0"><small>截止時間：2020/03/11</small></p>
-                        <p class="m-0"><small>派發時間：2020/03/16</small></p>
-                    </td>
-                    <td>
-                        <a href="" class="btn btn-primary btn-sm">詳情</a>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
