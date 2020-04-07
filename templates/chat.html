@@ -89,8 +89,8 @@
             <h5 class="modal-title m-0 mr-2" id="chatModalLabel">
                 <span></span>
                 <form class="form-inline">
-                    <button class="btn-sm btn-outline-danger" id="delete">結案</button>
-                    <button class="btn-sm btn-outline-info" id="go2info">個人資料</button>
+                    <button class="btn-sm btn-outline-danger" id="delete" type="button">結案</button>
+                    <button class="btn-sm btn-outline-info" id="go2info" type="button">個人資料</button>
                 </form>
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -403,7 +403,7 @@
             
             var _gotUserid = $(this).attr("data-userid");
             var _gotChannel = $(this).attr("data-channel")
-            location.href = "./user_info/"+ _gotChannel+"/"+ _gotUserid
+            location.href = "/user_info/"+ _gotChannel+"/"+ _gotUserid
         })
     })
     </script>
