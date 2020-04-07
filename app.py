@@ -132,7 +132,11 @@ def users():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            datalist = user.get_all_users(channel_id)
+            if "keyword" in request.values:
+                print(request.values['keyword'])
+                datalist = user.get_all_users(channel_id,request.values['keyword'])
+            else:
+                datalist = user.get_all_users(channel_id)
             return render_template("users.html",datalist=datalist)
     else:
         return redirect(url_for("login"))

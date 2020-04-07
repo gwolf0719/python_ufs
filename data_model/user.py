@@ -144,10 +144,12 @@ class User:
         return res
     
     # 取得所有人
-    def get_all_users(self,channel_id):
+    def get_all_users(self,channel_id,keyword=''):
         find = {
             "channel_id":channel_id
         }
+        if(keyword != ''):
+            find['name'] = {"$regex":keyword}
         datalist = []
         for d in self.col_user.find(find):
             del d["_id"]

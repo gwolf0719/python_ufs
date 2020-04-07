@@ -90,6 +90,7 @@
                 <span></span>
                 <form class="form-inline">
                     <button class="btn-sm btn-outline-danger" id="delete">結案</button>
+                    <button class="btn-sm btn-outline-info" id="go2info">個人資料</button>
                 </form>
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -197,6 +198,12 @@
                 'data-userid' : _userid ,
                 'data-channel' : _channelId,
             })
+            // 個人資料鈕
+            $("#go2info").attr({
+                'data-userid': _userid,
+                'data-channel': _channelId,
+            })
+
             var _alllength = ''; //對話有幾則
             getChat()
             timer = setInterval(function(){
@@ -390,6 +397,13 @@
             }else{ 
                 return false; 
             } 
+        })
+        $("#go2info").click(function (e) {
+            // 前往個人資料
+            
+            var _gotUserid = $(this).attr("data-userid");
+            var _gotChannel = $(this).attr("data-channel")
+            location.href = "./user_info/"+ _gotChannel+"/"+ _gotUserid
         })
     })
     </script>
