@@ -1,83 +1,124 @@
 {% extends 'layout.html'%}
 {% block title %}
-<h2><button type="buttom" onclick="history.back()" class="btn-outline-secondary btn-sm mr-2">
-    <i class="material-icons">keyboard_arrow_left</i></button>派發序號</h2>
+<h2>派發序號</h2>
 {% endblock title%}
 
-<div class="card mb-4">
-    <div class="row p-3">
-        <div class="col-1"><img class="img-fluid rounded" src="./static/assets/images/pre_1.jpg" alt=""></div>
-        <div class="col-11">
-            <h3>全家小熱美</h3>
-            <hr>
-            <table>
-                <tr>
-                    <td>兌換點數</td>
-                    <td><span class="text-danger">100</span>點</td>
-                </tr>
-                <tr>
-                    <td>庫存</td>
-                    <td><span class="text-danger">15</span>杯</td>
-                </tr>
-                <tr>
-                    <td>時間</td>
-                    <td>
-                        <p class="m-0"><small>上架時間：2020/03/06</small></p>
-                        <p class="m-0"><small>截止時間：2020/03/11</small></p>
-                        <p class="m-0"><small>派發時間：2020/03/16</small></p>
-                    </td>
-                </tr>
-            </table>
+{% block content %}
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="m-0 p-0">
+                <button class="btn btn-link m-0 p-0" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    全家小熱美
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <div class="row p-3">
+                    <div class="col-1"><img class="img-fluid rounded" src="http://ufs.ladesign.tw/static/product/week1_2.jpg" alt=""></div>
+                    <div class="col-11">
+                        <h3>全家小熱美</h3>
+                        <hr>
+                        <table>
+                            <tr>
+                                <td>兌換點數</td>
+                                <td><span class="text-danger">100</span>點</td>
+                            </tr>
+                            <tr>
+                                <td>庫存</td>
+                                <td><span class="text-danger">15</span>杯</td>
+                            </tr>
+                            <tr>
+                                <td>時間</td>
+                                <td>
+                                    <p class="m-0"><small>上架時間：2020/03/06</small></p>
+                                    <p class="m-0"><small>截止時間：2020/03/11</small></p>
+                                    <p class="m-0"><small>派發時間：2020/03/16</small></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>兌換者</th>
+                            <th>進行派發</th>
+                            <th>對使用者進行</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                Effy Tsiu<br/>
+                                <!-- user id -->
+                                <small class="text-gray">eser1321245432</small>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control mb-2" placeholder="網址">
+                                <input type="text" class="form-control mb-1" placeholder="密碼">
+                                <button class="btn btn-sm btn-primary">派發</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
+                                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>
+                                James Wolf<br/>
+                                <!-- user id -->
+                                <small class="text-gray">eser1321245432</small>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control mb-2" placeholder="網址">
+                                <input type="text" class="form-control mb-1" placeholder="密碼">
+                                <button class="btn btn-sm btn-primary">派發</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
+                                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+        <h2 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Collapsible Group Item #2
+            </button>
+        </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div class="card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingThree">
+        <h2 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Collapsible Group Item #3
+            </button>
+        </h2>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+        <div class="card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        </div>
         </div>
     </div>
 </div>
-<h3>兌換者列表</h3>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>兌換者</th>
-            <th>進行派發</th>
-            <th>對使用者進行</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>
-                Effy Tsiu<br/>
-                <!-- user id -->
-                <small class="text-gray">eser1321245432</small>
-            </td>
-            <td>
-                <input type="text" class="form-control mb-2" placeholder="網址">
-                <input type="text" class="form-control mb-1" placeholder="密碼">
-                <button class="btn btn-sm btn-primary">派發</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
-                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>
-                James Wolf<br/>
-                <!-- user id -->
-                <small class="text-gray">eser1321245432</small>
-            </td>
-            <td>
-                <input type="text" class="form-control mb-2" placeholder="網址">
-                <input type="text" class="form-control mb-1" placeholder="密碼">
-                <button class="btn btn-sm btn-primary">派發</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
-                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
 {# 燈箱組件 #}
 <!-- Modal -->
@@ -191,3 +232,4 @@
     })
 </script>
 {# 燈箱組建結束#}
+{% endblock content %}
