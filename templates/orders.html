@@ -24,20 +24,22 @@
                 </tr>
             </thead>
             <tbody>
+                {% for data in datalist %}
                 <tr>
-                    <td>全家小熱美</td>
-                    <td><img src="./static/assets/images/pre_1.jpg" class="img-fluid border" style="max-width:60px" alt=""></td>
-                    <td>100</td>
-                    <td>15</td>
+                    <td>{{ data.product_name}}</td>
+                    <td><img src="{{ data.product_img }}" class="img-fluid border" style="max-width:60px" alt=""></td>
+                    <td>{{ data.need_points }}</td>
+                    <td>{{ data.last_qty }}/{{ data.total_qty }}</td>
                     <td>
-                        <p class="m-0"><small>上架時間：2020/03/06</small></p>
-                        <p class="m-0"><small>截止時間：2020/03/11</small></p>
-                        <p class="m-0"><small>派發時間：2020/03/16</small></p>
+                        <p class="m-0"><small>上架時間：{{ data.date_sale }}</small></p>
+                        <p class="m-0"><small>截止時間：{{ data.date_close }}</small></p>
+                        <p class="m-0"><small>派發時間：{{ data.date_send }}</small></p>
                     </td>
                     <td>
-                        <a href="order_info" class="btn btn-primary btn-sm">詳情</a>
+                        <a href="order_info/{{ data.product_id }}" class="btn btn-primary btn-sm">詳情</a>
                     </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -87,10 +89,7 @@
             $("." + $(this).val() + "_box").show();
         })
 
-        $("body").on("click", ".user-info", function () {
-            user_id = $(this).attr("user_id");
-            location.href = "./user_info/{{session.get('channel_id')}}/"+user_id
-        })
+        
 
     })
 </script>

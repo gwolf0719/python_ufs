@@ -23,6 +23,7 @@ from data_model.msg import *
 from data_model.re_url import *
 from data_model.product import *
 from data_model.chat import *
+from data_model.order import *
 
 from api import *
 from api_sys import *
@@ -327,12 +328,16 @@ def orders():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            return render_template("orders.html")
+            product = Product()
+
+            
+            datalist = product.get_list(channel_id)
+            return render_template("orders.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 
-@app.route("/order_info", methods=["GET", "POST"])
-def order_info():
+@app.route("/order_info/<product_id>", methods=["GET", "POST"])
+def order_info(product_id):
     if(manager.chk_now() == True):
         manager_id = session.get("manager_id")
         if session.get("channel_id") is None:
@@ -340,7 +345,9 @@ def order_info():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            return render_template("order_info.html")
+            order = Order()
+            datalist = order.order_list_by_product(channel_id,product_id)
+            return render_template("order_info.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
 

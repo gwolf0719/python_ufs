@@ -33,6 +33,34 @@ class Order:
         return list(datalist)
 
 
+    # 各種狀態訂單列表
+    # applying pass got fail
+    def order_list_by_status(self,channel_id,status):
+        find = {
+            "channel_id":channel_id,
+            "status":status
+        }
+        
+        datalist = []
+        for data in self.col_order.find(find).sort("datetime",-1):
+            del data["_id"]
+            datalist.append(data)
+        return list(datalist)
+    def order_list_by_product(self,channel_id,product_id,status=""):
+        find = {
+            "channel_id":channel_id,
+            "product_id":product_id
+        }
+        if status != "":
+            find["status"] = status
+        
+        datalist = []
+        for data in self.col_order.find(find).sort("datetime",-1):
+            del data["_id"]
+            datalist.append(data)
+        return list(datalist)
+
+
     # 申請預購
     def applying_preorder(self,channel_id,product_id,user_id,qty):
         product = Product()
