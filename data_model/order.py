@@ -93,7 +93,7 @@ class Order:
         # 扣除點數
         user.deduct_point(user_id,channel_id,point,"預購 {0} ".format(p_data['product_name']));
         return True
-
+    # 取得訂單資料
     def get_once(self,channel_id,order_id):
         find = {
             "channel_id":channel_id,
@@ -102,7 +102,7 @@ class Order:
         data = self.col_order.find_one(find)
         del data["_id"]
         return data
-
+    # 確認訂單存在
     def chk_once(self,channel_id,order_id):
         find = {
             "channel_id":channel_id,
@@ -113,9 +113,7 @@ class Order:
         else :
             return True
 
-    def pass_one(self,channel_id,order_id,data):
-        
-        # 回寫主表
+    def pass_one(self,channel_id,order_id,data):    
         find = {
             "channel_id":channel_id,
             "order_id":order_id
@@ -127,3 +125,15 @@ class Order:
         self.col_order.update_one(find,{"$set":data})
 
         return True
+    def order_2_got(self,channel_id,order_id):
+        find = {
+            "channel_id":channel_id,
+            "order_id":order_id,
+        }
+        now = datetime.datetime.now();
+        date_time = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
+        data = {
+            'status':"got",
+            "got_datetime":date_time
+        }
+        self.col_order.update_one(find,{"$set":data})

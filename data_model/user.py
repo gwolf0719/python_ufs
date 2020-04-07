@@ -41,7 +41,7 @@ class User:
             "user_id": user_id,
             "channel_id": channel_id
         }
-        # print(find)
+        print(find)
         cursor = self.col_user.find(find) 
         if(cursor.count() == 0):
             return False

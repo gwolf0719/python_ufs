@@ -424,6 +424,33 @@ def get_user_preorder(channel_id,user_id):
     }
     return json_data
 
+# # 領取
+@api.route('/api/v0/order_2_got/<channel_id>/<user_id>/<order_id>')
+def order_2_got(channel_id,user_id,order_id):
+    order = Order()
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    
+    if order.chk_once(channel_id,order_id) == False:
+        json_data = {'sys_code':"404","sys_msg":"order not found"}
+        return json_data
+    
+    order_info = order.get_once(channel_id,order_id)
+    if order_info['status'] == 'pass':
+        order.order_2_got(channel_id,order_id)
+        json_data = {'sys_code':"200","sys_msg":"Success"}
+        return json_data
+    else :
+        
+        json_data = {'sys_code':"500","sys_msg":"status fail"}
+        json_data['info'] = order_info
+        return json_data
 
     
     
