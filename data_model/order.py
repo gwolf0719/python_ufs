@@ -47,6 +47,7 @@ class Order:
             datalist.append(data)
         return list(datalist)
     def order_list_by_product(self,channel_id,product_id,status=""):
+        user = User()
         find = {
             "channel_id":channel_id,
             "product_id":product_id
@@ -57,7 +58,10 @@ class Order:
         datalist = []
         for data in self.col_order.find(find).sort("datetime",-1):
             del data["_id"]
+            data['name'] = user.get_once(data['user_id'],channel_id)['name']
             datalist.append(data)
+        
+        print(datalist)
         return list(datalist)
 
 
