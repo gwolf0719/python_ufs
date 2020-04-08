@@ -56,7 +56,7 @@ class Order:
             find["status"] = status
         
         datalist = []
-        for data in self.col_order.find(find).sort("datetime",-1):
+        for data in self.col_order.find(find).sort("datetime",1):
             del data["_id"]
             data['name'] = user.get_once(data['user_id'],channel_id)['name']
             datalist.append(data)
