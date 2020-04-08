@@ -37,45 +37,38 @@
         <tr>
             <th>#</th>
             <th>兌換者</th>
+            <th>申請日</th>
             <th>進行派發</th>
             <th>對使用者進行</th>
         </tr>
     </thead>
     <tbody>
+        {% for data in datalist %}
         <tr>
-            <td>1</td>
-            <td>
-                Effy Tsiu<br/>
+            <td>{{loop.index}}</td>
+            <td>{{data.user_name}}<br/>
                 <!-- user id -->
-                <small class="text-gray">eser1321245432</small>
+                <small class="text-gray">{{data.user_id}}</small>
+            </td>
+            <td>{{data.datetime}}</td>
+            <td>
+                <form action="" class="goSubmit">
+                    <input type="text" name="order_id" value="{{data.order_id}}" hidden class="form-control mb-2">
+                    <input type="text" name="channel_id" value="{{data.channel_id}}" hidden class="form-control mb-1">
+                    <input type="text" name="exchange_link" value="{{data.exchange_link}}" class="form-control mb-2" placeholder="網址" >
+                    <input type="text" name="exchange_code" value="{{data.exchange_code}}" class="form-control mb-1" placeholder="密碼" >
+                    {% if data.exchange_link|length %}
+                    {% else %}
+                        <button type="submit" class="btn btn-sm btn-primary">派發</button>
+                    {% endif %}
+                </form>
             </td>
             <td>
-                <input type="text" class="form-control mb-2" placeholder="網址">
-                <input type="text" class="form-control mb-1" placeholder="密碼">
-                <button class="btn btn-sm btn-primary">派發</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
-                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button>
+                <!-- <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
+                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button> -->
             </td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>
-                James Wolf<br/>
-                <!-- user id -->
-                <small class="text-gray">eser1321245432</small>
-            </td>
-            <td>
-                <input type="text" class="form-control mb-2" placeholder="網址">
-                <input type="text" class="form-control mb-1" placeholder="密碼">
-                <button class="btn btn-sm btn-primary">派發</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
-                <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button>
-            </td>
-        </tr>
+        {% endfor %}
     </tbody>
 </table>
 
@@ -187,7 +180,29 @@
             user_id = $(this).attr("user_id");
             location.href = "./user_info/{{session.get('channel_id')}}/"+user_id
         })
-
+        $(".goSubmit").submit(function(e){
+            e.preventDefault();
+            $(this).find(".btn").attr("disabled","disabled").text("派發中...")
+            var _this = $(this)
+            var _data = $(this).serializeArray();
+            console.log(_data)
+            var _forUpload = {}
+            $.each(_data,function(k,v){
+                _forUpload[v.name] = v.value
+            })
+            console.log(_forUpload)
+            $.ajax({
+                url : './api_sys/order_set_exchange',
+                dataType : "json",
+                data : _forUpload
+            }).done(function(data){
+                _this.find(".btn").text(data.sys_msg)
+                _this.append("<span class='text-primary p-0 m-0'><small>" + data.sys_code + "</small></span>")
+                if( data.sys_code == "200" || data.sys_code == "500" ){}else{
+                    _this.find(".btn").removeAttr("disabled","")
+                }
+            })
+        })
     })
 </script>
 {# 燈箱組建結束#}
