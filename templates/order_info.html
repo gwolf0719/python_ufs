@@ -57,9 +57,9 @@
                     <input type="text" name="channel_id" value="{{data.channel_id}}" hidden class="form-control mb-1">
                     <input type="text" name="exchange_link" value="{{data.exchange_link}}" class="form-control mb-2" placeholder="網址" >
                     <input type="text" name="exchange_code" value="{{data.exchange_code}}" class="form-control mb-1" placeholder="密碼" >
-                    {% if data.exchange_link|length %}
-                    {% else %}
+                    {% if data.status == 'applying' %}
                         <button type="submit" class="btn btn-sm btn-primary">派發</button>
+                    {% else %}
                     {% endif %}
                 </form>
             </td>
