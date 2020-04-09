@@ -49,9 +49,10 @@
             <td>{{loop.index}}</td>
             <td>{{data.name}}<br/>
                 <!-- user id -->
-                <small class="text-gray">{{data.user_id}}</small>
+                <small class="text-muted">{{data.user_id}}</small>
             </td>
             <td>
+                <p class="m-0 mb-2"><span class="badge badge-light mr-2">ORDER ID</span><small class="text-muted">{{data.order_id}}</small></p>
                 <form action="" class="goSubmit">
                     <input type="text" name="order_id" value="{{data.order_id}}" hidden class="form-control mb-2">
                     <input type="text" name="channel_id" value="{{data.channel_id}}" hidden class="form-control mb-1">
