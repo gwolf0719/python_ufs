@@ -8,6 +8,9 @@
 {% endblock title%}
 
 {% block content %}
+<div class="alert alert-success d-none" id="alert_msg" role="alert">
+新增標籤完成
+</div>
 <h3>
     取得<span class="badge badge-pill badge-outline-primary ml-1 mr-1">2019新光登高賽</span>Tag的會員人數趨勢：
 </h3>
@@ -164,6 +167,10 @@
                 method : 'post'
             }).done(function(data){
                 console.log("ok")
+                if( data.sys_code == "200" ){
+                    $("#tagsModal").modal('hide');
+                    $("#alert_msg").removeClass("d-none")
+                }
             })
         })
         var chart_1 = echarts.init(document.getElementById('chart_1'));
