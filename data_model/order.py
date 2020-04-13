@@ -61,7 +61,7 @@ class Order:
             data['name'] = user.get_once(data['user_id'],channel_id)['name']
             datalist.append(data)
         
-        print(datalist)
+        # print(datalist)
         return list(datalist)
 
 

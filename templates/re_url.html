@@ -65,8 +65,14 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label" for="">標籤<span
                                     class="text-danger"></span></label>
-                            <div class="col-10"> <input type="text" name="tags" class="form-control"
-                                    placeholder="請輸入" ></div>
+                            <div class="col-10"> 
+                                <select id="tags" name="tags" class="form-control">
+                                    <option value="">請選擇（如需新增請前往標籤管理）</option>
+                                    {% for tag in tags %}
+                                    <option value="{{ tag.tag}}">{{ tag.tag_desc}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

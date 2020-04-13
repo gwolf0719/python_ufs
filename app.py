@@ -186,7 +186,11 @@ def re_url():
                 re_url.add_once(datajson)
                 
             urls = re_url.get_list(channel_id)
-        return render_template("re_url.html",datalist=urls)
+            tags = Tags()
+            tag_list = tags.get_tag_list(channel_id)
+            print(tag_list)
+
+        return render_template("re_url.html",datalist=urls,tags=tag_list)
     else:
         return redirect(url_for("login"))
 
