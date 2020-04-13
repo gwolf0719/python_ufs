@@ -175,7 +175,10 @@
             _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
             $("#out_msg").val("")
             $.ajax({
-                url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId + "/" + _value ,
+                url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId ,
+                data : {
+                    text_info:_value
+                },
                 dataType : "json",
             }).done(function(data){
                 console.log(data)

@@ -103,12 +103,12 @@ def get_chat_msg(channel_id, user_id):
 
 
 # 後台回覆私訊
-@api_sys.route('/api_sys/return_chat_msg/<channel_id>/<user_id>/<text_info>')
-def return_chat_msg(channel_id, user_id, text_info):
+@api_sys.route('/api_sys/return_chat_msg/<channel_id>/<user_id>')
+def return_chat_msg(channel_id, user_id):
     chat = Chat()
     msg = Msg()
     channel = Channel()
-    
+    text_info = request.values['text_info']
     
     text_info = text_info.replace('<br>','\n')
     channel_access_token = channel.get_channel(channel_id)['channel_access_token']
