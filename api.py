@@ -316,15 +316,15 @@ def get_user_points_log(channel_id, user_id):
     # =================================================================
 # =================================================================
 
-@api.route('/api/v0/set_tag_main', methods=['POST'])
-def set_tag_main():
-    jsondata = request.get_json()
-    tags = Tags()
-    if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
-        return  {'sys_code':"500","sys_msg":"重複設定"}
-    else:
-        tags.set_tag_main(jsondata)
-        return "jsondata"
+# @api.route('/api/v0/set_tag_main', methods=['POST'])
+# def set_tag_main():
+#     jsondata = request.get_json()
+#     tags = Tags()
+#     if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
+#         return  {'sys_code':"500","sys_msg":"重複設定"}
+#     else:
+#         tags.set_tag_main(jsondata)
+#         return "jsondata"
 
 
 @api.route('/api/v0/send_message/<channel_id>/<user_id>/<msg>', methods=['POST',"GET"])

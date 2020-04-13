@@ -199,3 +199,24 @@ def order_exchange():
         json_data = {'sys_code':"500","sys_msg":"status fail"}
     json_data['info'] = order_info;
     return json_data
+
+
+
+#============================================================================
+    #
+    # 
+    # 標籤
+    #
+    # 
+    # =================================================================
+# =================================================================
+
+@api.route('/api_sys/set_tag_main', methods=['POST'])
+def set_tag_main():
+    jsondata = request.get_json()
+    tags = Tags()
+    if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
+        return  {'sys_code':"500","sys_msg":"重複設定"}
+    else:
+        tags.set_tag_main(jsondata)
+        return "jsondata"
