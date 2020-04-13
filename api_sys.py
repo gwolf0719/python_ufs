@@ -211,7 +211,7 @@ def order_exchange():
     # =================================================================
 # =================================================================
 
-@api.route('/api_sys/set_tag_main', methods=['POST'])
+@api_sys.route('/api_sys/set_tag_main', methods=['POST'])
 def set_tag_main():
     jsondata = request.get_json()
     tags = Tags()
