@@ -263,6 +263,23 @@ class User:
             for data in res:
                 print(data)
         return data['point']
+    # 取得累績總點數
+    def lifetime_record_total(self,channel_id):
+        find = {
+            "channel_id":channel_id,
+            "act":"add"
+        }
+        pipeline = [
+            {'$match':find},
+            {'$group': {'_id': "$channel_id", 'point': {'$sum': '$point'}}},
+        ]
+        if self.col_point_logs.find(find).count() == 0:
+            return 0
+        else :
+            res = self.col_point_logs.aggregate(pipeline)
+            for data in res:
+                print(data)
+        return data['point']
 
     def set_user_log(self, user_id,channel_id,log_msg):
         log_data = {}

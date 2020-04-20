@@ -64,6 +64,22 @@
                             <div class="col-10"> <input type="text" name="subject" class="form-control" placeholder="請輸入" required></div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">觸發方式<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <div class="form-group">
+                                    <select class="form-control" name="type" id="type">
+                                        <option value="">請選擇</option>
+                                        <option value="send_msg">直接發送</option>
+                                        <option value="listen_keyword">監聽訊息</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">監聽訊息內容<span class="text-danger">*</span></label>
+                            <div class="col-10"> <input type="text" name="listen_keyword" class="form-control" placeholder="請輸入" ></div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-2 col-form-label" for="">訊息種類<span class="text-danger">*</span></label>
                             <div class="col-10"> 
                                 <div class="form-group">

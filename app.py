@@ -404,6 +404,7 @@ def webhook(channel_id):
     event = jsondata["events"][0]
     user_id = event["source"]["userId"]
     jsondata["user_id"] = user_id
+    print(jsondata)
     webhook.add_log(jsondata)
 
 

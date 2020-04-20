@@ -220,3 +220,10 @@ def set_tag_main():
     else:
         tags.set_tag_main(jsondata)
         return "jsondata"
+
+
+@api_sys.route('/api_sys/lifetime_record_total', methods=['GET'])
+def lifetime_record_total():
+    user = User()
+    a = user.lifetime_record_total('1653459101')
+    return "a"
