@@ -32,6 +32,9 @@ def set_channel(channel_id):
     json_data = {'sys_code':"200","sys_msg":"success",'channel_id':channel_id}
     return json_data
 
+
+
+
 # 發送
 # @api_sys.route('/api_sys/send_message/<channel_id>/<msg_id>/<user_id>')
 # def send_message(channel_id,msg_id,user_id):
@@ -221,9 +224,3 @@ def set_tag_main():
         tags.set_tag_main(jsondata)
         return "jsondata"
 
-
-@api_sys.route('/api_sys/lifetime_record_total', methods=['GET'])
-def lifetime_record_total():
-    user = User()
-    a = user.lifetime_record_total('1653459101')
-    return "a"

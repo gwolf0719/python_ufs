@@ -205,6 +205,31 @@ def get_share_info(channel_id, user_id, link_id):
     else:
         json_data = {'sys_code':"404","sys_msg":"查無資料"}
         return json_data
+
+# 取得轉址資料
+@api.route('/api/v0/get_re_url_info/<channel_id>/<user_id>/<link_id>')
+def get_re_url_info(channel_id, user_id, link_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+
+    # 取得內容
+    re_url = Re_url()
+    re_url_data = re_url.get_once(link_id)
+    
+    
+    # 設定對應標籤
+        tag = re_url_data['tags']
+        user.set_user_tag(user_id,channel_id,re_url_data['tags'])
+        
+    json_data = {'sys_code':"200","sys_msg":"Success","target_url":re_url_data["target_url"]}
+        # json_data = {'sys_code':"200","sys_msg":"Success","desc":"#地球一小時EarthHour 3/28(六)晚間8:30~9:30\n 瓜寶邀請你關燈一小時⚡️\n 一起關一波作伙愛地球🌎\n \n 💝快閃小活動：關燈可以幹嘛？\n 快來發揮創意留言抽小禮物👉\n"}
+    return json_data
     
 
 
