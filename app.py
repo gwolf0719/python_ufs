@@ -38,7 +38,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = 7200
 app.config['SESSION_REDIS'] = redis.Redis(host='127.0.0.1', port='6379', db=4) 
 app.register_blueprint(api)
 app.register_blueprint(api_sys)
-# app.register_blueprint(hack)//
 manager = Manager()
 
 # 登入管理者
