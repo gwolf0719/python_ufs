@@ -221,13 +221,17 @@ def get_re_url_info(channel_id, user_id, link_id):
     # 取得內容
     re_url = Re_url()
     re_url_data = re_url.get_once(link_id)
-    
+    print(re_url_data)
     
     # 設定對應標籤
-    tag = re_url_data['tags']
-    user.set_user_tag(user_id,channel_id,re_url_data['tags'])
-    json_data = {'sys_code':"200","sys_msg":"Success","target_url":re_url_data["target_url"]}
-    return json_data
+    if 'tags' in re_url_data:  
+        tag = re_url_data['tags']
+        user.set_user_tag(user_id,channel_id,re_url_data['tags'])
+        json_data = {'sys_code':"200","sys_msg":"Success","target_url":re_url_data["target_url"]}
+        return json_data
+    else:
+        json_data = {'sys_code':"404","sys_msg":"notfound"}
+        return json_data
     
 
 
