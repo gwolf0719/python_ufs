@@ -218,6 +218,7 @@ def order_exchange():
 def set_tag_main():
     jsondata = request.get_json()
     jsondata['channel_id']  = str(jsondata['channel_id'])
+    jsondata['limit_qty']  = int(jsondata['limit_qty'])
     tags = Tags()
     if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
         return  {'sys_code':"500","sys_msg":"重複設定"}
