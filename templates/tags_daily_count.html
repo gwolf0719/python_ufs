@@ -2,6 +2,10 @@
 
 {% block title %}
 <h2>單日統計</h2>
+<a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <i class="material-icons">add</i>
+    新增標籤
+</a>
 {% endblock title%}
 {% block content %}
 <form action="" class="form-inline" id="date_form">
@@ -22,7 +26,88 @@
     </tr>
     {% endfor%}
 </table>
+{# 燈箱組件 #}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">新增追縱標籤</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+                    <div class="tool-list-width">
 
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">標籤<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="text" id="tag" name="tag" class="form-control"
+                                    placeholder="請輸入" required></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">標籤說明<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="text" id="tag_desc" class="form-control" placeholder="請輸入" required></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">追蹤周期<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <select id="limit_cycle" class="form-control">
+                                    <option value="">請選擇</option>
+                                    <option value="total">全系統</option>
+                                    <option value="year">每年</option>
+                                    <option value="month">每月</option>
+                                    <option value="week">每週</option>
+                                    <option value="day">每天</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">統計次數<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="number" id="limit_qty" class="form-control" placeholder="請輸入" required></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("body").on("click", "#save", function () {
+            
+            $.ajax({
+                url: "./api_sys/set_tag_main",
+                data: JSON.stringify({
+                    "channel_id":{{ channel_id }},
+                    "tag":$("#tag").val(),
+                    "tag_desc":$("#tag_desc").val(),
+                    "limit_cycle":$("#limit_cycle :selected").val(),
+                    "limit_qty":$("#limit_qty").val()
+                }),
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (returnData) {
+                    console.log(returnData);
+                    alert(returnData.sys_msg);
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                }
+            });
+        })
+    })
+</script>
+{# 燈箱組建結束#}
 <!-- {{ session.get('channel_id')}} -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
     <script>

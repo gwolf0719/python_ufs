@@ -217,10 +217,11 @@ def order_exchange():
 @api_sys.route('/api_sys/set_tag_main', methods=['POST'])
 def set_tag_main():
     jsondata = request.get_json()
+    jsondata['channel_id']  = str(jsondata['channel_id'])
     tags = Tags()
     if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
         return  {'sys_code':"500","sys_msg":"重複設定"}
     else:
         tags.set_tag_main(jsondata)
-        return "jsondata"
+        return  {'sys_code':"200","sys_msg":"Success"}
 

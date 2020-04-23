@@ -273,7 +273,7 @@ def tags_daily_count():
                     "count":tags.tags_daily_count(channel_id,td['tag'],daily)
                 })
             print(datalist)
-        return render_template("tags_daily_count.html",datalist=datalist)
+        return render_template("tags_daily_count.html",datalist=datalist,channel_id=channel_id)
     else:
         return redirect(url_for("login"))
 
