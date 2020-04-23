@@ -25,7 +25,8 @@
             {% for data in datalist %}
             <tr>
                 <td>{{data.subject}}</td>
-                <td>{{ request.url_root }}re_url/{{data.link_id}}</td>
+                <td>{{data.url}}</td>
+                <!-- <td>{{ request.url_root }}re_url/{{data.link_id}}</td> -->
                 <td>{{data.target_url}}</td>
                 <td>{{data.tags}}</td>
             </tr>

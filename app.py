@@ -171,6 +171,9 @@ def re_url():
                 target_url = request.values['target_url']
                 tags = request.values['tags']
                 
+                
+                
+                
                 # 先將資料編碼，再更新 MD5 雜湊值
                 m = hashlib.md5()
                 m.update(str(time.time()).encode("utf-8"))
@@ -180,16 +183,21 @@ def re_url():
                     "target_url":target_url,
                     "tags":tags,
                     "channel_id":channel_id,
-                    "url":link_id,
                     "link_id":link_id
                 }
+                channel = Channel()
+                channel_info = channel.get_channel(channel_id)
+                if 'liff_link' in channel_info:
+                    # 取得 liff 的路徑
+                    # https://liff.line.me/1653459101-B52Noyy1?from=redirect&link_id=c78b22
+                    datajson['url'] = channel_info['liff_link']+"?from=redirect&link_id="+link_id;
                 
                 re_url.add_once(datajson)
                 
             urls = re_url.get_list(channel_id)
             tags = Tags()
             tag_list = tags.get_tag_list(channel_id)
-            print(tag_list)
+            
 
         return render_template("re_url.html",datalist=urls,tags=tag_list)
     else:
@@ -272,7 +280,7 @@ def tags_daily_count():
                     "tag":td['tag'],
                     "count":tags.tags_daily_count(channel_id,td['tag'],daily)
                 })
-            print(datalist)
+            
         return render_template("tags_daily_count.html",datalist=datalist,channel_id=channel_id)
     else:
         return redirect(url_for("login"))
