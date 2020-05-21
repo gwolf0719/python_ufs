@@ -102,7 +102,9 @@ def channel_info():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            return render_template("channel_info.html")
+            channel = Channel()
+            data = channel.get_channel(channel_id)
+            return render_template("channel_info.html",data=data)
     else:
         return redirect(url_for("login"))
 
