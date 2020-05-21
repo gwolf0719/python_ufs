@@ -73,7 +73,7 @@
 
         function memberAdd_data(start,end){
             console.log(start,end)
-            $.getJSON('./api_chart/new_reg/1653459101/' + start + '/' + end,function(data){
+            $.getJSON('./api_chart/new_reg/{{ data.channel_id }}/' + start + '/' + end,function(data){
                 var option1 = {
                     tooltip: {
                         trigger: 'axis',

@@ -16,7 +16,7 @@ db = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mong
 # 新註冊人口
 @api_chart.route('/api_chart/new_reg/<channel_id>/<start>/<end>')
 def set_channel(channel_id,start,end):
-    # i.split(' ')
+    # 搜尋區間資料
     users = db.ufs.users.find(
         {
             "created_datetime":{
@@ -26,26 +26,25 @@ def set_channel(channel_id,start,end):
             "channel_id":channel_id
         }
     )
-
-
     datalist = []
     for row in users:
         del row["_id"]
         datalist.append(row)
-
+    # 將資料轉成 DataFrame
     df = pd.DataFrame(datalist)
     df = df.set_index('created_datetime', inplace = False)
-
+    # 設定每日數量統計
     df2 = df.resample('D')["user_id"].count()
 
+    # print(df2)
+
+    # 製作 data list
     d_list = []
     for d in df2.values:
         d = int(d)
         d_list.append(d)
-    # jsdata = df2.to_json(orient='values')
-    # print(list(df2.index))
+    # 製做 index list
     i_list =[]
-    
     for i in df2.index:
         i = str(i)
         i = i.split(' ')
