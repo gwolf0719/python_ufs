@@ -16,10 +16,14 @@ db = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mong
 # 新註冊人口
 @api_chart.route('/api_chart/new_reg/<channel_id>/<start>/<end>')
 def set_channel(channel_id,start,end):
+    # i.split(' ')
     users = db.ufs.users.find(
         {
-            "created_datetime":{"$gte" : datetime.datetime(2020, 3, 1), "$lt": datetime.datetime(2020, 5, 30)},
-            "channel_id":'1653459101'
+            "created_datetime":{
+                "$gte" : datetime.datetime(int(start.split("-")[0]), int(start.split("-")[1]), int(start.split("-")[2])),
+                "$lt": datetime.datetime(int(end.split("-")[0]), int(end.split("-")[1]), int(end.split("-")[2]))
+            },
+            "channel_id":channel_id
         }
     )
 
