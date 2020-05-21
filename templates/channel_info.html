@@ -40,27 +40,34 @@
             var chart_1 = echarts.init(document.getElementById('chart_1'));
             var chart_2 = echarts.init(document.getElementById('chart_2'));
             var chart_3 = echarts.init(document.getElementById('chart_3'));
+
+            $.getJSON('./api_chart/new_reg/1653459101/2020-03-01/2020-05-01',function(data){
+                var option1 = {
+                    xAxis: {
+                        type: 'category',
+                        data: data.index
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: data.data,
+                        type: 'line',
+                        lineStyle: {
+                            color: '#00b900',
+                        },
+                        itemStyle: {
+                            color: '#00b900',
+                            borderWidth: 5
+                        },
+                    }],
+                };
+                console.log(data.index);
+                console.log(data.data);
+                chart_1.setOption(option1);
+            })
             // 指定图表的配置项和数据
-            var option1 = {
-                xAxis: {
-                    type: 'category',
-                    data: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL' , 'AUG']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    data: [ 2932, 820 , 1820, 3901, 6330, 4934, 5290, 7320],
-                    type: 'line',
-                    lineStyle : {
-                        color : '#00b900',
-                    },
-                    itemStyle : {
-                        color : '#00b900',
-                        borderWidth : 5
-                    },
-                }],
-            };
+            
     
             var option2 = {
                 tooltip: {
@@ -162,7 +169,7 @@
             };
     
             // 使用刚指定的配置项和数据显示图表。
-            chart_1.setOption(option1);
+            
             chart_2.setOption(option2);
             chart_3.setOption(option3);
         })
