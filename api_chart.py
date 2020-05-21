@@ -18,7 +18,7 @@ db = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mong
 def set_channel(channel_id,start,end):
     users = db.ufs.users.find(
         {
-            "created_datetime":{"$gte" : datetime.datetime(2020, 3, 1), "$lt": datetime.datetime(2020, 3, 30)},
+            "created_datetime":{"$gte" : datetime.datetime(2020, 3, 1), "$lt": datetime.datetime(2020, 5, 30)},
             "channel_id":'1653459101'
         }
     )
@@ -34,16 +34,20 @@ def set_channel(channel_id,start,end):
 
     df2 = df.resample('D')["user_id"].count()
 
-    jsdata = df2.to_json(orient='values')
+    d_list = []
+    for d in df2.values:
+        d = int(d)
+        d_list.append(d)
+    # jsdata = df2.to_json(orient='values')
     # print(list(df2.index))
-    d_list =[]
+    i_list =[]
     
-    for d in df2.index:
-        d = str(d)
-        d = d.split(' ')
-        d_list.append(d[0])
+    for i in df2.index:
+        i = str(i)
+        i = i.split(' ')
+        i_list.append(i[0])
 
-    json_data = {'sys_code':"200","sys_msg":"success",'index':d_list,'data':jsdata}
+    json_data = {'sys_code':"200","sys_msg":"success",'index':i_list,'data':d_list}
     return json_data
 
 
