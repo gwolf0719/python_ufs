@@ -45,9 +45,10 @@ def tag_daily(channel_id, start, end):
     # # 取得 tag 清單
     tags = db.ufs.tag_main.find({"channel_id":channel_id})
     datas_tags=[]
-    
+    tag_names = []
     for t in tags:
         datas = []
+        tag_names.append(t["tag_desc"])
         count_list = []
         for i in index_list:
             mask1 = df['tag'] == t['tag']
@@ -64,14 +65,14 @@ def tag_daily(channel_id, start, end):
             "name":t["tag_desc"],
             "type": 'line',
             "stack": '總量',
-            "count_list":count_list
+            "data":count_list
         }
         # print(datas)
         datas_tags.append(datas)
         # series =df.resample('D',index=index)["user_id"].count()
     
-    print(datas_tags)
-    return {"index":index_list,'datas':datas_tags}
+    # print(datas_tags)
+    return {"index":index_list,'datas':datas_tags,'tags':tag_names}
 
 
     
