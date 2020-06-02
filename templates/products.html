@@ -32,7 +32,6 @@
             </thead>
             <tbody>
                 {% for data in datalist %}
-                
                 <tr>
                     <td>{{ data.product_id}}</td>
                     <td>{{ data.product_name}}</td>
@@ -148,9 +147,9 @@
     </div>
 </div>
     
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script> -->
 <script>
     $(function () {
         $('.datalist').DataTable();
