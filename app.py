@@ -10,6 +10,7 @@ import hashlib
 from datetime import timedelta
 import time
 import numpy as np
+
 # line bot 相關元件
 from linebot import LineBotApi
 from linebot.models import *
@@ -175,9 +176,6 @@ def re_url():
                 target_url = request.values['target_url']
                 tags = request.values['tags']
                 
-                
-                
-                
                 # 先將資料編碼，再更新 MD5 雜湊值
                 m = hashlib.md5()
                 m.update(str(time.time()).encode("utf-8"))
@@ -201,9 +199,50 @@ def re_url():
             urls = re_url.get_list(channel_id)
             tags = Tags()
             tag_list = tags.get_tag_list(channel_id)
-            
-
         return render_template("re_url.html",datalist=urls,tags=tag_list)
+    else:
+        return redirect(url_for("login"))
+
+# 分享文章轉址
+@app.route('/re_url/share/', methods=["GET", "POST"])
+def re_url_share():
+    if(manager.chk_now() == True):
+        channel = Channel()
+        tags = Tags()
+        channel_id = session.get("channel_id")
+        channel_info = channel.get_channel(channel_id)
+        datalist = []
+        tag_list = tags.get_tag_list(channel_id)
+        # 判斷有沒有設定 liff_link
+        if 'liff_link' in channel_info:
+            re_url = Re_url()
+            datalist = re_url.get_share_list(channel_id)
+
+            # 如果是表單送出的
+            if request.method == "POST":
+                # 先將資料編碼，再更新 MD5 雜湊值
+                m = hashlib.md5()
+                m.update(str(time.time()).encode("utf-8"))
+                link_id = m.hexdigest()[-6:]
+                
+                datajson = {
+                    "subject" : request.values['subject'],
+                    "target_url" : channel_info['liff_link']+"?from=share&link_id="+link_id,
+                    "tags" : request.values['tags'],
+                    "channel_id" : channel_id,
+                    "url" : channel_info['liff_link']+"?from=redirect&link_id="+link_id,
+                    "link_id" : link_id,
+                    "type" : "share",
+                    "desc" : request.values['desc'].replace('\n','<br />\n')
+                }
+                re_url.add_once(datajson)
+
+            datalist = re_url.get_share_list(channel_id)
+
+        else:
+            flash("本功能需要先設定 liff 路徑才能使用 ","error")
+
+        return render_template("re_url_share.html",datalist=datalist,tag_list=tag_list)
     else:
         return redirect(url_for("login"))
 

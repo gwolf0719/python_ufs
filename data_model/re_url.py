@@ -33,6 +33,18 @@ class Re_url:
             datalist.append(d)
         return list(datalist)
 
+    def get_share_list(self,channel_id):
+        find = {
+            "channel_id":channel_id,
+            "type":"share"
+        }
+        datas = self.col_reurl.find(find)
+        datalist = []
+        for d in datas:
+            del d["_id"]
+            datalist.append(d)
+        return list(datalist)
+
 
     def get_once(self,link_id):
         find = {
