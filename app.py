@@ -305,27 +305,36 @@ def products():
             # 如果是表單送出
             if request.method == "POST":
                 product_id = request.values['product_id']
-                # 上傳檔案
-                file_name  = product_id+'.jpg'
-                product_file = request.files['product_img']
-                product_file.save(os.path.join('./static/product', file_name));
-                product_img = request.url_root+'static/product/'+file_name;
+
+                
 
                 datajson = {
                     "product_id": product_id,
                     "category_id":request.values['category_id'],
                     "product_name": request.values['product_name'],
                     "need_points":request.values['need_points'],
-                    "total_qty":request.values['qty'],
-                    "last_qty":request.values['qty'],
+                    "total_qty":request.values['total_qty'],
+                    "last_qty":request.values['total_qty'],
                     "date_sale":request.values['date_sale'],
                     "date_close":request.values['date_close'],
                     "date_send":request.values['date_send'],
-                    "channel_id":channel_id,
-                    "product_img":product_img
+                    "channel_id":channel_id
                 }
-                product.add_once(datajson)
-                flash("商品設定完成 ","success")
+                # 上傳檔案
+                if 'product_img' in request.files:
+                    file_name  = product_id+'.jpg'
+                    product_file = request.files['product_img']
+                    product_file.save(os.path.join('./static/product', file_name))
+                    product_img = request.url_root+'static/product/'+file_name
+                    datajson['product_img'] = product_img
+
+                # 判斷是新增還是編輯
+                if product.chk_once(channel_id,product_id) == True:
+                    product.update_once(channel_id,product_id,datajson)
+                    flash("商品設定完成 ","success")
+                else:
+                    product.add_once(datajson)
+                    flash("商品新增完成 ","success")
 
             datalist = product.get_list(channel_id)
             product_categories_list = product.product_categories_list(channel_id)

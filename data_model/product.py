@@ -22,7 +22,16 @@ class Product:
 
     
     def add_once(self,datajson):
+        datajson['update_datetime']= datetime.datetime.now()
         self.col_product.insert_one(datajson)
+        return True
+    def update_once(self,channel_id,product_id,datajson):
+        find = {
+            "product_id":product_id,
+            "channel_id":channel_id,
+        }
+        datajson["update_datetime"] =datetime.datetime.now()
+        self.col_product.update_one(find,{"$set":datajson})
         return True
 
     def chk_once(self,channel_id,product_id):
@@ -47,8 +56,10 @@ class Product:
         if category_id != "":
             find["category_id"] = category_id
         datalist = []
-        for d in self.col_product.find(find):
+        for d in self.col_product.find(find).sort('update_datetime',-1):
             del d["_id"]
+            if 'update_datetime' in d:
+                del d["update_datetime"]
             datalist.append(d)
         return list(datalist)
     def product_categories_list(self,channel_id):
