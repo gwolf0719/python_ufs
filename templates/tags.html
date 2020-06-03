@@ -1,134 +1,75 @@
 {% extends 'layout.html'%}
+
 {% block title %}
 <h2>標籤管理</h2>
-<a href="" class="btn btn-primary" data-toggle="modal" data-target="#tagsModal">
+<a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     <i class="material-icons">add</i>
-    新增
+    新增標籤
 </a>
 {% endblock title%}
-
 {% block content %}
-<!-- <h3>
-    取得<span class="badge badge-pill badge-outline-primary ml-1 mr-1">2019新光登高賽</span>Tag的會員人數趨勢：
-</h3>
-<div class="text-right mb-3">
-    <form>
-        <div class="form-check form-check-inline">
-            <input type="date" class="form-control" value="2020-01-25">
-        </div>
-        <div class="form-check form-check-inline">
-            至
-        </div>
-        <div class="form-check form-check-inline mr-0">
-            <input type="date" class="form-control" value="2020-02-25">
-        </div>
-    </form>
-</div>
-<div class="card mb-5">
-    <div class="chart_area" id="chart_1" style="width: 100%;height:400px;"></div>
-</div>
-<div class="tagArea d-none">
-    <div class="row mb-3">
-        <div class="col-6">
-            <h3>Tags列表</h3>
-        </div>
-        <div class="col-6">
-            <form class="form-inline my-2 my-lg-0 float-right">
-                <input class="form-control mr-sm-2 form-control-md" type="search" placeholder="搜尋tag"
-                    aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0 btn-md" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-    <div class="taglist row">
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">2019新光登高賽</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">2020Q1</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">2020Q2</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">2020Q3</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">2020Q4</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">旅平險用戶</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">機車族</a></div>
-        <div class="col-2 text-center mb-2"><a href="" class="card text-secondary">長照險用戶</a></div>
-    </div>
-</div> -->
-
-
+<!-- <form action="" class="form-inline" id="date_form">
+    <input type="date" name="" id="date_select" value="" class="form-control mr-2">
+    <button class="btn btn-success" type="submit">選擇</button>
+</form> -->
+<table class="table table-border table-hover mt-4">
+    <tr>
+        <th>標籤標題</th>
+        <th>標籤</th>
+        <th></th>
+    </tr>
+    {% for data in datalist %}
+    <tr>
+        <td>{{ data.tag_desc }}</td>
+        <td>{{ data.tag }}</td>
+        <td>
+            <a href="/tags/analysis/{{data.tag}}" class="btn btn-primary btn-sm">詳細報告</a>
+            <!-- <a href="" class="btn btn-primary btn-sm">編輯</a> -->
+        </td>
+    </tr>
+    {% endfor%}
+</table>
 {# 燈箱組件 #}
 <!-- Modal -->
-<div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="tagsModalLabel"
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tagsModalLabel">新增Tag</h5>
+                <h5 class="modal-title" id="exampleModalLabel">新增追縱標籤</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" id="formAddTag" method="post">
+            <form action="" method="post">
                 <div class="modal-body">
                     <div class="tool-list-width">
+
                         <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">Channel ID<span class="text-danger">*</span>
-                            </label>
+                            <label class="col-2 col-form-label" for="">標籤<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="text" id="tag" name="tag" class="form-control"
+                                    placeholder="請輸入" required></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">標籤說明<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="text" id="tag_desc" class="form-control" placeholder="請輸入" required></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">追蹤周期<span class="text-danger">*</span></label>
                             <div class="col-10">
-                                <input type="text" name="channel_id" class="form-control" placeholder="請輸入" required value="{{ session.get('channel_id')}}" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">標籤<span class="text-danger">*</span></label>
-                            <div class="col-10">
-                                <input type="text" name="tag" class="form-control" placeholder="請輸入" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">標籤敘述<span class="text-danger">*</span></label>
-                            <div class="col-10">
-                                <input type="text" name="tag_desc" class="form-control" placeholder="請輸入" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">週期<span class="text-danger">*</span></label>
-                            <div class="col-10"> 
-                                <div class="form-group">
-                                  <select  class="form-control" name="limit_cycle">
-                                    <option value="total">總額</option>
-                                    <option value="year">年</option>
-                                    <option value="month">月</option>
-                                    <option value="week">週</option>
-                                    <option value="day">日</option>
-                                  </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">週期次數<span class="text-danger">*</span></label>
-                            <div class="col-10">
-                                <input type="number" name="limit_qty" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">類型<span class="text-danger">*</span></label>
-                            <div class="col-10"> 
-                                <div class="form-group">
-                                  <select  class="form-control" name="type">
-                                    <option value="read_ranking">閱讀</option>
-                                    <option value="share_ranking">分享</option>
-                                  </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">額外動作<span class="text-danger">*</span></label>
-                            <div class="col-5">
-                                <select id="act_key" name="act_key">
-                                    <option value="" >不進行動作</option>
-                                    <option value="add_user_point" >贈點</option>
+                                <select id="limit_cycle" class="form-control">
+                                    <option value="">請選擇</option>
+                                    <option value="total">全系統</option>
+                                    <option value="year">每年</option>
+                                    <option value="month">每月</option>
+                                    <option value="week">每週</option>
+                                    <option value="day">每天</option>
                                 </select>
                             </div>
-                            <div class="col-5">
-                                <input name="act_value" placeholder="動作內容" class="form-control">
-                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">統計次數<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="number" id="limit_qty" class="form-control" placeholder="請輸入" required></div>
                         </div>
                     </div>
                 </div>
@@ -142,76 +83,59 @@
 </div>
 <script>
     $(function () {
-        $("#formAddTag").on("click","#save",function(){
-            var _oriData = $("#formAddTag").serializeArray();
-            // console.log(_oriData)
-            var _obj = {} //完整表單
-            var _ArrayInside = [];
-            
-            console.log(_obj)
-            // $.ajax({
-            //     url : "./api_sys/set_tag_main",
-            //     data : _obj,
-            //     dataType : "json",
-            //     method : 'post'
-            // }).done(function(data){
-            //     console.log("ok")
-            // })
+        $("body").on("click", "#save", function () {
+            var data_json = JSON.stringify({
+                "channel_id": "{{ channel_id }}",
+                "tag": $("#tag").val(),
+                "tag_desc": $("#tag_desc").val(),
+                "limit_cycle": $("#limit_cycle :selected").val(),
+                "limit_qty": $("#limit_qty").val()
+                })
+            $.ajax({
+                url: "./api_sys/set_tag_main",
+                data: data_json ,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (returnData) {
+                    console.log(returnData);
+                    alert(returnData.sys_msg);
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                }
+            });
         })
-        // $("#formAddTag").submit(function(e){
-        //     e.preventDefault();
-        //     var _oriData = $(this).serializeArray();
-        //     // console.log(_oriData)
-        //     var _obj = {} //完整表單
-        //     var _ArrayInside = [];
-        //     $.each(_oriData,function(k,v){
-        //         var _objInside = {}
-        //         if( v.name == "act_key" || v.name == "act_value"){
-        //             console.log(v.name)
-        //             _objInside[v.name] = v.value;
-        //             _ArrayInside.push(_objInside)
-        //             _obj['act'] = _ArrayInside;
-        //         }else{
-        //             _obj[v.name] = v.value;
-        //         }
-        //     })
-        //     // console.log(_obj)
-        //     $.ajax({
-        //         url : "./api_sys/set_tag_main",
-        //         data : _obj,
-        //         dataType : "json",
-        //         method : 'post'
-        //     }).done(function(data){
-        //         console.log("ok")
-        //     })
-        // })
-        // var chart_1 = echarts.init(document.getElementById('chart_1'));
-        // $("body").on("click", ".openSecond", function () {
-        //     $(this).parents(".first").next(".second").toggleClass("d-none")
-        // })
-        // var option1 = {
-        //     xAxis: {
-        //         type: 'category',
-        //         data: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG']
-        //     },
-        //     yAxis: {
-        //         type: 'value'
-        //     },
-        //     series: [{
-        //         data: [32, 342, 820, 901, 1330, 1934, 2290, 2320],
-        //         type: 'line',
-        //         lineStyle: {
-        //             color: '#00b900',
-        //         },
-        //         itemStyle: {
-        //             color: '#00b900',
-        //             borderWidth: 5
-        //         },
-        //     }],
-        // };
-
-        // chart_1.setOption(option1);
     })
 </script>
 {# 燈箱組建結束#}
+<!-- {{ session.get('channel_id')}} -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <script>
+        // 給後端的日期格式 YYYY-M-D
+        var _nowday = getUrlParam("day");
+        var _today = ''
+        if( _nowday == undefined ){
+            _today = moment().format("YYYY-MM-DD")
+        }else{
+            _today = _nowday
+            _today = moment(_today).format("YYYY-MM-DD")
+        }
+        $("#date_select").val(_today)
+        $("#date_form").submit(function(e){
+            e.preventDefault();
+            var _date1 = $("#date_select").val()
+            var _date = moment(_date1).format("YYYY-M-D")
+            location.href = "tags_daily_count/?day=" + _date
+        })
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+                return unescape(r[2]);
+            return null;
+        }
+    </script>
 {% endblock content %}

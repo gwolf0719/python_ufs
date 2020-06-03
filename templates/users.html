@@ -4,7 +4,7 @@
 {% endblock title%}
 
 {% block content %}
-<table class="table table-hover">
+<table class="table table-hover datalist">
     <thead>
         <tr>
             <th>暱稱</th>
@@ -130,8 +130,11 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
 <script>
     $(function () {
+        $('.datalist').DataTable();
         $("body").on("click", "#save", function () {
             $("form").submit();
         })
@@ -152,4 +155,5 @@
     })
 </script>
 {# 燈箱組建結束#}
+
 {% endblock content %}

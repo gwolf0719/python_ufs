@@ -289,15 +289,15 @@ def tags():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            
-        return render_template("tags.html")
+            tags = Tags()
+            # 取得需要追蹤的 tag 
+            tag_list = tags.get_tag_list(channel_id)
+        return render_template("tags.html",datalist=tag_list,channel_id=channel_id)
     else:
         return redirect(url_for("login"))
 
-    
-# 單日統計
-@app.route("/tags_daily_count/")
-def tags_daily_count():
+@app.route("/tags/analysis/<tag>", methods=["GET", "POST"])
+def tags_analysis(tag):
     if(manager.chk_now() == True):
         manager_id = session.get("manager_id")
         if session.get("channel_id") is None:
@@ -305,28 +305,13 @@ def tags_daily_count():
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            
-            if "day" not in request.values:
-                
-                now = datetime.datetime.now()
-                daily = "{0}-{1}-{2}".format(now.year, now.month, now.day)
-            else:
-                daily = request.values['day']
             tags = Tags()
-            # 取得需要追蹤的 tag 
-            tag_list = tags.get_tag_list(channel_id)
-            datalist = []
-            # 取得單日數量
-            for td in tag_list:
-                datalist.append({
-                    "tag_desc": td['tag_desc'],
-                    "tag":td['tag'],
-                    "count":tags.tags_daily_count(channel_id,td['tag'],daily)
-                })
             
-        return render_template("tags_daily_count.html",datalist=datalist,channel_id=channel_id)
+        return render_template("tags_analysis.html",channel_id=channel_id)
     else:
         return redirect(url_for("login"))
+
+    
 
 
 
