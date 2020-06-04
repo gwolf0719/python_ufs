@@ -306,8 +306,9 @@ def tags_analysis(tag):
         else:
             channel_id = session.get("channel_id")
             tags = Tags()
+            tag_info = tags.get_once(channel_id,tag)
             
-        return render_template("tags_analysis.html",channel_id=channel_id)
+        return render_template("tags_analysis.html",channel_id=channel_id,tag=tag_info)
     else:
         return redirect(url_for("login"))
 
