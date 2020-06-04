@@ -1,6 +1,123 @@
 {% extends 'layout.html'%}
 
 {% block title %}
-<h2>標籤詳細資料</h2>
+<h2>
+    <button type="buttom" onclick="history.back()" class="btn-outline-secondary btn-sm mr-2">
+    <i class="material-icons">keyboard_arrow_left</i></button>標籤詳細資料
+</h2>
 
 {% endblock title%}
+{% block content %}
+<div class="col-12 mb-4">
+    <div class="chart_area_wrapper p-3 card">
+        <h3>標籤趨勢圖</h3>
+        <div class="row justify-content-center mb-2">
+            <div class="col-4">
+                <label for="tagTrading_startDate">開始時間</label>
+                <input type="date" id="tagTrading_startDate" data-type="start" class="form-control member_add_date">
+            </div>
+            <div class="col-4">
+                <label for="tagTrading_endDate">結束時間</label>
+                <input type="date" id="tagTrading_endDate" data-type="end" class="form-control member_add_date">
+            </div>
+            <div class="col-12 text-center mt-2">
+                <button class="btn btn-secondary" id="tagTrading_search">搜尋</button>
+            </div>
+        </div>
+        <div class="chart_area" id="chart_2" style="width: 100%;height:400px;"></div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+<script>
+$(function(){
+    var chart_2 = echarts.init(document.getElementById('chart_2'));
+        $("#tagTrading_startDate").val(_startDate)
+        $("#tagTrading_endDate").val(_endDate)
+        tagTrading_data(_startDate,_endDate)
+        $("#tagTrading_search").click(function(){
+            var _newStart = $("#tagTrading_startDate").val();
+            var _newEnd = $("#tagTrading_endDate").val();
+            tagTrading_data(_newStart,_newEnd)
+        })
+        function tagTrading_data(start,end){
+            $.getJSON('./api_chart/tag_daily_once/{{ tag.tag }}/{{ data.channel_id }}/' + start + '/' + end , function(data){
+                // console.log(start,end)
+                // console.log(data)
+                var _tagArr = [];
+                $.each(data.datas,function(k,v){
+                    _tagArr.push(v.name)
+                })
+                console.log(_tagArr)
+                var option2 = {
+                // title: {
+                //     text: '折线图堆叠'
+                // },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        // data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+                        data : _tagArr
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        // data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                        data : data.index
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: data.datas
+                    // [
+                        
+                    // {
+                    //     name: '邮件营销',
+                    //     type: 'line',
+                    //     stack: '总量',
+                    //     data: [120, 132, 101, 134, 90, 230, 210]
+                    // },
+                    // {
+                    //     name: '联盟广告',
+                    //     type: 'line',
+                    //     stack: '总量',
+                    //     data: [220, 182, 191, 234, 290, 330, 310]
+                    // },
+                    // {
+                    //     name: '视频广告',
+                    //     type: 'line',
+                    //     stack: '总量',
+                    //     data: [150, 232, 201, 154, 190, 330, 410]
+                    // },
+                    // {
+                    //     name: '直接访问',
+                    //     type: 'line',
+                    //     stack: '总量',
+                    //     data: [320, 332, 301, 334, 390, 330, 320]
+                    // },
+                    // {
+                    //     name: '搜索引擎',
+                    //     type: 'line',
+                    //     stack: '总量',
+                    //     data: [820, 932, 901, 934, 1290, 1330, 1320]
+                    // }
+                // ]
+                };
+                chart_2.setOption(option2);
+            })
+        }
+})
+</script>
+{% endblock content %}
