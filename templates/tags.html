@@ -20,7 +20,7 @@
     </tr>
     {% for data in datalist %}
     <tr>
-        <td>{{ data.tag_desc }}</td>
+        <td><span class="badge badge-pill badge-outline-primary">{{ data.tag_desc }}</span></td>
         <td>{{ data.tag }}</td>
         <td>
             <a href="/tags/analysis/{{data.tag}}" class="btn btn-primary btn-sm">詳細報告</a>

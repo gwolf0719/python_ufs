@@ -3,7 +3,7 @@
 {% block title %}
 <h2>
     <button type="buttom" onclick="history.back()" class="btn-outline-secondary btn-sm mr-2">
-    <i class="material-icons">keyboard_arrow_left</i></button>標籤詳細資料
+    <i class="material-icons">keyboard_arrow_left</i></button><span class="badge badge-pill badge-outline-primary mr-1">{{ tag.tag_desc }}</span>詳細資料
 </h2>
 
 {% endblock title%}
@@ -31,6 +31,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
 <script>
 $(function(){
+    var _startDate = moment().subtract(1, 'month').format("YYYY-MM-DD");
+    var _endDate = moment().format("YYYY-MM-DD");
     var chart_2 = echarts.init(document.getElementById('chart_2'));
         $("#tagTrading_startDate").val(_startDate)
         $("#tagTrading_endDate").val(_endDate)
@@ -41,7 +43,7 @@ $(function(){
             tagTrading_data(_newStart,_newEnd)
         })
         function tagTrading_data(start,end){
-            $.getJSON('./api_chart/tag_daily_once/{{ tag.tag }}/{{ data.channel_id }}/' + start + '/' + end , function(data){
+            $.getJSON('./api_chart/tag_daily_once/{{ tag.tag }}/{{ channel_id }}/' + start + '/' + end , function(data){
                 // console.log(start,end)
                 // console.log(data)
                 var _tagArr = [];
@@ -50,11 +52,9 @@ $(function(){
                 })
                 console.log(_tagArr)
                 var option2 = {
-                // title: {
-                //     text: '折线图堆叠'
-                // },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        formatter: "{b}<br>{c}人"
                     },
                     legend: {
                         // data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
@@ -81,39 +81,6 @@ $(function(){
                         type: 'value'
                     },
                     series: data.datas
-                    // [
-                        
-                    // {
-                    //     name: '邮件营销',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [120, 132, 101, 134, 90, 230, 210]
-                    // },
-                    // {
-                    //     name: '联盟广告',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [220, 182, 191, 234, 290, 330, 310]
-                    // },
-                    // {
-                    //     name: '视频广告',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [150, 232, 201, 154, 190, 330, 410]
-                    // },
-                    // {
-                    //     name: '直接访问',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [320, 332, 301, 334, 390, 330, 320]
-                    // },
-                    // {
-                    //     name: '搜索引擎',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [820, 932, 901, 934, 1290, 1330, 1320]
-                    // }
-                // ]
                 };
                 chart_2.setOption(option2);
             })
