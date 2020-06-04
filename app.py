@@ -491,6 +491,7 @@ def webhook(channel_id):
                     # 判斷腳本
                     if msg_data != False:
                         msg_id = msg_data['msg_id']
+                        print(msg_id)
                         msg.reply_message(channel_id,msg_id,replyToken,user_id)
                     else:
                         # 判斷自動回應時間
