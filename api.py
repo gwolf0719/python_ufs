@@ -395,6 +395,7 @@ def products(channel_id):
     }
     return json_data
 # # 預購
+# 2020-06-05 增加如果type= qr_ticket 就直接派發
 @api.route("/api/v0/product_preorder/<channel_id>/<product_id>/<user_id>/<qty>")
 def product_preorder(channel_id, product_id, user_id,qty):
     # 確認 channel_id
@@ -424,7 +425,20 @@ def product_preorder(channel_id, product_id, user_id,qty):
         return json_data
     # 預購
     order = Order()
-    order.applying_preorder(channel_id,product_id,user_id,qty)
+    order_id = order.applying_preorder(channel_id,product_id,user_id,qty)
+
+    # 如果type= qr_ticket 就直接派發
+    if product['type'] == 'qr_ticket':
+        # 先將資料編碼，再更新 MD5 雜湊值
+        m = hashlib.md5()
+        m.update(str(time.time()).encode("utf-8"))
+        link_id = m.hexdigest()[-6:]
+
+        exchange_link = 'https://crm.userflow.media/chk_qr_ticket/'+m.hexdigest()[-6:]
+        exchange_code = hashlib.md5().hexdigest()[-4:]
+        order.pass_one(channel_id,order_id,{"exchange_link":exchange_link,"exchange_code":exchange_code,"status":"pass"})
+
+
     json_data = {
         "sys_code":"200",
         "sys_msg": "Success"

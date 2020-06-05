@@ -66,6 +66,7 @@ class Order:
 
 
     # 申請預購
+    
     def applying_preorder(self,channel_id,product_id,user_id,qty):
         product = Product()
         p_data = product.get_once(channel_id,product_id)
@@ -95,8 +96,8 @@ class Order:
         # 寫入 log
         self.col_order_log.insert_one(pre_order)
         # 扣除點數
-        user.deduct_point(user_id,channel_id,point,"預購 {0} ".format(p_data['product_name']));
-        return True
+        user.deduct_point(user_id,channel_id,point,"預購 {0} ，訂單編號：{1}".format(p_data['product_name'],pre_order['order_id']));
+        return pre_order['order_id']
     # 取得訂單資料
     def get_once(self,channel_id,order_id):
         find = {
