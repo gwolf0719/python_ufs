@@ -471,7 +471,7 @@ def get_order_once(channel_id,order_id):
         return json_data
     
     order = Order()
-    data = order.get_once(channel_id, usorder_ider_id)
+    data = order.get_once(channel_id, order_id)
     json_data = {
         "sys_code":"200",
         "sys_msg": "Success",
