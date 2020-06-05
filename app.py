@@ -401,7 +401,10 @@ def order_info(product_id):
     else:
         return redirect(url_for("login"))
 
-
+# chk_qr_ticket
+@app.route("/chk_qr_ticket/<channel_id>/<order_id>/<exchange_code>", methods=["GET", "POST"])
+def chk_qr_ticket(channel_id,order_id,exchange_code):
+    return ''
 
 # 腳本訓息
 @app.route("/scripts", methods=["GET", "POST"])
