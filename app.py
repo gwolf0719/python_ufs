@@ -475,10 +475,10 @@ def webhook(channel_id):
             # 開始追縱歡迎
             if event['type'] == 'follow':
                 print('follow');
-                print(channel_data);
-                if 'welcome' in channel_data:
+                # print(channel_data);
+                if 'welcome_msg' in channel_data:
                     print('welcome');
-                    rebot_text = channel_data['welcome']
+                    rebot_text = channel_data['welcome_msg']
                     line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
                     chat_data['text'] = event['message']['text']
                     chat_data['type'] = event['message']['type']
