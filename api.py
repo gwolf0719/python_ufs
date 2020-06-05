@@ -431,8 +431,7 @@ def product_preorder(channel_id, product_id, user_id,qty):
     if p_data['type'] == 'qr_ticket':
         # 先將資料編碼，再更新 MD5 雜湊值
         
-
-        exchange_link = 'https://crm.userflow.media/chk_qr_ticket/'+channel_id+'/'+order_id+"/"
+        exchange_link = '/chk_qr_ticket/'+channel_id+'/'+order_id+"/"
         exchange_code = hashlib.md5().hexdigest()[-4:]
         order.pass_one(channel_id,order_id,{"exchange_link":exchange_link,"exchange_code":exchange_code,"status":"pass"})
 
@@ -463,6 +462,22 @@ def get_user_preorder(channel_id,user_id):
     }
     return json_data
 
+# 取得單一訂單
+@api.route('/api/v0/get_order_once/<channel_id>/<order_id>')
+def get_user_preorder(channel_id,order_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    
+    order = Order()
+    data = order.get_once(channel_id, usorder_ider_id)
+    json_data = {
+        "sys_code":"200",
+        "sys_msg": "Success",
+        "data":data
+    }
+    return json_data
 # # 領取
 @api.route('/api/v0/order_2_got/<channel_id>/<user_id>/<order_id>')
 def order_2_got(channel_id,user_id,order_id):

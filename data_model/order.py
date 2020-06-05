@@ -88,7 +88,8 @@ class Order:
             "datetime":date_time,
             "points":point,
             "status":"applying",
-            "user_id":user_id
+            "user_id":user_id,
+            "type":p_data['type'],
         }
         self.col_order.insert_one(pre_order)
         # 扣除數量
