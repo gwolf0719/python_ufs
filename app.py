@@ -472,7 +472,16 @@ def webhook(channel_id):
             line_bot_api = LineBotApi(channel_access_token)
             user_data = user.get_once(user_id,channel_id)
             
-            
+            # 開始追縱歡迎
+            if event['type'] == 'follow':
+                if 'welcome' in channel_data:
+                    rebot_text = channel_data['welcome']
+                    line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
+                    chat_data['text'] = event['message']['text']
+                    chat_data['type'] = event['message']['type']
+                    chat.add_chat(chat_data)
+
+
 
             if "message" in event:
                 # 整理聊天室需要的基本資料格式
