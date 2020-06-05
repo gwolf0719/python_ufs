@@ -434,7 +434,7 @@ def product_preorder(channel_id, product_id, user_id,qty):
         m.update(str(time.time()).encode("utf-8"))
         link_id = m.hexdigest()[-6:]
 
-        exchange_link = 'https://crm.userflow.media/chk_qr_ticket/'+m.hexdigest()[-6:]
+        exchange_link = 'https://crm.userflow.media/chk_qr_ticket/'+m.hexdigest()[-6:]+"/"
         exchange_code = hashlib.md5().hexdigest()[-4:]
         order.pass_one(channel_id,order_id,{"exchange_link":exchange_link,"exchange_code":exchange_code,"status":"pass"})
 
