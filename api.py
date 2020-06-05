@@ -464,7 +464,7 @@ def get_user_preorder(channel_id,user_id):
 
 # 取得單一訂單
 @api.route('/api/v0/get_order_once/<channel_id>/<order_id>')
-def get_user_preorder(channel_id,order_id):
+def get_order_once(channel_id,order_id):
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
