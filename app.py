@@ -331,8 +331,6 @@ def products():
             if request.method == "POST":
                 product_id = request.values['product_id']
 
-                
-
                 datajson = {
                     "product_id": product_id,
                     "category_id":request.values['category_id'],
@@ -343,7 +341,8 @@ def products():
                     "date_sale":request.values['date_sale'],
                     "date_close":request.values['date_close'],
                     "date_send":request.values['date_send'],
-                    "channel_id":channel_id
+                    "channel_id":channel_id,
+                    "type":request.values['type']
                 }
                 # 上傳檔案
                 if 'product_img' in request.files:

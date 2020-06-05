@@ -94,6 +94,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">兌換型式<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <select name="type">
+                                    <option value="link_code">連結＋密碼</option>
+                                    <option value="qr_ticket">QRCode 驗證</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-2 col-form-label" for="">商品名稱<span class="text-danger">*</span></label>
                             <div class="col-10">
                                 <input type="text" name="product_name" class="form-control" placeholder="" required>
@@ -182,6 +191,7 @@
             }else{
                 // 編輯，把資料塞進form中
                 var _putData = eval('[' + _data + ']'); // string to obj
+                console.log(_putData)
                 $("form").find("input").each(function(){
                     var _name = $(this).attr("name");
                     if( _name == undefined || _name == 'product_img' ){
@@ -191,6 +201,11 @@
                         console.log(_name)
                         $(this).val(_val)
                     }
+                })
+                $("form").find("select").each(function () {
+                    var _name = $(this).attr("name");
+                    var _val = _putData[0][_name]
+                    $(this).val(_val)
                 })
             }
             var modal = $(this)
