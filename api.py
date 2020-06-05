@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template,session,redirect,url_for,flash,Blueprint
 import os
 import json
-
+import hashlib
 # Model
 from data_model.manager import *
 from data_model.channel import *
@@ -428,10 +428,9 @@ def product_preorder(channel_id, product_id, user_id,qty):
     order_id = order.applying_preorder(channel_id,product_id,user_id,qty)
 
     # 如果type= qr_ticket 就直接派發
-    if product['type'] == 'qr_ticket':
+    if p_data['type'] == 'qr_ticket':
         # 先將資料編碼，再更新 MD5 雜湊值
         
-        link_id = m.hexdigest()[-6:]
 
         exchange_link = 'https://crm.userflow.media/chk_qr_ticket/'+channel_id+'/'+order_id+"/"
         exchange_code = hashlib.md5().hexdigest()[-4:]
