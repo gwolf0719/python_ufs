@@ -475,6 +475,7 @@ def webhook(channel_id):
             # 開始追縱歡迎
             if event['type'] == 'follow':
                 print('follow');
+                print(channel_data);
                 if 'welcome' in channel_data:
                     print('welcome');
                     rebot_text = channel_data['welcome']
