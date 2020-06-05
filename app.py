@@ -480,9 +480,9 @@ def webhook(channel_id):
                     print('welcome');
                     rebot_text = channel_data['welcome_msg']
                     line_bot_api.reply_message(replyToken, TextSendMessage(text=rebot_text))
-                    chat_data['text'] = event['message']['text']
-                    chat_data['type'] = event['message']['type']
-                    chat.add_chat(chat_data)
+                    # chat_data['text'] = event['message']['text']
+                    # chat_data['type'] = event['message']['type']
+                    # chat.add_chat(chat_data)
 
 
 
