@@ -71,6 +71,11 @@
                             <label class="col-2 col-form-label" for="">統計次數<span class="text-danger"> *</span></label>
                             <div class="col-10"> <input type="number" id="limit_qty" class="form-control" placeholder="請輸入" required></div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">自動配點<span class="text-danger"> *</span></label>
+                            <div class="col-10"> <input type="number" id="user_add_point_value" class="form-control" value="0"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -89,7 +94,8 @@
                 "tag": $("#tag").val(),
                 "tag_desc": $("#tag_desc").val(),
                 "limit_cycle": $("#limit_cycle :selected").val(),
-                "limit_qty": $("#limit_qty").val()
+                "limit_qty": $("#limit_qty").val(),
+                "user_add_point_value":$("#user_add_point_value").val()
                 })
             $.ajax({
                 url: "./api_sys/set_tag_main",

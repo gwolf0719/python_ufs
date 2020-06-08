@@ -66,7 +66,7 @@ class Order:
 
 
     # 申請預購
-    
+    # 2020-06-08 修改為直接扣庫存
     def applying_preorder(self,channel_id,product_id,user_id,qty):
         product = Product()
         p_data = product.get_once(channel_id,product_id)

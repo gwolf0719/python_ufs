@@ -219,6 +219,15 @@ def set_tag_main():
     jsondata = request.get_json()
     jsondata['channel_id']  = str(jsondata['channel_id'])
     jsondata['limit_qty']  = int(jsondata['limit_qty'])
+    
+    # 新增標籤增加配點功能 ＠2020-06-08
+    if jsondata['user_add_point_value'] != "0" :
+        jsondata['act'] = []
+        jsondata['act'].append({
+            'act_key':"add_user_point",
+            "act_value":jsondata['user_add_point_value']
+        })
+    del jsondata['user_add_point_value']
     tags = Tags()
     if tags.chk_once(jsondata['channel_id'],jsondata['tag']) == True:
         return  {'sys_code':"500","sys_msg":"重複設定"}

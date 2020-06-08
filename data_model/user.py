@@ -122,7 +122,6 @@ class User:
                 if "act" in tag_data:
                     for a in tag_data["act"]:
                         if a["act_key"] == "add_user_point":
-
                             User().add_point(user_id,channel_id,int(a["act_value"]),tag_data["tag_desc"])
 
                 tags.set_tag_log(channel_id, user_id,tag_name)

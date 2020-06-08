@@ -501,7 +501,6 @@ def order_2_got(channel_id,user_id,order_id):
         json_data = {'sys_code':"200","sys_msg":"Success"}
         return json_data
     else :
-        
         json_data = {'sys_code':"500","sys_msg":"status fail"}
         json_data['info'] = order_info
         return json_data
