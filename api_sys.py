@@ -219,11 +219,17 @@ def order_cancel():
         return json_data
 
     order_info = order.get_once(channel_id,order_id)
-        
-    order.cancel_order(channel_id,order_id)
-    # 重新計算庫存量
-    order.rechk_last_product(channel_id)
-    json_data = {'sys_code':"200","sys_msg":"Success"}
+    
+    if(order_info['status'] != 'cancel'):
+        order.cancel_order(channel_id,order_id)
+        # 重新計算庫存量
+        order.rechk_last_product(channel_id)
+        # 歸還點數
+        user = User()
+        user.add_point(order_info['user_id'],channel_id,order_info['points'],'訂單取消歸還點數，訂單編號：'+order_id)
+        json_data = {'sys_code':"200","sys_msg":"Success"}
+    else:
+        json_data = {'sys_code':"500","sys_msg":"訂單已取消，不需再操作"}
     
     json_data['info'] = order_info;
     return json_data
