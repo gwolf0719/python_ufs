@@ -12,7 +12,7 @@ from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
 from data_model.tags import *
-from data_model.product import *
+# from data_model.product import *
 
 
 class Order:
@@ -20,6 +20,7 @@ class Order:
         self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
         self.col_order = self.client.ufs.order
         self.col_order_log = self.client.ufs.order_log
+        self.col_product = self.client.ufs.product
     
     def get_user_preorder(self,channel_id,user_id):
         find = {
@@ -33,7 +34,57 @@ class Order:
         return list(datalist)
 
 
+    def cancel_order(self,channel_id,order_id):
+        find = {
+            "channel_id":channel_id,
+            "order_id":order_id
+        }
+        now = datetime.datetime.now();
+        date_time = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
+        data = {
+            'cancel_datetime':date_time,
+            'status':"cancel"
+        }
+        
+        self.col_order.update_one(find,{"$set":data})
+    # 重新計算剩餘量
+    def rechk_last_product(self,channel_id):
+        # 找出所有未取消的單
+        pipeline = [
+            {
+                "$match":{"channel_id":channel_id,"status":{"$ne":"cancel"}}
+            },{
+                "$group":{
+                    "_id":"$product_id", "total":{"$sum":1}
+                }
+            }]
+        datalist = []
+        for data in self.col_order.aggregate(pipeline):
+            f = {
+                "channel_id":channel_id,
+                "product_id":data['_id']
+            }
+            p = self.col_product.find_one(f)
+            # 計算剩餘數量
+            last_qty  = int(p['total_qty']) - int(data['total'])
+            update_data = {
+                "last_qty":last_qty
+            }
+            self.col_product.update_one(f,{"$set":update_data})
+
     # 各種狀態訂單列表
+    # 訂單總表
+    def order_list(self,channel_id):
+        find = {
+            "channel_id":channel_id
+        }
+        
+        datalist = []
+        for data in self.col_order.find(find).sort("datetime",-1):
+            del data["_id"]
+            datalist.append(data)
+        return list(datalist)
+
     # applying pass got fail
     def order_list_by_status(self,channel_id,status):
         find = {
@@ -46,6 +97,8 @@ class Order:
             del data["_id"]
             datalist.append(data)
         return list(datalist)
+    
+    # 針對商品篩選訂單
     def order_list_by_product(self,channel_id,product_id,status=""):
         user = User()
         find = {
@@ -92,8 +145,7 @@ class Order:
             "type":p_data['type'],
         }
         self.col_order.insert_one(pre_order)
-        # 扣除數量
-        product.deduct_qty(channel_id,product_id,qty)
+        
         # 寫入 log
         self.col_order_log.insert_one(pre_order)
         # 扣除點數

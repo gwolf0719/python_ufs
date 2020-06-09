@@ -203,6 +203,31 @@ def order_exchange():
     json_data['info'] = order_info;
     return json_data
 
+# 取消訂單
+@api_sys.route('/api_sys/order_cancel', methods=["GET", "POST"])
+def order_cancel():
+    channel = Channel()
+    order = Order()
+    channel_id = request.values['channel_id']
+    order_id = request.values['order_id']
+    
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    if order.chk_once(channel_id,order_id) == False:
+        json_data = {'sys_code':"404","sys_msg":"order not found"}
+        return json_data
+
+    order_info = order.get_once(channel_id,order_id)
+        
+    order.cancel_order(channel_id,order_id)
+    # 重新計算庫存量
+    order.rechk_last_product(channel_id)
+    json_data = {'sys_code':"200","sys_msg":"Success"}
+    
+    json_data['info'] = order_info;
+    return json_data
+
 
 
 #============================================================================

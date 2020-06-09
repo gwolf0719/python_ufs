@@ -426,6 +426,8 @@ def product_preorder(channel_id, product_id, user_id,qty):
     # 預購
     order = Order()
     order_id = order.applying_preorder(channel_id,product_id,user_id,qty)
+    # 重新計算庫存量
+    order.rechk_last_product(channel_id)
 
     # 如果type= qr_ticket 就直接派發
     if p_data['type'] == 'qr_ticket':

@@ -1,0 +1,57 @@
+{% extends 'layout.html'%}
+{% block title %}
+<h2>訂單完整清單</h2> <a href="./orders" class="badge badge-pill badge-outline-primary mr-1">商品訂單管理</a>
+{% endblock title%}
+
+{% block content %}
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active pt-3" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>商品名稱</th>
+                    <th>申請兌換時間</th>
+                    <th>兌換點數</th>
+                    <th>狀態</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in datalist %}
+                <tr>
+                    <td>{{ data.product_name}}</td>
+                    <td>{{ data.datetime}}</td>
+                    <td>{{ data.points}}</td>
+                    <td>{{ data.status}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm cancel_order" order_id="{{data.order_id}}">取消訂單</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(function () {
+       
+        $("body").on("click",'.cancel_order',function(){
+            if(confirm('Are you sure you want to cancel')){
+                $.post('./api_sys/order_cancel',{
+                    "channel_id":"{{ channel_id }}",
+                    "order_id":$(this).attr("order_id")
+                },function(data){
+                    console.log(data)
+                    alert(data.sys_msg)
+                    location.reload()
+                },'json')
+            }
+        })
+
+
+    })
+</script>
+{# 燈箱組建結束#}
+{% endblock content %}

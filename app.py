@@ -388,6 +388,20 @@ def orders():
             return render_template("orders.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
+@app.route("/order_list", methods=["GET", "POST"])
+def order_list():
+    if(manager.chk_now() == True):
+        manager_id = session.get("manager_id")
+        if session.get("channel_id") is None:
+            flash("請先選取要設定的 Channel ","danger")
+            return redirect(url_for("channel"))
+        else:
+            channel_id = session.get("channel_id")
+            order = Order()
+            datalist = order.order_list(channel_id)
+            return render_template("order_list.html",datalist=datalist,channel_id=channel_id)
+    else:
+        return redirect(url_for("login"))
 
 @app.route("/order_info/<product_id>", methods=["GET", "POST"])
 def order_info(product_id):
