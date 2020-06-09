@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td>庫存</td>
-                    <td><span class="text-danger">{{product.last_qty}}</span>杯</td>
+                    <td><span class="text-danger">{{product.last_qty}}</span></td>
                 </tr>
                 <tr>
                     <td>時間</td>
@@ -40,6 +40,7 @@
             <th>兌換者</th>
             <th>進行派發</th>
             <th>申請日</th>
+            <th>狀態</th>
             <!-- <th>對使用者進行</th> -->
         </tr>
     </thead>
@@ -65,6 +66,7 @@
                 </form>
             </td>
             <td>{{data.datetime}}</td>
+            <td>{{data.status}}</td>
             <!-- <td> -->
                 <!-- <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
                 <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button> -->

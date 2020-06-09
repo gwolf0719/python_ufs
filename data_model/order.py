@@ -12,7 +12,7 @@ from data_model.channel import *
 from data_model.webhook import *
 from data_model.user import *
 from data_model.tags import *
-# from data_model.product import *
+from data_model.product import *
 
 
 class Order:
