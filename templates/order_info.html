@@ -7,25 +7,25 @@
 <div class="card mb-4">
     <div class="row p-3">
         
-        <div class="col-1"><img class="img-fluid rounded" src="{{datalist[0].product_img}}" alt=""></div>
+        <div class="col-1"><img class="img-fluid rounded" src="{{product.product_img}}" alt=""></div>
         <div class="col-11">
-            <h3>{{datalist[0].product_name}}</h3>
+            <h3>{{product.product_name}}</h3>
             <hr>
             <table>
                 <tr>
                     <td>兌換點數</td>
-                    <td><span class="text-danger">{{datalist[0].points}}</span>點</td>
+                    <td><span class="text-danger">{{product.points}}</span>點</td>
                 </tr>
-                <!-- <tr>
+                <tr>
                     <td>庫存</td>
-                    <td><span class="text-danger">15</span>杯</td>
-                </tr> -->
+                    <td><span class="text-danger">{{product.last_qty}}</span>杯</td>
+                </tr>
                 <tr>
                     <td>時間</td>
                     <td>
-                        <p class="m-0"><small>上架時間：{{datalist[0].date_sale}}</small></p>
-                        <p class="m-0"><small>截止時間：{{datalist[0].date_close}}</small></p>
-                        <p class="m-0"><small>派發時間：{{datalist[0].date_send}}</small></p>
+                        <p class="m-0"><small>上架時間：{{product.date_sale}}</small></p>
+                        <p class="m-0"><small>截止時間：{{product.date_close}}</small></p>
+                        <p class="m-0"><small>派發時間：{{product.date_send}}</small></p>
                     </td>
                 </tr>
             </table>

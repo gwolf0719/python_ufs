@@ -34,6 +34,7 @@ class User:
         }
         userdata = self.col_user.find_one(find)
         del userdata["_id"]
+        
         return userdata
     #確認帳號存在
     def chk_once(self, user_id, channel_id):

@@ -75,13 +75,15 @@ class Order:
     # 各種狀態訂單列表
     # 訂單總表
     def order_list(self,channel_id):
+        user = User()
         find = {
             "channel_id":channel_id
         }
-        
         datalist = []
         for data in self.col_order.find(find).sort("datetime",-1):
             del data["_id"]
+            userdata = user.get_once(data['user_id'],channel_id)
+            data['name'] = userdata['name']
             datalist.append(data)
         return list(datalist)
 

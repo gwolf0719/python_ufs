@@ -413,8 +413,10 @@ def order_info(product_id):
         else:
             channel_id = session.get("channel_id")
             order = Order()
+            product = Product()
+            pdata = product.get_once(channel_id, product_id)
             datalist = order.order_list_by_product(channel_id,product_id)
-            return render_template("order_info.html",datalist=datalist)
+            return render_template("order_info.html",datalist=datalist,product=pdata)
     else:
         return redirect(url_for("login"))
 
