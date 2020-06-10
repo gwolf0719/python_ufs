@@ -233,8 +233,9 @@ def re_url_share():
                     "url" : channel_info['liff_link']+"?from=redirect&link_id="+link_id,
                     "link_id" : link_id,
                     "type" : "share",
-                    "desc" : request.values['desc'].replace('\n','<br />\n')
+                    "desc" : request.values['desc'].replace('\n','\n').replace('\r','')
                 }
+                # print(datajson)
                 re_url.add_once(datajson)
 
             datalist = re_url.get_share_list(channel_id)
