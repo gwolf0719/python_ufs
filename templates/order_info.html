@@ -66,7 +66,24 @@
                 </form>
             </td>
             <td>{{data.datetime}}</td>
-            <td>{{data.status}}</td>
+            <td>
+                {% if data.status == 'applying' %}
+                    審核中
+                {% else %}
+                {% endif %}
+                {% if data.status == 'got' %}
+                    使用者已點領取
+                {% else %}
+                {% endif %}
+                {% if data.status == 'pass' %}
+                    已派發
+                {% else %}
+                {% endif %}
+                {% if data.status == 'cancel' %}
+                    取消
+                {% else %}
+                {% endif %}
+            </td>
             <!-- <td> -->
                 <!-- <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#msgModal">傳訊</button>
                 <button class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#blockModal">黑名單</button> -->
