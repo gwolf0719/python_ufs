@@ -26,7 +26,7 @@ class Re_url:
         find = {
             "channel_id":channel_id
         }
-        datas = self.col_reurl.find(find)
+        datas = self.col_reurl.find(find).sort('_id',-1)
         datalist = []
         for d in datas:
             del d["_id"]
@@ -38,7 +38,7 @@ class Re_url:
             "channel_id":channel_id,
             "type":"share"
         }
-        datas = self.col_reurl.find(find)
+        datas = self.col_reurl.find(find).sort('_id',-1)
         datalist = []
         for d in datas:
             del d["_id"]

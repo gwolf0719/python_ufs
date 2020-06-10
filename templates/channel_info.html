@@ -72,7 +72,7 @@
         var chart_2 = echarts.init(document.getElementById('chart_2'));
         // var chart_3 = echarts.init(document.getElementById('chart_3'));
         var _startDate = moment().subtract(1, 'month').format("YYYY-MM-DD");
-        var _endDate = moment().format("YYYY-MM-DD");
+        var _endDate = moment().subtract(-1, 'day').format("YYYY-MM-DD");
 
         $("#memberAdd_startDate").val(_startDate)
         $("#memberAdd_endDate").val(_endDate)
