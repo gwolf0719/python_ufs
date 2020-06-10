@@ -45,7 +45,7 @@
                         <p class="m-0"><small>派發時間：{{data.date_send}}</small></p>
                     </td>
                     <td>
-                        <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-idx="{{loop.index}}" data-all="{{data}}" data-target="#productModal">編輯</a>
+                        <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-idx="{{loop.index}}" data-all="{{data}}" data-target="#editproductModal">編輯</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -62,12 +62,12 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="productModalLabel">新增、編輯商品</h5>
+                <h5 class="modal-title" id="productModalLabel">新增商品</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="" method="post" enctype="multipart/form-data" id="new-form">
                 <div class="modal-body">
                     <div class="tool-list-width">
 
@@ -149,7 +149,106 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="save">完成</button>
+                    <button type="submit" class="btn btn-primary" id="saveNew">完成</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="editproductModal" tabindex="-1" role="dialog" aria-labelledby="editproductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editproductModalLabel">編輯商品</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data" id="edit-form">
+                <div class="modal-body">
+                    <div class="tool-list-width">
+
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">Channel ID<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-10"> <input type="text" name="channel_id" class="form-control"
+                                    placeholder="請輸入" required value="{{ session.get('channel_id')}}" readonly></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">商品編號<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <input type="text" name="product_id" class="form-control" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">商品分類<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <select name="category_id">
+                                    {% for category in product_categories_list %}
+                                    <option value="{{ category.category_id }}">{{ category.category_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">兌換型式<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <select name="type">
+                                    <option value="link_code">連結＋密碼</option>
+                                    <option value="qr_ticket">QRCode 驗證</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">商品名稱<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <input type="text" name="product_name" class="form-control" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">兌換點數<span class="text-danger">*</span></label>
+                            <div class="col-4">
+                                <input type="number" name="need_points" class="form-control"
+                                    placeholder="請輸入" required>
+                            </div>
+                            <label class="col-2 col-form-label" for="">名額<span class="text-danger">*</span></label>
+                            <div class="col-4">
+                                <input type="number" name="total_qty" class="form-control"
+                                    placeholder="請輸入" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">上架時間<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <input type="date" name="date_sale" class="form-control" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">截止時間<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <input type="date" name="date_close" class="form-control" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">派發時間<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <input type="date" name="date_send" value="" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label" for="">商品圖片<span class="text-danger">*</span></label>
+                            <div class="col-10">
+                                <input type="file" name="product_img" class="form-control mb-2">
+                                <img src="" alt="" class="product_img img-fluid w-50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="saveEdit">完成</button>
                 </div>
             </form>
         </div>
@@ -162,8 +261,12 @@
 <script>
     $(function () {
         $('.datalist').DataTable();
-        $("body").on("click", "#save", function () {
-            $("form").submit();
+        $("body").on("click", "#saveNew", function () {
+            // 新增商品
+            $("#new-form").submit();
+        })
+        $("body").on("click", "#saveEdit", function () {
+            // 編輯商品
         })
 
         $(".msg_type_box").hide();
@@ -182,7 +285,8 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             // $("form").find("input").val();
         })
-        $('#productModal').on('show.bs.modal', function (event) {
+        $('#editproductModal').on('show.bs.modal', function (event) {
+            // 編輯商品前先把原先商品資料塞入
             var button = $(event.relatedTarget) // Button that triggered the modal
             var _data = button.attr('data-all') // Extract info from data-* attributes
             var _idx = button.attr('idx') // Extract info from data-* attributes
