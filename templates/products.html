@@ -238,7 +238,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">商品圖片<span class="text-danger">*</span></label>
+                            <label class="col-2 col-form-label" for="">商品圖片<span class="text-danger"></span></label>
                             <div class="col-10">
                                 <input type="file" name="product_img" class="form-control mb-2">
                                 <img src="" alt="" class="product_img img-fluid w-50">
@@ -290,28 +290,26 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var _data = button.attr('data-all') // Extract info from data-* attributes
             var _idx = button.attr('idx') // Extract info from data-* attributes
-            if( _data == undefined ){
-                // 新增
-            }else{
-                // 編輯，把資料塞進form中
-                var _putData = eval('[' + _data + ']'); // string to obj
-                console.log(_putData)
-                $("form").find("input").each(function(){
-                    var _name = $(this).attr("name");
-                    if( _name == undefined || _name == 'product_img' ){
-                        $(this).next(".product_img").attr('src',_putData[0]['product_img'])
-                    }else{
-                        var _val = _putData[0][_name]
-                        console.log(_name)
-                        $(this).val(_val)
-                    }
-                })
-                $("form").find("select").each(function () {
-                    var _name = $(this).attr("name");
+           
+            // 編輯，把資料塞進form中
+            var _putData = eval('[' + _data + ']'); // string to obj
+            console.log(_putData)
+            $("form").find("input").each(function(){
+                var _name = $(this).attr("name");
+                if( _name == undefined || _name == 'product_img' ){
+                    $(this).next(".product_img").attr('src',_putData[0]['product_img'])
+                }else{
                     var _val = _putData[0][_name]
+                    console.log(_name)
                     $(this).val(_val)
-                })
-            }
+                }
+            })
+            $("form").find("select").each(function () {
+                var _name = $(this).attr("name");
+                var _val = _putData[0][_name]
+                $(this).val(_val)
+            })
+            
             var modal = $(this)
         })
     })

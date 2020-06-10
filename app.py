@@ -346,7 +346,9 @@ def products():
                     "type":request.values['type']
                 }
                 # 上傳檔案
-                if 'product_img' in request.files:
+                
+                    
+                if request.files['product_img'].filename != "":
                     now = datetime.datetime.now()
                     time = now.strftime("%Y%m%d%H%M%S")
 
@@ -355,6 +357,8 @@ def products():
                     product_file.save(os.path.join('./static/product', file_name))
                     product_img = request.url_root+'static/product/'+file_name
                     datajson['product_img'] = product_img
+                    
+                        
 
                 # 判斷是新增還是編輯
                 if product.chk_once(channel_id,product_id) == True:
