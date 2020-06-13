@@ -412,7 +412,7 @@ def product_preorder(channel_id, product_id, user_id,qty):
         json_data = {'sys_code':"404","sys_msg":"product not found"}
         return json_data
     # 確認商品存量
-    if product.chk_last(channel_id,product_id) == 0:
+    if product.chk_last(channel_id,product_id) <= 0:
         json_data = {'sys_code':"404","sys_msg":"商品數量不足"}
         return json_data
     # 確認需要點數

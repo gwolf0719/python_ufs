@@ -130,6 +130,7 @@ class Order:
         date_time = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         
         point =  p_data['need_points']
+
         # 新增預購單
         pre_order = {
             "order_id":str(time.time()),
