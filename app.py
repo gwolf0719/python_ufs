@@ -342,6 +342,7 @@ def products():
                     "date_sale":request.values['date_sale'],
                     "date_close":request.values['date_close'],
                     "date_send":request.values['date_send'],
+                    "single_limit":request.values['single_limit'],
                     "channel_id":channel_id,
                     "type":request.values['type']
                 }

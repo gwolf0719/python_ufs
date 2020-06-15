@@ -33,6 +33,20 @@ class Order:
             datalist.append(data)
         return list(datalist)
 
+    # 取得消費單一商品清單
+    def user_product_orders(self,channel_id, user_id,product_id):
+        find = {
+            "channel_id":channel_id,
+            "user_id":user_id,
+            "product_id":product_id,
+            "status":{"$ne":"cancel"}
+        }
+        datalist = []
+        for data in self.col_order.find(find).sort("datetime",-1):
+            del data["_id"]
+            datalist.append(data)
+        return list(datalist)
+
 
     def cancel_order(self,channel_id,order_id):
         find = {
@@ -47,6 +61,9 @@ class Order:
         }
         
         self.col_order.update_one(find,{"$set":data})
+
+
+
     # 重新計算剩餘量
     def rechk_last_product(self,channel_id):
         # 找出所有未取消的單
