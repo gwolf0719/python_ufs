@@ -186,20 +186,35 @@
             })
         })
         var _timer = ''
-        $('#chatModal').on('shown.bs.modal', function (e) {
-            // 開啟對話視窗時
-            _singleRoomuserId = $(e.relatedTarget).attr('data-userid');
-            _singleRoomName = $(e.relatedTarget).attr('data-name');
-            var _title = _singleRoomName ;
-            var _userid = _singleRoomuserId
+        
+        user_id = '{{user_id}}';
+        if(user_id != ""){
+            $('#chatModal').on('shown.bs.modal', function () {
+                console.log('_channelId'+ _channelId);
+                openChatWindow('{{ user.name }}', user_id)
+            })
+            $("#chatModal").modal('show');
+        }else{
+            $('#chatModal').on('shown.bs.modal', function (e) {
+                // 開啟對話視窗時
+                _singleRoomuserId = $(e.relatedTarget).attr('data-userid');
+                _singleRoomName = $(e.relatedTarget).attr('data-name');
+                openChatWindow(_singleRoomName, _singleRoomuserId)
+            })
+        }
+        
+        // 開啟對話視窗開始
+        function openChatWindow(_title, _userid) {
+            // var _title = _singleRoomName;
+            // var _userid = _singleRoomuserId
             // 標題
             $("#chatModalLabel").find("span").html(_title + " <small class='text-info'>" + _singleRoomuserId + "</small>")
             // 複製用
             $("#show_userid").val(_userid)
             // 結案鈕
             $("#delete").attr({
-                'data-userid' : _userid ,
-                'data-channel' : _channelId,
+                'data-userid': _userid,
+                'data-channel': _channelId,
             })
             // 個人資料鈕
             $("#go2info").attr({
@@ -209,54 +224,58 @@
 
             var _alllength = ''; //對話有幾則
             getChat()
-            timer = setInterval(function(){
+            timer = setInterval(function () {
                 getChat()
-            },1000)
-            function getChat(){
-                    $.ajax({
-                        url : "./api_sys/get_chat_msg/" + _channelId + "/" + _singleRoomuserId,
-                        dataType : "json",
-                    }).done(function(data){
-                        if( _alllength == "" ){
-                            // 第一次進來，必須全體資料each一遍
-                            $(".msg_history").html("")
-                            var _chat = data.datalist;
-                            _alllength = data.datalist.length;
-                            for( var j=0 ; j < _alllength ; j++ ){
-                                var _dialogHtml = ''
-                                if( _chat[j].originator == "user"){
-                                    _dialogHtml = dialog_user(_chat[j])
-                                }else{
-                                    _dialogHtml = dialog_admin(_chat[j])
-                                }
-                                $(".msg_history").append(_dialogHtml)
-                                scrollOnBottom()
+            }, 1000)
+            function getChat() {
+                $.ajax({
+                    url: "./api_sys/get_chat_msg/" + _channelId + "/" + _userid,
+                    dataType: "json",
+                }).done(function (data) {
+                    if (_alllength == "") {
+                        // 第一次進來，必須全體資料each一遍
+                        $(".msg_history").html("")
+                        var _chat = data.datalist;
+                        _alllength = data.datalist.length;
+                        for (var j = 0; j < _alllength; j++) {
+                            var _dialogHtml = ''
+                            if (_chat[j].originator == "user") {
+                                _dialogHtml = dialog_user(_chat[j])
+                            } else {
+                                _dialogHtml = dialog_admin(_chat[j])
                             }
-                        }else{
-                            // 再次訪問，比對是否有新資料
-                            if( data.datalist.length > _alllength){
-                                //append新對話+1
-                                console.log("paiki")
-                                readRefresh(data.datalist,-1)
-                                _alllength = data.datalist.length;
-                                var _chat = data.datalist[(data.datalist.length-1)];
-                                var _dialogHtml = '';
-                                if( _chat.originator == "user"){
-                                    _dialogHtml = dialog_user(_chat)
-                                }else{
-                                    _dialogHtml = dialog_admin(_chat)
-                                }
-                                $(".msg_history").append(_dialogHtml)
-                                scrollOnBottom()
-                            }else{
-                                // console.log("no")
-                                readRefresh(data.datalist,0)
-                            }
+                            $(".msg_history").append(_dialogHtml)
+                            scrollOnBottom()
                         }
-                        // console.log(data)
-                    })
-                }
-        })
+                    } else {
+                        // 再次訪問，比對是否有新資料
+                        if (data.datalist.length > _alllength) {
+                            //append新對話+1
+                            console.log("paiki")
+                            readRefresh(data.datalist, -1)
+                            _alllength = data.datalist.length;
+                            var _chat = data.datalist[(data.datalist.length - 1)];
+                            var _dialogHtml = '';
+                            if (_chat.originator == "user") {
+                                _dialogHtml = dialog_user(_chat)
+                            } else {
+                                _dialogHtml = dialog_admin(_chat)
+                            }
+                            $(".msg_history").append(_dialogHtml)
+                            scrollOnBottom()
+                        } else {
+                            // console.log("no")
+                            readRefresh(data.datalist, 0)
+                        }
+                    }
+                    // console.log(data)
+                })
+            }
+        }
+        // 開啟對話視窗結束
+
+
+
         $('#chatModal').on('hide.bs.modal', function (e) {
             clearInterval(timer);
             var _htmlclose = '<div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div>'

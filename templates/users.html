@@ -16,11 +16,13 @@
     <tbody>
         {% for data in datalist %}
         <tr>
-            <td>{{data.name}}</td>
+           
+            <td><img src="{{data.avator}}" width="50"> {{data.name}}</td>
             <td>{{data.user_id}}</td>
             <td>{{data.point}}</td>
             <td>
                 <button class="btn btn-primary btn-sm user-info" user_id="{{ data.user_id }}">查看</button>
+                <button class="btn btn-primary btn-sm user-chat" user_id="{{ data.user_id }}">開啟私訊</button>
             </td>
         </tr>
         {% endfor %}
@@ -135,6 +137,7 @@
 <script>
     $(function () {
         $('.datalist').DataTable();
+
         $("body").on("click", "#save", function () {
             $("form").submit();
         })
@@ -150,6 +153,15 @@
         $("body").on("click", ".user-info", function () {
             user_id = $(this).attr("user_id");
             location.href = "./user_info/{{session.get('channel_id')}}/"+user_id
+        })
+
+        $("body").on("click",'.user-chat',function(){
+            user_id = $(this).attr("user_id");
+            $.getJSON("./api_sys/open_chat_room/{{session.get('channel_id')}}/"+user_id,function(data){
+                if(confirm("請問要直接前往私訊頁面嗎？")){
+                    location.href = "./chat?user_id=" + user_id
+                }
+            })
         })
 
     })

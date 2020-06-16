@@ -439,13 +439,22 @@ def scripts():
 @app.route("/chat")
 def chat():
     chat = Chat()
+    user = User()
     if(manager.chk_now() == True):
         manager_id = session.get("manager_id")
         if session.get("channel_id") is None:
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
-            return render_template("chat.html")
+            if 'user_id' in request.values:
+                user_id = request.values['user_id']
+                user_data = user.get_once(user_id,channel_id)
+                print(user_data)
+            else:
+                user_id = ''
+                user_data = ''
+                
+            return render_template("chat.html",user_id=user_id,user=user_data)
     else:
         return redirect(url_for("login"))
 

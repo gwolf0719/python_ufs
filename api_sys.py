@@ -79,6 +79,7 @@ def remove_chat_room(channel_id, user_id):
     chat.remove_chat_room(channel_id,user_id)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
+# 開啟聊天室
 @api_sys.route('/api_sys/open_chat_room/<channel_id>/<user_id>')
 def open_chat_room(channel_id, user_id):
     chat = Chat()
@@ -91,8 +92,8 @@ def open_chat_room(channel_id, user_id):
                 'read_status':0,
                 'avator':user_data['avator']
             }
-            # self.col_chat_room.insert_one(room_data)
-    chat.open_chat_room(room_data)
+    if chat.chk_chat_room(channel_id,user_id) == False:
+        chat.open_chat_room(room_data)
 
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data

@@ -22,8 +22,6 @@ class Chat:
     
     # 寫入 chat
     def add_chat(self,chat_data):
-        print(chat_data['channel_id'])
-        print(chat_data['user_id'])
         now = datetime.datetime.now();
         chat_data['datetime'] = "{0}-{1}-{2} {3}:{4}:{5}".format(now.year, now.month, now.day,now.hour,now.minute,now.second)
         self.col_chat.insert_one(chat_data)
@@ -32,10 +30,8 @@ class Chat:
         if Chat().chk_chat_room(chat_data['channel_id'],chat_data['user_id']) == True:
             # 如果發話者是 user 則設定未讀
             if chat_data['originator'] == 'user':
-                print("如果發話者是 user 則設定未讀")
                 Chat().set_chat_room_read(chat_data['channel_id'],chat_data['user_id'],0)
             else:
-                print("如果發話者是 admin 則設定已讀")
                 Chat().set_chat_room_read(chat_data['channel_id'],chat_data['user_id'],1)
         # 否則直接建立
         else:
@@ -46,7 +42,6 @@ class Chat:
                 'read_status':0,
                 'avator':chat_data['avator']
             }
-            # self.col_chat_room.insert_one(room_data)
             Chat().open_chat_room(room_data)
 
 
@@ -94,6 +89,13 @@ class Chat:
         return list(datalist)
     
     # 打開聊天室
+    # room_data = {
+    #             'channel_id':chat_data['channel_id'],
+    #             'user_id':chat_data['user_id'],
+    #             'name':chat_data['name'],
+    #             'read_status':0,
+    #             'avator':chat_data['avator']
+    #         }
     def open_chat_room(self,room_data):
         self.col_chat_room.insert_one(room_data)
         return True
