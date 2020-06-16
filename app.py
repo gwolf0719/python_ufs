@@ -77,8 +77,6 @@ def channel():
     if(manager.chk_now() == True):
         channel = Channel()
         manager_id = session.get("manager_id")
-        
-        
         if(request.method == "POST"):
             jsondata = {
                 "manager_id": manager_id,
@@ -94,6 +92,8 @@ def channel():
     else:
         return redirect(url_for("login"))
 
+
+# Channel 內容
 @app.route("/channel_info", methods=["GET", "POST"])
 def channel_info():
     if(manager.chk_now() == True):
@@ -110,26 +110,26 @@ def channel_info():
         return redirect(url_for("login"))
 
 
-@app.route("/msg", methods=["GET", "POST"])
-def msg():
-    if(manager.chk_now() == True):
-        msg = Msg()
-        if session.get("channel_id") is None:
-            flash("請先選取要設定的 Channel ","danger")
-            return redirect(url_for("channel"))
-        else:
-            if(request.method == "POST"):
-                msg.add_once(request.form.to_dict())
-                flash("訊息設定完成，請點選操作工具發送","success")
-            datalist = msg.get_list()
+# @app.route("/msg", methods=["GET", "POST"])
+# def msg():
+#     if(manager.chk_now() == True):
+#         msg = Msg()
+#         if session.get("channel_id") is None:
+#             flash("請先選取要設定的 Channel ","danger")
+#             return redirect(url_for("channel"))
+#         else:
+#             if(request.method == "POST"):
+#                 msg.add_once(request.form.to_dict())
+#                 flash("訊息設定完成，請點選操作工具發送","success")
+#             datalist = msg.get_list()
             
-            return render_template("msg.html",datalist=datalist)
-    else:
-        return redirect(url_for("login"))
+#             return render_template("msg.html",datalist=datalist)
+#     else:
+#         return redirect(url_for("login"))
 
 
 
-
+# 會員列表
 @app.route("/users", methods=["GET", "POST"])
 def users():
     if(manager.chk_now() == True):
@@ -140,14 +140,13 @@ def users():
         else:
             channel_id = session.get("channel_id")
             if "keyword" in request.values:
-                print(request.values['keyword'])
                 datalist = user.get_all_users(channel_id,request.values['keyword'])
             else:
                 datalist = user.get_all_users(channel_id)
             return render_template("users.html",datalist=datalist)
     else:
         return redirect(url_for("login"))
-
+# 會員內容
 @app.route("/user_info/<channel_id>/<user_id>", methods=["POST", "GET"])
 def user_info(channel_id, user_id):
     
@@ -160,7 +159,7 @@ def user_info(channel_id, user_id):
     else:
         return redirect(url_for("login"))
 
-
+# 轉址器
 @app.route("/re_url/", methods=["GET", "POST"])
 def re_url():
     if(manager.chk_now() == True):
@@ -191,7 +190,6 @@ def re_url():
                 channel_info = channel.get_channel(channel_id)
                 if 'liff_link' in channel_info:
                     # 取得 liff 的路徑
-                    # https://liff.line.me/1653459101-B52Noyy1?from=redirect&link_id=c78b22
                     datajson['url'] = channel_info['liff_link']+"?from=redirect&link_id="+link_id;
                 
                 re_url.add_once(datajson)
@@ -296,7 +294,7 @@ def tags():
         return render_template("tags.html",datalist=tag_list,channel_id=channel_id)
     else:
         return redirect(url_for("login"))
-
+# 標籤分析內頁
 @app.route("/tags/analysis/<tag>", methods=["GET", "POST"])
 def tags_analysis(tag):
     if(manager.chk_now() == True):
@@ -312,9 +310,6 @@ def tags_analysis(tag):
         return render_template("tags_analysis.html",channel_id=channel_id,tag=tag_info)
     else:
         return redirect(url_for("login"))
-
-    
-
 
 
 # 商品管理
@@ -388,8 +383,6 @@ def orders():
         else:
             channel_id = session.get("channel_id")
             product = Product()
-
-            
             datalist = product.get_list(channel_id)
             return render_template("orders.html",datalist=datalist)
     else:
@@ -449,7 +442,6 @@ def chat():
     if(manager.chk_now() == True):
         manager_id = session.get("manager_id")
         if session.get("channel_id") is None:
-            
             return redirect(url_for("channel"))
         else:
             channel_id = session.get("channel_id")
@@ -457,7 +449,7 @@ def chat():
     else:
         return redirect(url_for("login"))
 
-
+# ================= webhook ==================================================================
 # 單純抓取 webhook 回傳資料
 @app.route("/webhook/<channel_id>", methods=["POST", "GET"])
 def webhook(channel_id):
@@ -559,7 +551,7 @@ def webhook(channel_id):
                             fd.write(chunk)
                     chat_data['src'] = image_data
                     chat.add_chat(chat_data)
-        print("OK")
+        # print("OK")
         # line_bot_api.reply_message(replyToken, TextSendMessage(text='Hello World!'))
         
 
@@ -568,9 +560,6 @@ def webhook(channel_id):
         print(EOFError)
         print(KeyboardInterrupt)
         
-    # mycol = client.ufs.webhook
-    # df = pd.DataFrame(jsondata, index=[0])
-    # mycol.insert_many(df.to_dict('records'))
     return "replyToken"
 
 
