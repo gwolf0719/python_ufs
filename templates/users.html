@@ -10,22 +10,11 @@
             <th>暱稱</th>
             <th>user_id</th>
             <th>點數</th>
-            <th>操作</th>
+            <th>控制</th>
         </tr>
     </thead>
     <tbody>
-        {% for data in datalist %}
-        <tr>
-           
-            <td><img src="{{data.avator}}" width="50"> {{data.name}}</td>
-            <td>{{data.user_id}}</td>
-            <td>{{data.point}}</td>
-            <td>
-                <button class="btn btn-primary btn-sm user-info" user_id="{{ data.user_id }}">查看</button>
-                <button class="btn btn-primary btn-sm user-chat" user_id="{{ data.user_id }}">開啟私訊</button>
-            </td>
-        </tr>
-        {% endfor %}
+        
     </tbody>
 </table>
 
@@ -136,7 +125,13 @@
 
 <script>
     $(function () {
-        $('.datalist').DataTable();
+        $('.datalist').DataTable({
+            processing: true,
+            serverSide: true, 
+            ajax:"./api_sys/users/{{session.get('channel_id')}}",
+            orderings:false,
+            iDisplayLength:50,
+        });
 
         $("body").on("click", "#save", function () {
             $("form").submit();

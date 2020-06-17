@@ -64,6 +64,28 @@ def set_channel(channel_id):
 #     return json_data
 
 
+# 取得會員清單 API 
+@api_sys.route('/api_sys/users/<channel_id>', methods=["GET", "POST"])
+def users(channel_id):
+    user = User()
+    draw = request.values['draw']
+    order_column = request.values.get('search[value]')
+    # order_column = request.values['order']
+    # order_dir = request.values['order'][0]['dir']
+    # print(order_column)
+    # print(order_dir)
+    search = request.values.get('search[value]')
+    start = request.values['start'] 
+    length = request.values['length']
+    datalist = user.find_list(channel_id,start,length,search)
+
+    json_data = {
+        "draw":int(draw),
+        'recordsTotal':len(user.get_all_users(channel_id)),
+        'recordsFiltered':len(user.get_all_users(channel_id,search)) ,
+        "data":datalist
+    }
+    return json_data
 
 # 取得聊天室清單
 @api_sys.route('/api_sys/get_chat_room/<channel_id>')

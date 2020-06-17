@@ -26,6 +26,25 @@ class User:
         self.col_point_logs = self.client.ufs.point_logs
         self.col_user_log = self.client.ufs.user_log
 
+    def find_list(self,channel_id,start,length,keyword=""):
+        find = {}
+        if keyword == "":
+            find ={"channel_id":channel_id}
+        else:
+            find['name'] = {"$regex": keyword}
+            find['channel_id'] = channel_id
+        datas = self.col_user.find(find).limit(int(length)).skip(int(start))
+        datalist = []
+        for row in datas:
+            btn = '<button class="btn btn-primary btn-sm user-info" user_id="'+row["user_id"]+'">查看</button>'
+            btn = btn+'<button class="btn btn-primary btn-sm user-chat" user_id="'+row["user_id"]+'">開啟私訊</button>'
+            lite = ['<img src="'+row["avator"]+'" width="50">  '+row["name"],row["point"],row["user_id"],btn]
+            datalist.append(lite)
+        
+        return list(datalist)
+    
+
+
     # 取得單一帳號資料
     def get_once(self,user_id,channel_id):
         find = {
