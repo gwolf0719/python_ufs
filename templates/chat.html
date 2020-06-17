@@ -133,6 +133,7 @@
         var _channelId = "{{ session.get('channel_id')}}"
         var _singleRoomuserId = '';
         var _leftlength = ''
+        user_id = '{{user_id}}';
         
         left();
         var lefttimer = setInterval(function(){
@@ -175,7 +176,7 @@
             _value = _value.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>");
             $("#out_msg").val("")
             $.ajax({
-                url : './api_sys/return_chat_msg/' + _channelId + "/" + _singleRoomuserId ,
+                url : './api_sys/return_chat_msg/' + _channelId + "/" + user_id ,
                 data : {
                     text_info:_value
                 },
@@ -187,7 +188,7 @@
         })
         var _timer = ''
         
-        user_id = '{{user_id}}';
+        
         if(user_id != ""){
             $('#chatModal').on('shown.bs.modal', function () {
                 console.log('_channelId'+ _channelId);
@@ -197,9 +198,9 @@
         }else{
             $('#chatModal').on('shown.bs.modal', function (e) {
                 // 開啟對話視窗時
-                _singleRoomuserId = $(e.relatedTarget).attr('data-userid');
+                user_id = $(e.relatedTarget).attr('data-userid');
                 _singleRoomName = $(e.relatedTarget).attr('data-name');
-                openChatWindow(_singleRoomName, _singleRoomuserId)
+                openChatWindow(_singleRoomName, user_id)
             })
         }
         
@@ -208,7 +209,7 @@
             // var _title = _singleRoomName;
             // var _userid = _singleRoomuserId
             // 標題
-            $("#chatModalLabel").find("span").html(_title + " <small class='text-info'>" + _singleRoomuserId + "</small>")
+            $("#chatModalLabel").find("span").html(_title + " <small class='text-info'>" + _userid + "</small>")
             // 複製用
             $("#show_userid").val(_userid)
             // 結案鈕
