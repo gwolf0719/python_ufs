@@ -1,3 +1,4 @@
+appdirs==1.4.3
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
@@ -12,11 +13,13 @@ line-bot-sdk==1.15.0
 MarkupSafe==1.1.1
 numpy==1.18.1
 pandas==1.0.0
+pathspec==0.8.0
 pymongo==3.10.1
 python-dateutil==2.8.1
 pytz==2019.3
 redis==3.4.1
 requests==2.22.0
 six==1.14.0
+toml==0.10.0
 urllib3==1.25.8
 Werkzeug==0.16.1
