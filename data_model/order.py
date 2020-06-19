@@ -81,13 +81,16 @@ class Order:
                 "channel_id":channel_id,
                 "product_id":data['_id']
             }
+            # print(f)
             p = self.col_product.find_one(f)
-            # 計算剩餘數量
-            last_qty  = int(p['total_qty']) - int(data['total'])
-            update_data = {
-                "last_qty":last_qty
-            }
-            self.col_product.update_one(f,{"$set":update_data})
+            if p != None:
+                
+                # 計算剩餘數量
+                last_qty  = int(p['total_qty']) - int(data['total'])
+                update_data = {
+                    "last_qty":last_qty
+                }
+                self.col_product.update_one(f,{"$set":update_data})
 
     # 各種狀態訂單列表
     # 訂單總表
