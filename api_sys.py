@@ -134,21 +134,26 @@ def return_chat_msg(channel_id, user_id):
     chat = Chat()
     msg = Msg()
     channel = Channel()
+    user = User()
+    user_data = user.get_once(user_id,channel_id)
+    
     text_info = request.values['text_info']
     
     text_info = text_info.replace('<br>','\n')
     channel_access_token = channel.get_channel(channel_id)['channel_access_token']
     # 取得最後一筆資料 ，優先用回覆
-    last_chat = chat.get_user_chat(channel_id, user_id)[-1]
-    replyToken = last_chat['replyToken']
+    try :
+        last_chat = chat.get_user_chat(channel_id, user_id)[-1]
+        replyToken = last_chat['replyToken']
+    except BaseException:
+        print("")
     send_message = TextSendMessage(text=text_info)
     line_bot_api = LineBotApi(channel_access_token)
     try:
         
-        line_bot_api.push_message(user_id, send_message)
-        
+        line_bot_api.reply_message(replyToken, send_message)
     except BaseException:
-            line_bot_api.reply_message(replyToken, send_message)
+        line_bot_api.push_message(user_id, send_message)
     
     
         # 寫入記錄
@@ -158,8 +163,8 @@ def return_chat_msg(channel_id, user_id):
                     "text":text_info,
                     "replyToken":"",
                     "read_status":1,
-                    "name":last_chat['name'],
-                    "avator":last_chat['avator'],
+                    "name":user_data['name'],
+                    "avator":user_data['avator'],
                     "originator":"admin"
                 }
     datetime = chat.add_chat(chat_data)
