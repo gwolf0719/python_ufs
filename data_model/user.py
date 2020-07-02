@@ -38,7 +38,8 @@ class User:
         for row in datas:
             btn = '<button class="btn btn-primary btn-sm user-info" user_id="'+row["user_id"]+'">查看</button>'
             btn = btn+' <button class="btn btn-primary btn-sm user-chat" user_id="'+row["user_id"]+'">開啟私訊</button>'
-            lite = ['<img src="'+row["avator"]+'" width="50">  '+row["name"],row["point"],row["user_id"],btn]
+            
+            lite = ['<img src="'+str(row["avator"])+'" width="50">  '+row["name"],row["point"],row["user_id"],btn]
             datalist.append(lite)
         
         return list(datalist)
