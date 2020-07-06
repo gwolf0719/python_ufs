@@ -419,13 +419,14 @@ def product_preorder(channel_id, product_id, user_id,qty):
         return json_data
     # 確認限購額度
     if 'single_limit' in p_data:
-        single_limit = int(p_data['single_limit'])
-        if single_limit > 0:
-            order = Order()
-            user_product_orders = order.user_product_orders(channel_id, user_id,product_id)
-            if len(user_product_orders) >= single_limit:
-                json_data = {'sys_code':"500","sys_msg":"超過可以購買的量，請購買其它商品"}
-                return json_data
+        if p_data['single_limit'] != '':
+            single_limit = int(p_data['single_limit'])
+            if single_limit > 0:
+                order = Order()
+                user_product_orders = order.user_product_orders(channel_id, user_id,product_id)
+                if len(user_product_orders) >= single_limit:
+                    json_data = {'sys_code':"500","sys_msg":"超過可以購買的量，請購買其它商品"}
+                    return json_data
 
     # 確認需要點數
     need = int(p_data['need_points']) * int(qty)
