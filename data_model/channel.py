@@ -17,19 +17,19 @@ class Channel:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
         self.col_channel = self.client.ufs.channel
+        self.col_manager = self.client.ufs.manager
     # 取得 manager_id 所屬的 channel
     def get_list(self,manager_id):
-        mycol = self.client.ufs.channel
+        mycol = self.col_manager
         find = {"manager_id":manager_id}
         # datas = mycol.find(find).sort("create_datetime",-1)
-        datas = mycol.find(find)
+        data = mycol.find_one(find)
         datalist = []
-        for d in datas:
+        for d in data['channels']:
             datalist.append({
                 "channel_id":d["channel_id"],
-                "channel_secret":d["channel_secret"],
                 "channel_name":d["channel_name"],
-                "channel_access_token":d["channel_access_token"]
+                "level":d['level']
             })
         return list(datalist)
     # 新增 Channel 
@@ -47,10 +47,15 @@ class Channel:
         return data
     # 取得單一 channel 資料
     def get_channel_manger(self, channel_id,manager_id):
-        mycol = self.client.ufs.channel
-        find = {"channel_id":channel_id,"manager_id":manager_id}
+        mycol = self.col_manager
+        find = {"manager_id":manager_id}
         data = mycol.find_one(find)
-        return data
+        res_data = []
+        for item in data['channels']:
+            if item['channel_id'] == channel_id :
+                res_data = item
+            
+        return res_data
 
     def chk_once(self,channel_id):
         find = {"channel_id":channel_id}

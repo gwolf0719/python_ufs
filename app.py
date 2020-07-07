@@ -87,6 +87,7 @@ def channel():
                 "level":"superadmin"
             }
             channel.add_once(jsondata)
+            
         datalist = channel.get_list(manager_id)
         return render_template("channel.html",datalist=datalist)
     else:
