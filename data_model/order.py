@@ -109,7 +109,7 @@ class Order:
             }]
         t = 0
         for data in self.col_order.aggregate(pipeline):
-            t = t+int(data['total'])
+            t = t+int(data['total_qty'])
         print(t)
         return t
 
