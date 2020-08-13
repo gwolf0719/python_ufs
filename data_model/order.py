@@ -101,7 +101,7 @@ class Order:
         #取得正常的交易量
         pipeline = [
             {
-                "$match":{"channel_id":channel_id,"status":{"$ne":"cancel"}}
+                "$match":{"channel_id":channel_id,"product_id":product_id,"status":{"$ne":"cancel"}}
             },{
                 "$group":{
                     "_id":"$product_id", "total":{"$sum":1}
