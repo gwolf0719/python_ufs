@@ -108,10 +108,13 @@ class Order:
                 }
             }]
         t = 0
-        for data in self.col_order.aggregate(pipeline):
-            print(data)
-            t = int(t) + int(data['total_qty'])
-        print(t)
+        datalist = self.col_order.aggregate(pipeline)
+        if datalist.count() > 0:
+            for data in datalist:
+                t = int(t) + int(data['total_qty'])
+            print(t)
+        else:
+            return 0
         return t
 
     # 各種狀態訂單列表
