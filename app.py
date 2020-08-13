@@ -364,6 +364,9 @@ def products():
                 else:
                     product.add_once(datajson)
                     flash("商品新增完成 ","success")
+                # 重新計算庫存量
+                order = Order()
+                order.rechk_last_product(channel_id)
 
             datalist = product.get_list(channel_id)
             product_categories_list = product.product_categories_list(channel_id)

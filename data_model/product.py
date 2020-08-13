@@ -50,6 +50,7 @@ class Product:
             "product_id":product_id
         }
         return self.col_product.find_one(find)['last_qty']
+    
    
 
     def get_list(self,channel_id,category_id=""):
