@@ -303,6 +303,7 @@ def get_user_points(channel_id, user_id):
         "used_point": lifetime_record-point,
         "lifetime_record":lifetime_record
     }
+    print(json_data)
     return json_data
 # 查詢點數記錄
 @api.route('/api/v0/get_user_points_log/<channel_id>/<user_id>', methods=['GET'])
