@@ -91,15 +91,9 @@ class Order:
                     "last_qty":last_qty
                 }
                 self.col_product.update_one(f,{"$set":update_data})
-    def rechk_last_product_once(self,channel_id,product_id):
-        #取得商品
-        f = {
-                "channel_id":channel_id,
-                "product_id":product_id
-            }
-        p = self.col_product.find_one(f)
-        print("=========================")
-        print(p)
+    # 已經購買的數量
+    def rechk_buyed_product_once(self,channel_id,product_id):
+        
         #取得正常的交易量
         pipeline = [
             {
@@ -115,14 +109,7 @@ class Order:
         for data in datalist:
             print(data)
             t = int(t) + int(data['total'])
-        print(t)
-        print('total_qty')
-        print(p['total_qty'])
-        print('total')
-        
-        total = int(p['total_qty'])-t
-        print(total)
-        return total
+        return t
 
     # 各種狀態訂單列表
     # 訂單總表
