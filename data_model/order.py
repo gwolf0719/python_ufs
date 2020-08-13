@@ -110,14 +110,13 @@ class Order:
         t = 0
         datalist = self.col_order.aggregate(pipeline)
 
-        try:
-            for data in datalist:
-                print(data)
-                t = int(t) + int(data['total_qty'])
-            print(t)
-        except:
-            return 0
-        return t
+        for data in datalist:
+            print(data)
+            t = int(t) + int(data['total'])
+        print(t)
+
+        total = int(p['total_qty'])-t
+        return total
 
     # 各種狀態訂單列表
     # 訂單總表
