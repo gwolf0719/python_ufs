@@ -88,7 +88,7 @@ class Order:
                 # 計算剩餘數量
                 last_qty  = int(p['total_qty']) - int(data['total'])
                 print('total_qty:'+p['total_qty'])
-                print('total:'+data['total'])
+                print('total:'+str(data['total']))
                 update_data = {
                     "last_qty":last_qty
                 }
