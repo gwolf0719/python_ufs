@@ -98,6 +98,7 @@ class Order:
                 "product_id":product_id
             }
         p = self.col_product.find_one(f)
+        print(p)
         #取得正常的交易量
         pipeline = [
             {
