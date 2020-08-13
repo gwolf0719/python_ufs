@@ -334,7 +334,7 @@ def products():
                     "product_name": request.values['product_name'],
                     "need_points":request.values['need_points'],
                     "total_qty":request.values['total_qty'],
-                    "last_qty":request.values['total_qty'],
+                    "last_qty":product.chk_last(channel_id,product_id),
                     "date_sale":request.values['date_sale'],
                     "date_close":request.values['date_close'],
                     "date_send":request.values['date_send'],
