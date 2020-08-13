@@ -329,13 +329,17 @@ def products():
             if request.method == "POST":
                 product_id = request.values['product_id']
 
+                if product.chk_once(channel_id,product_id) == False:
+                    last_qty = 0
+                else:
+                    last_qty = order.rechk_last_product_once(channel_id,product_id)
                 datajson = {
                     "product_id": product_id,
                     "category_id":request.values['category_id'],
                     "product_name": request.values['product_name'],
                     "need_points":request.values['need_points'],
                     "total_qty":request.values['total_qty'],
-                    "last_qty":order.rechk_last_product_once(channel_id,product_id),
+                    "last_qty":last_qty,
                     "date_sale":request.values['date_sale'],
                     "date_close":request.values['date_close'],
                     "date_send":request.values['date_send'],
