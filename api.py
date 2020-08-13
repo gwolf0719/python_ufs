@@ -279,6 +279,7 @@ def deduct_user_point(channel_id, user_id):
 # # 點數查詢
 @api.route('/api/v0/get_user_points/<channel_id>/<user_id>', methods=['GET'])
 def get_user_points(channel_id, user_id):
+    print("get_user_points")
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
         return json_data
