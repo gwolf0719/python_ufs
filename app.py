@@ -330,7 +330,7 @@ def products():
                 product_id = request.values['product_id']
 
                 if product.chk_once(channel_id,product_id) == False:
-                    last_qty = 0
+                    last_qty =int(request.values['total_qty'])
                 else:
                     last_qty =int(request.values['total_qty'])- order.rechk_buyed_product_once(channel_id,product_id)
                 datajson = {
