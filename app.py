@@ -317,6 +317,7 @@ def tags_analysis(tag):
 @app.route("/products", methods=["GET", "POST"])
 def products():
     if(manager.chk_now() == True):
+        order = Order()
         manager_id = session.get("manager_id")
         if session.get("channel_id") is None:
             flash("請先選取要設定的 Channel ","danger")
@@ -334,7 +335,7 @@ def products():
                     "product_name": request.values['product_name'],
                     "need_points":request.values['need_points'],
                     "total_qty":request.values['total_qty'],
-                    "last_qty":product.chk_last(channel_id,product_id),
+                    "last_qty":order.rechk_last_product_once(channel_id,product_id),
                     "date_sale":request.values['date_sale'],
                     "date_close":request.values['date_close'],
                     "date_send":request.values['date_send'],
@@ -364,9 +365,7 @@ def products():
                 else:
                     product.add_once(datajson)
                     flash("商品新增完成 ","success")
-                # 重新計算庫存量
-                order = Order()
-                order.rechk_last_product(channel_id)
+               
 
             datalist = product.get_list(channel_id)
             product_categories_list = product.product_categories_list(channel_id)

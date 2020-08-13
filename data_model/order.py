@@ -87,12 +87,31 @@ class Order:
                 
                 # 計算剩餘數量
                 last_qty  = int(p['total_qty']) - int(data['total'])
-                print('total_qty:'+p['total_qty'])
-                print('total:'+str(data['total']))
                 update_data = {
                     "last_qty":last_qty
                 }
                 self.col_product.update_one(f,{"$set":update_data})
+    def rechk_last_product_once(self,channel_id,product_id):
+        #取得商品
+        f = {
+                "channel_id":channel_id,
+                "product_id":product_id
+            }
+        p = self.col_product.find_one(f)
+        #取得正常的交易量
+        pipeline = [
+            {
+                "$match":{"channel_id":channel_id,"status":{"$ne":"cancel"}}
+            },{
+                "$group":{
+                    "_id":"$product_id", "total":{"$sum":1}
+                }
+            }]
+        t = 0
+        for data in self.col_order.aggregate(pipeline):
+            t = t+int(data['total'])
+        print(t)
+        return t
 
     # 各種狀態訂單列表
     # 訂單總表
