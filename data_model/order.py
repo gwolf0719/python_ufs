@@ -112,6 +112,7 @@ class Order:
 
         try:
             for data in datalist:
+                print(data)
                 t = int(t) + int(data['total_qty'])
             print(t)
         except:
