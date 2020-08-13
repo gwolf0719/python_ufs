@@ -109,7 +109,9 @@ class Order:
             }]
         t = 0
         datalist = self.col_order.aggregate(pipeline)
-        if datalist.count() > 0:
+        Return = self.col_order.count_documents(pipeline)
+
+        if Return > 0:
             for data in datalist:
                 t = int(t) + int(data['total_qty'])
             print(t)
