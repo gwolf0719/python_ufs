@@ -116,8 +116,12 @@ class Order:
             print(data)
             t = int(t) + int(data['total'])
         print(t)
-
+        print('total_qty')
+        print(p['total_qty'])
+        print('total')
+        
         total = int(p['total_qty'])-t
+        print(total)
         return total
 
     # 各種狀態訂單列表
