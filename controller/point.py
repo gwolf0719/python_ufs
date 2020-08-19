@@ -7,12 +7,14 @@ import arrow
 from data_model.channel import *
 from data_model.user import *
 from data_model.limit_time_point import *
+from data_model.ltp_product import *
 
 point = Blueprint('point', __name__)
 
 user = User()
 channel = Channel()
 ltp = Limit_time_point()
+ltp_product = Ltp_product()
 
 
 # 取得個人點數餘額
@@ -72,4 +74,34 @@ def ch_point(channel_id, user_id):
     }
 
     return json_data
+
+
+# 序號商品
+# 設定商品
+@point.route('/api/v1/set_product/<channel_id>', methods=['GET', 'POST'])
+def set_product(channel_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    data = request.get_json()
+    data['channel_id'] = channel_id
+    ltp_product.set_product(data)
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
+# 取得商品清單
+@point.route('/api/v1/list_product/<channel_id>', methods=['GET', 'POST'])
+def list_product(channel_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    datalist =ltp_product.list_product(channel_id)
+    json_data = {'sys_code':"200","sys_msg":"success","datalist":datalist}
+    return json_data
+# 建立訂單
+@point.route('/api/v1/create_order/<channel_id>', methods=['GET', 'POST'])
+def create_order(channel_id):
+    return request.values
+
     
