@@ -2,6 +2,10 @@ from flask import Flask, jsonify, request, render_template,session,redirect,url_
 import os
 import json
 import hashlib
+import requests
+import random
+
+
 # Model
 from data_model.manager import *
 from data_model.channel import *
@@ -27,6 +31,59 @@ channel = Channel()
     # 
     # =================================================================
 # =================================================================
+
+# 發送簡訊驗證
+@api.route('/api/v0/send_mobile_chk/<channel_id>/<user_id>/<mobile>')
+def send_mobile_chk(channel_id, user_id,mobile):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+
+    user_info = user.get_once(user_id,channel_id)
+    if 'mobile_chk' in user_info:
+        if user_info['mobile_chk'] == True:
+            json_data = {'sys_code':"500","sys_msg":"重複驗證"}
+            return json_data
+
+    # 送出簡訊驗證
+    user.set_mobile_chk_code(channel_id,user_id,mobile)
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
+
+
+# 驗證簡訊
+
+@api.route('/api/v0/chk_mobile_code/<channel_id>/<user_id>/<mobile_code>')
+def chk_mobile_code(channel_id, user_id,mobile_code):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+
+    user_info = user.get_once(user_id,channel_id)
+    if 'mobile_chk' in user_info:
+        if user_info['mobile_chk'] == True:
+            json_data = {'sys_code':"500","sys_msg":"重複驗證"}
+            return json_data
+    else:
+        json_data = {'sys_code':"500","sys_msg":"尚未申請驗證碼"}
+        return json_data
+
+    # 送出簡訊驗證
+    user.chk_mobile_code(channel_id,user_id,mobile_code)
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
+
+
 # 取得會員資料
 @api.route("/api/v0/get_user_info/<channel_id>/<user_id>", methods=["POST", "GET"])
 def v0_get_user_info(channel_id,user_id):

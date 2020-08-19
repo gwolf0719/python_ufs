@@ -5,6 +5,8 @@ import pandas as pd
 import datetime 
 import time
 import numpy as np
+import random
+import requests
 
 # Model
 from data_model.manager import *
@@ -25,6 +27,56 @@ class User:
         self.col_user = self.client.ufs.users
         self.col_point_logs = self.client.ufs.point_logs
         self.col_user_log = self.client.ufs.user_log
+        self.sms_log = self.client.ufs.sms_log
+
+    # 設定簡訊驗證
+    def set_mobile_chk_code(self,channel_id,user_id,mobile):
+        find = {
+            "channel_id":channel_id,
+            "user_id":user_id
+        }
+        user_info = self.col_user.find_one(find)
+        mobile_code = ''
+        #如果 mobile_code 存在
+        if 'mobile_code' in user_info :    
+            mobile_code = user_info['mobile_code']
+        else:
+            mobile_code = ''
+            for num in range(1,5):
+                mobile_code = mobile_code + str(random.randint(0, 9))
+
+        # 更新會員資料
+        data = {
+            "mobile":mobile,
+            "mobile_code":mobile_code,
+            "mobile_chk":False
+        }
+        User().update_user_main(user_id,channel_id,data)
+        
+        
+        msg = '您的簡訊驗證碼為： '+ mobile_code +" 請儘速回填驗證"
+        # 建立簡訊紀錄
+        data['msg'] = msg
+        data['channel_id'] = channel_id
+        data['user_id'] = user_id
+        self.sms_log.insert_one(data)
+
+        api_link = "https://oms.every8d.com/API21/HTTP/sendSMS.ashx?UID=0919636153&PWD=wolf0719&MSG="+msg+"&DEST="+mobile
+        response = requests.get(api_link)
+        return True
+    
+    # 確認簡訊驗證碼
+    def chk_mobile_code(self,channel_id,user_id,mobile_code):
+        find = {
+            "channel_id":channel_id,
+            "user_id":user_id
+        }
+        data = {
+            "mobile_chk":True
+        }
+        User().update_user_main(user_id,channel_id,data)
+        # self.col_user.update_one(find,{"$set", data})
+
 
     def find_list(self,channel_id,start,length,keyword=""):
         find = {}

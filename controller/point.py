@@ -72,9 +72,27 @@ def ch_point(channel_id, user_id):
         'sys_msg':'success',
         'data':ltp.user_point_info(channel_id, user_id)
     }
-
     return json_data
 
+# 點數紀錄
+@point.route('/api/v1/log_point/<channel_id>/<user_id>', methods=['GET', 'POST'])
+def log_point(channel_id, user_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    
+    datalist = ltp.user_point_log(channel_id,user_id)
+    json_data = {
+        'sys_code':'200',
+        'sys_msg':'success',
+        'data':datalist
+    }
+    return json_data
 
 # 序號商品
 # 設定商品

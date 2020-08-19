@@ -16,6 +16,19 @@ class Limit_time_point:
         self.limit_time_point_log = self.db.limit_time_point_log
         self.users = self.db.users
     
+    def user_point_log(self,channel_id,user_id):
+        find = {
+            "channel_id":channel_id,
+            "user_id":user_id
+        }
+        datalist = []
+        for d in self.limit_time_point_log.find(find).sort('created_datetime',-1):
+            del d['_id']
+            datalist.append(d)
+        return list(datalist)
+
+    
+
     def user_point_info(self,channel_id,user_id):
         res = {
             "add":Limit_time_point().chk_user_add_total(channel_id, user_id),
