@@ -92,6 +92,8 @@ def v0_set_user_info(channel_id, user_id):
         update_data['name'] = jsondata["name"]
     if ("avator" in jsondata):
         update_data['avator'] = jsondata["avator"]
+    if ("extra" in jsondata):
+        update_data['extra'] = jsondata["extra"]
     # 輸入更新
     user.update_user_main(user_id,channel_id,update_data)
     # 取得會員資料
