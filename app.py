@@ -26,9 +26,10 @@ from data_model.product import *
 from data_model.chat import *
 from data_model.order import *
 
-from api import *
-from api_sys import *
-from api_chart import *
+from controller.api import *
+from controller.api_sys import *
+from controller.api_chart import *
+from controller.point import *
 # from hack import *
 
 
@@ -41,6 +42,7 @@ app.config['SESSION_REDIS'] = redis.Redis(host='127.0.0.1', port='6379', db=4)
 app.register_blueprint(api)
 app.register_blueprint(api_sys)
 app.register_blueprint(api_chart)
+app.register_blueprint(point)
 manager = Manager()
 
 # 登入管理者

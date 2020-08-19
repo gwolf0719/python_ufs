@@ -9,17 +9,84 @@ import numpy as np
 # Model
 from data_model.database import *
 
-class limit_time_point:
+class Limit_time_point:
     def __init__(self):
-        database = Database();
-        self.limit_time_point_log = database.set_doc('limit_time_point_log')
+        self.database = Database();
+        self.db = self.database.set_db()
+        self.limit_time_point_log = self.db.limit_time_point_log
+        self.users = self.db.users
     
-    # 確認使用者點數餘額
-    def chk_once(self,channel_id,user_id):
+    def user_point_info(self,channel_id,user_id):
+        res = {
+            "add":Limit_time_point().chk_user_add_total(channel_id, user_id),
+            "consume":Limit_time_point().chk_user_consume_total(channel_id, user_id),
+        }
+        # 計算總數
+        res["total"] = int(res['add'])- int(res['consume'])
+        # 回寫會員主表
+        data = {}
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id
+        }
+        data["last_datetime"] =datetime.datetime.now()
+        data["ltp"] = res['total']
+        self.users.update_one(find,{"$set":data})
+        # 取得下個月即將消失的點數
+        return res
+
+    # 點數異動  act = add ,consume
+    def ch_point(self,channel_id,user_id,point,note,act,limit=''):
+        
+        data = {
+            "user_id":user_id,
+            "channel_id":channel_id,
+            "point":int(point),
+            "note":note,
+            "act":act,
+            "limit":limit
+        }
+        data["update_datetime"] =datetime.datetime.now()
+        self.limit_time_point_log.insert_one(data)
+        return True
+
+    # 取得下個月即將消失的點數
+    # 累計到到期日前的總點數 - 總消費點數
+    def get_month_last(self,limit,channel_id,user_id):
+        # 到到期日前的總點數 
+        add = Limit_time_point().chk_user_add_total(channel_id,user_id,limit)
+        last_point = add - Limit_time_point().chk_user_consume_total(channel_id,user_id)
+        return last_point
+
+
+    
+
+    # 確認使用者累計增加總點數 =============
+    def chk_user_add_total(self,channel_id,user_id,limit=''):
         find = {
             "user_id":user_id,
             "channel_id":channel_id,
             "act":"add"
+        }
+        if limit != '':
+            find['limit'] = {"$lte":limit}
+        pipeline = [
+            {'$match':find},
+            {'$group': {'_id': "$user_id", 'point': {'$sum': '$point'}}},
+        ]
+        if self.limit_time_point_log.find(find).count() == 0:
+            return 0
+        else :
+            res = self.limit_time_point_log.aggregate(pipeline)
+            for data in res:
+                point = data['point']
+        return point
+    # 確認使用者累計消費總點數 =============
+    def chk_user_consume_total(self,channel_id,user_id):
+        find = {
+            "user_id":user_id,
+            "channel_id":channel_id,
+            "act":"consume"
         }
         pipeline = [
             {'$match':find},
@@ -29,8 +96,7 @@ class limit_time_point:
             return 0
         else :
             res = self.limit_time_point_log.aggregate(pipeline)
-            print(res[0])
             for data in res:
-                print(data)
-        return data['point']
+                point = data['point']
+        return point
 
