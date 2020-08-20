@@ -79,8 +79,11 @@ def chk_mobile_code(channel_id, user_id,mobile_code):
         return json_data
 
     # 送出簡訊驗證
-    user.chk_mobile_code(channel_id,user_id,mobile_code)
-    json_data = {'sys_code':"200","sys_msg":"success"}
+    if user.chk_mobile_code(channel_id,user_id,mobile_code) == True:
+        json_data = {'sys_code':"200","sys_msg":"success"}
+    else:
+        json_data = {'sys_code':"500","sys_msg":"驗證碼不正確"}
+    
     return json_data
 
 

@@ -71,11 +71,15 @@ class User:
             "channel_id":channel_id,
             "user_id":user_id
         }
-        data = {
-            "mobile_chk":True
-        }
-        User().update_user_main(user_id,channel_id,data)
-        # self.col_user.update_one(find,{"$set", data})
+        user_info = self.col_user.find_one(find)
+        if user_info['mobile_code'] == mobile_code:
+            data = {
+                "mobile_chk":True
+            }
+            User().update_user_main(user_id,channel_id,data)
+            return True
+        else:
+            return False
 
 
     def find_list(self,channel_id,start,length,keyword=""):
