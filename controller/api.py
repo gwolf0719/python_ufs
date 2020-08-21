@@ -105,7 +105,34 @@ def v0_get_user_info(channel_id,user_id):
 
     return json_data
 
-# # =================================================================    
+# # =================================================================  
+@api.route("/api/v1/set_user/<channel_id>/<user_id>", methods=["POST", "GET"])
+def v1_set_user(channel_id, user_id):
+    channel = Channel()
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == True):
+        user.update_user_main(user_id,channel_id)
+    else:
+        channel_info = channel.get_channel(channel_id)
+        channel_access_token = channel_info['channel_access_token']
+        block = 0;
+        if user.add_once(user_id,block,channel_id,channel_access_token) == True:
+            # 取得會員資料
+            user_info = user.get_once(user_id,channel_id)
+            json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
+        else:
+            json_data = {'sys_code':"500","sys_msg":"id error"}
+   
+    return json_data
+    
+
+    
+
+
 @api.route("/api/v0/add_user/<channel_id>/<user_id>", methods=["POST", "GET"])
 def v0_add_user(channel_id, user_id):
     channel = Channel()
