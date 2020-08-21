@@ -16,10 +16,11 @@ class Limit_time_point:
         self.limit_time_point_log = self.db.limit_time_point_log
         self.users = self.db.users
     
-    def user_point_log(self,channel_id,user_id):
+    def user_point_log(self,channel_id,user_id,act):
         find = {
             "channel_id":channel_id,
-            "user_id":user_id
+            "user_id":user_id,
+            "act":act
         }
         datalist = []
         for d in self.limit_time_point_log.find(find).sort('created_datetime',-1):

@@ -49,7 +49,7 @@ def reset_mobile_chk(channel_id, user_id):
         "mobile_chk":False,
         "mobile_code":""
     }
-    user.update_user_main(user_id,channel_id,data):
+    user.update_user_main(user_id,channel_id,data)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
 

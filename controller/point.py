@@ -75,8 +75,8 @@ def ch_point(channel_id, user_id):
     return json_data
 
 # 點數紀錄
-@point.route('/api/v1/log_point/<channel_id>/<user_id>', methods=['GET', 'POST'])
-def log_point(channel_id, user_id):
+@point.route('/api/v1/log_point/<channel_id>/<user_id>/<act>', methods=['GET', 'POST'])
+def log_point(channel_id, user_id,act):
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
@@ -86,7 +86,8 @@ def log_point(channel_id, user_id):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
     
-    datalist = ltp.user_point_log(channel_id,user_id)
+    
+    datalist = ltp.user_point_log(channel_id,user_id,act)
     json_data = {
         'sys_code':'200',
         'sys_msg':'success',
