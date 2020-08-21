@@ -32,6 +32,27 @@ channel = Channel()
     # =================================================================
 # =================================================================
 
+
+# 重設手機驗證
+@api.route('/api/v1/reset_mobile_chk/<channel_id>/<user_id>')
+def reset_mobile_chk(channel_id, user_id):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    data = {
+        "mobile":"",
+        "mobile_chk":False,
+        "mobile_code":""
+    }
+    user.update_user_main(user_id,channel_id,data):
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
+
 # 發送簡訊驗證
 @api.route('/api/v0/send_mobile_chk/<channel_id>/<user_id>/<mobile>')
 def send_mobile_chk(channel_id, user_id,mobile):
@@ -57,7 +78,6 @@ def send_mobile_chk(channel_id, user_id,mobile):
 
 
 # 驗證簡訊
-
 @api.route('/api/v0/chk_mobile_code/<channel_id>/<user_id>/<mobile_code>')
 def chk_mobile_code(channel_id, user_id,mobile_code):
     # 確認 channel_id
