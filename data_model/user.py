@@ -37,8 +37,8 @@ class User:
         }
         user_info = self.col_user.find_one(find)
         mobile_code = ''
-            for num in range(1,5):
-                mobile_code = mobile_code + str(random.randint(0, 9))
+        for num in range(1,5):
+            mobile_code = mobile_code + str(random.randint(0, 9))
 
         # 更新會員資料
         data = {
