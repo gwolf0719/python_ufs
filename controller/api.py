@@ -135,7 +135,8 @@ def v1_set_user(channel_id, user_id):
         return json_data
     # 確認 user_id
     if(user.chk_once(user_id,channel_id) == True):
-        user.update_user_main(user_id,channel_id)
+        data = {}
+        user.update_user_main(user_id,channel_id,data)
     else:
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
