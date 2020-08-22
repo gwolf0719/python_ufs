@@ -37,11 +37,6 @@ class User:
         }
         user_info = self.col_user.find_one(find)
         mobile_code = ''
-        #如果 mobile_code 存在
-        if 'mobile_code' in user_info :    
-            mobile_code = user_info['mobile_code']
-        else:
-            mobile_code = ''
             for num in range(1,5):
                 mobile_code = mobile_code + str(random.randint(0, 9))
 
