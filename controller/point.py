@@ -56,7 +56,7 @@ def ch_point(channel_id, user_id):
     if(user.chk_once(user_id,channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
-    r = request.values
+    r = request.get_json()
     # 設定點數到期日
     limit = ''
     if 'limit' in r:
