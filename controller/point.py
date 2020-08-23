@@ -60,12 +60,12 @@ def ch_point(channel_id, user_id):
     # 設定點數到期日
     limit = ''
     if 'limit' in r:
-        limit = r['limit']
+        limit = r.limit
     else :
-        if r['act'] == 'add':
+        if r.act== 'add':
             limit = arrow.now().shift(years=+1).format("YYYY-MM")
     # 寫入點數
-    ltp.ch_point(channel_id,user_id,r['point'],r['note'],r['act'],limit)
+    ltp.ch_point(channel_id,user_id,r.point,r.note,r.act,limit)
     # 取回資料
     json_data = {
         'sys_code':'200',
