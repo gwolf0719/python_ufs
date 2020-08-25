@@ -55,7 +55,7 @@ class Limit_time_point:
         data = {
             "user_id":user_id,
             "channel_id":channel_id,
-            "point":point,
+            "point":int(point),
             "note":note,
             "act":act,
             "limit":limit
