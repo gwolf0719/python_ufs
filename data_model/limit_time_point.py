@@ -68,8 +68,10 @@ class Limit_time_point:
     # 累計到到期日前的總點數 - 總消費點數
     def get_month_last(self,limit,channel_id,user_id):
         # 到到期日前的總點數 
+        total = Limit_time_point().chk_user_add_total(channel_id,user_id)
         add = Limit_time_point().chk_user_add_total(channel_id,user_id,limit)
-        last_point = add - Limit_time_point().chk_user_consume_total(channel_id,user_id)
+        used =Limit_time_point().chk_user_consume_total(channel_id,user_id)
+        last_point = int(total)-int(add)-int(used)
         return last_point
 
 
@@ -88,6 +90,7 @@ class Limit_time_point:
             {'$match':find},
             {'$group': {'_id': "$user_id", 'point': {'$sum': '$point'}}},
         ]
+        # print(pipeline)
         if self.limit_time_point_log.find(find).count() == 0:
             return 0
         else :

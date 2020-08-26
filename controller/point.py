@@ -32,10 +32,11 @@ def user_point(channel_id, user_id):
     point = ltp.user_point_info(channel_id, user_id)
     # 取得下個到期日
     n  = arrow.now()
-    limit = n.shift(months=+1).format("YYYY-MM")
+    limit = n.shift(months=-13).format("YYYY-MM")
     # 計算將過期量
-    point['limit'] = limit
-    point['limit_last_point'] = ltp.get_month_last(limit,channel_id, user_id)
+    point['limit'] = n.format("YYYY-MM")
+    point['limit_last_point'] = 0
+    # point['limit_last_point'] = ltp.get_month_last(limit,channel_id, user_id)
     json_data = {
                     'sys_code':"200",
                     "sys_msg":"success",
