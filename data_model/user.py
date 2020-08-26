@@ -29,6 +29,14 @@ class User:
         self.col_user_log = self.client.ufs.user_log
         self.sms_log = self.client.ufs.sms_log
 
+    # 刪除會員
+    def remove(self,channel_id,user_id):
+        find = {
+            "channel_id":channel_id,
+            "user_id":user_id
+        }
+        self.col_user.delete_one(find)
+        return True
     # 設定簡訊驗證
     def set_mobile_chk_code(self,channel_id,user_id,mobile):
         find = {
