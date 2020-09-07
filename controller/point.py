@@ -131,8 +131,8 @@ def create_order(channel_id):
     return request.values
 
 # 傳送單一訊息
-@point.route('/api/v1/send_single_msg/<channel_id>/<user_id>/<msg>')
-def send_single_msg(channel_id, user_id, msg):
+@point.route('/api/v1/send_single_msg/<channel_id>/<user_id>/<message>')
+def send_single_msg(channel_id, user_id, message):
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
@@ -142,7 +142,6 @@ def send_single_msg(channel_id, user_id, msg):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
     msg = Msg()
-    print(msg)
-    msg.send_single_msg(channel_id,user_id,msg)
+    msg.send_single_msg(channel_id,user_id,message)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
