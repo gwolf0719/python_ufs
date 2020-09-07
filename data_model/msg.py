@@ -24,11 +24,8 @@ class Msg:
         channel = Channel()
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
-        
-        
-        
         line_bot_api = LineBotApi(channel_access_token)
-        line_bot_api.push_message(user_id, TextSendMessage(text='hello'))
+        line_bot_api.push_message(user_id, TextSendMessage(text=message))
         return True
 
 
