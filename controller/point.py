@@ -8,6 +8,7 @@ from data_model.channel import *
 from data_model.user import *
 from data_model.limit_time_point import *
 from data_model.ltp_product import *
+from data_model.msg import *
 
 point = Blueprint('point', __name__)
 
@@ -58,7 +59,7 @@ def ch_point(channel_id, user_id):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
     r = request.get_json()
-    print(r)
+    # print(r)
     # 設定點數到期日
     limit = ''
     if 'limit' in r:
@@ -125,4 +126,18 @@ def list_product(channel_id):
 def create_order(channel_id):
     return request.values
 
-    
+# 傳送單一訊息
+@point.route('/api/v1/send_single_msg/<channel_id>/<user_id>/<msg>')
+def send_single_msg(channel_id, user_id, msg):
+    # 確認 channel_id
+    if(channel.chk_once(channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    # 確認 user_id
+    if(user.chk_once(user_id,channel_id) == False):
+        json_data = {'sys_code':"404","sys_msg":"user not found"}
+        return json_data
+    msg = Msg()
+    msg.send_single_msg(channel_id, user_id,msg)
+    json_data = {'sys_code':"200","sys_msg":"success"}
+    return json_data
