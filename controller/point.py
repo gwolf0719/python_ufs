@@ -3,6 +3,10 @@ import os
 import json
 import hashlib
 import arrow
+# line bot 相關元件
+from linebot import LineBotApi
+from linebot.models import *
+from linebot.exceptions import LineBotApiError
 
 from data_model.channel import *
 from data_model.user import *
