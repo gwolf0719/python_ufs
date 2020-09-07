@@ -142,6 +142,7 @@ def send_single_msg(channel_id, user_id, msg):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
     msg = Msg()
-    msg.send_single_msg(channel_id, user_id,msg)
+    print(msg)
+    msg.send_single_msg(channel_id,user_id,msg)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
