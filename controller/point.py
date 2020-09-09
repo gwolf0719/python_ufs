@@ -148,8 +148,8 @@ def send_single_msg(channel_id, user_id):
     return json_data
 
 # 傳送多筆訊息
-@point.route('/api/v1/send_multicast_msg', methods=['POST'])
-def send_multicast_msg():
+@point.route('/api/v1/send_multicast_msg_by_tag', methods=['POST'])
+def send_multicast_msg_by_tag():
     data = request.get_json()
     # 確認 channel_id
     if(channel.chk_once(data['channel_id']) == False):
