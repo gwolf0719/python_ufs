@@ -280,6 +280,13 @@ def get_user_tags(channel_id, user_id):
 
     return json_data
 
+# 取得單一標籤被使用的會員
+@api.route('/api/v0/get_tag_users/<channel_id>/<tag>')
+def get_tag_users(channel_id, tag):
+    tags = Tags()
+    users = tags.tag_users(channel_id,tag)
+    return {'sys_code':"200","sys_msg":"success","users":users}
+
 # 取得須要被統計的標籤使用次數
 # track_types read_ranking=>指定閱讀,share_ranking=>分享連結
 @api.route('/api/v0/get_tag_count/<channel_id>/<user_id>/<track_types>')

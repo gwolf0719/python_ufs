@@ -27,6 +27,13 @@ class Msg:
         line_bot_api = LineBotApi(channel_access_token)
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
         return True
+    def send_multicast_msg(self,channel_id,users,message):
+        channel = Channel()
+        channel_info = channel.get_channel(channel_id)
+        channel_access_token = channel_info['channel_access_token']
+        line_bot_api = LineBotApi(channel_access_token)
+        line_bot_api.multicast(users, TextSendMessage(text=message))
+        return True
 
 
     def add_once(self,datajson):

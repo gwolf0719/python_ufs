@@ -138,6 +138,17 @@ class Tags:
         }
         return self.col_tag_log.find(find).count()
 
+    # 取得標籤所有不重複使用者
+    def tag_users(self, channel_id,tag):
+        pipeline = [
+            {'$match':{'channel_id':channel_id,'tag':tag}},
+            {'$group':{'_id':"$user_id"}}
+        ]
+        users = []
+        for i in self.col_tag_log.aggregate(pipeline):
+            users.append(i['_id'])
+        return users
+
 
     # # 2020-03-26 修補任務
     # # 取得今日遊戲次數

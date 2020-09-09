@@ -146,3 +146,18 @@ def send_single_msg(channel_id, user_id):
     msg.send_single_msg(channel_id,user_id,data['message'])
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
+
+# 傳送多筆訊息
+@point.route('/api/v1/send_multicast_msg', methods=['POST'])
+def send_multicast_msg():
+    data = request.get_json()
+    # 確認 channel_id
+    if(channel.chk_once(data['channel_id']) == False):
+        json_data = {'sys_code':"404","sys_msg":"channel not found"}
+        return json_data
+    tags = Tags()
+    msg = Msg()
+    users = tags.tag_users(data['channel_id'],data['tag'])
+    msg.send_multicast_msg(data['channel_id'],users,data['message'])
+    json_data = {'sys_code':"200","sys_msg":"success","message":data['message'],"users":users}
+    return json_data
