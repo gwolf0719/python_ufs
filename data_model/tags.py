@@ -72,21 +72,24 @@ class Tags:
                 "user_id":user_id,
                 "tag":tag
             }
-
-        if tag_data["limit_cycle"] == "none":
-            return True
-        elif tag_data['limit_cycle'] == 'day':
-            day = "{0}-{1}-{2}".format(now.year, now.month, now.day)
-            find['datetime'] = day
-        elif tag_data['limit_cycle'] == 'month':
-            day = "{0}-{1}".format(now.year, now.month)
-            find['datetime'] = {"$regex": day}
-        elif tag_data['limit_cycle'] == 'year':
-            day = "{0}-".format(now.year)
-            find['datetime'] = {"$regex": day}
+        # 如果沒有設定週期
+        if 'limit_cycle' in tag_data:
+            if tag_data["limit_cycle"] == "none":
+                return True
+            elif tag_data['limit_cycle'] == 'day':
+                day = "{0}-{1}-{2}".format(now.year, now.month, now.day)
+                find['datetime'] = day
+            elif tag_data['limit_cycle'] == 'month':
+                day = "{0}-{1}".format(now.year, now.month)
+                find['datetime'] = {"$regex": day}
+            elif tag_data['limit_cycle'] == 'year':
+                day = "{0}-".format(now.year)
+                find['datetime'] = {"$regex": day}
        
-        if(self.col_tag_log.find(find).count() >= tag_data['limit_qty']):
-            return False
+            if(self.col_tag_log.find(find).count() >= tag_data['limit_qty']):
+                return False
+            else:
+                return True
         else:
             return True
 
