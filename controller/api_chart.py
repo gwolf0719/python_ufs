@@ -13,6 +13,40 @@ api_chart = Blueprint('api_chart', __name__)
 
 db = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
 
+# 交集查詢
+@api_chart.route('/api_chart/tag_set/<channel_id>/<tags>')
+def tag_set(channel_id,tags):
+    tag_list = tags.split(",")
+    # tag_logs = db.ufs.tag_log.find(
+    #         {
+    #             "channel_id":channel_id,
+    #             "tag":tag_list[0]
+    #         }
+    #     )
+    # datalist = []
+    # for row in tag_logs:
+    #     datalist.append(row['user_id'])
+    alllist =[]
+    key = 0
+    for tag in tag_list:
+        tag_logs = db.ufs.tag_log.find(
+            {
+                "channel_id":channel_id,
+                "tag":tag
+            }
+        )
+        datalist = []
+        for row in tag_logs:
+            datalist.append(row['user_id'])
+        
+        if key == 0:
+            alllist = datalist
+        else:
+            alllist = set(datalist) & set(alllist)
+        
+        key = key + 1
+    return {'tags':tag_list,'total':len(alllist)}
+
 # 標籤趨勢
 @api_chart.route('/api_chart/tag_daily/<channel_id>/<start>/<end>')
 def tag_daily(channel_id, start, end):
@@ -24,7 +58,6 @@ def tag_daily(channel_id, start, end):
         i = str(i)
         i = i.split(' ')
         index_list.append(i[0])
-    # print(index)
 
     tag_logs = db.ufs.tag_log.find(
         {
