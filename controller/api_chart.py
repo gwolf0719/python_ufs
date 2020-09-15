@@ -51,10 +51,13 @@ def tag_daily(channel_id, start, end):
         tag_names.append(t["tag_desc"])
         count_list = []
         for i in index_list:
-            mask1 = df['tag'] == t['tag']
-            mask2 = df['time'].between(i+" 00:00:00",i+" 23:59:59")
-            c = df[mask1 & mask2 ].count()
-            count_list.append(int(c.values[0]))
+            if tag in df:
+                mask1 = df['tag'] == t['tag']
+                mask2 = df['time'].between(i+" 00:00:00",i+" 23:59:59")
+                c = df[mask1 & mask2 ].count()
+                count_list.append(int(c.values[0]))
+            else:
+                count_list.append(0)
         datas = {
             "name":t["tag_desc"],
             "type": 'line',
@@ -76,8 +79,7 @@ def tag_daily_once(tag,channel_id, start, end):
         i = i.split(' ')
         index_list.append(i[0])
     # 取得所有需要的資料
-    tag_logs = db.ufs.tag_log.find(
-        {
+    find = {
             "time":{
                 "$gte" : datetime.datetime(int(start.split("-")[0]), int(start.split("-")[1]), int(start.split("-")[2])),
                 "$lt": datetime.datetime(int(end.split("-")[0]), int(end.split("-")[1]), int(end.split("-")[2]))
@@ -85,7 +87,8 @@ def tag_daily_once(tag,channel_id, start, end):
             "channel_id":channel_id,
             "tag":tag
         }
-    )
+    tag_logs = db.ufs.tag_log.find(find)
+    
     fulldatalist = []
     for row in tag_logs:
         del row["_id"]
@@ -93,16 +96,16 @@ def tag_daily_once(tag,channel_id, start, end):
     # 將資料轉成 DataFrame
     df = pd.DataFrame(fulldatalist)
     
-    
-    
     datas = []
-    
     count_list = []
     for i in index_list:
-        mask1 = df['tag'] == tag
-        mask2 = df['time'].between(i+" 00:00:00",i+" 23:59:59")
-        c = df[mask1 & mask2 ].count()
-        count_list.append(int(c.values[0]))
+        if tag in df:
+            mask1 = df['tag'] == tag
+            mask2 = df['time'].between(i+" 00:00:00",i+" 23:59:59")
+            c = df[mask1 & mask2 ].count()
+            count_list.append(int(c.values[0]))
+        else:
+            count_list.append(0)
     datas = {
         "name":tag,
         "type": 'line',
