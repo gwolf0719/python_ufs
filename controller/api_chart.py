@@ -51,7 +51,7 @@ def tag_daily(channel_id, start, end):
         tag_names.append(t["tag_desc"])
         count_list = []
         for i in index_list:
-            if tag in df:
+            if "tag" in df:
                 mask1 = df['tag'] == t['tag']
                 mask2 = df['time'].between(i+" 00:00:00",i+" 23:59:59")
                 c = df[mask1 & mask2 ].count()
@@ -99,7 +99,7 @@ def tag_daily_once(tag,channel_id, start, end):
     datas = []
     count_list = []
     for i in index_list:
-        if tag in df:
+        if "tag" in df:
             mask1 = df['tag'] == tag
             mask2 = df['time'].between(i+" 00:00:00",i+" 23:59:59")
             c = df[mask1 & mask2 ].count()
