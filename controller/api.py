@@ -235,31 +235,12 @@ def v0_set_user_tag(channel_id,user_id,tag):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
         return json_data
     # 確認 user_id
-    if(user.chk_once(user_id,channel_id) == False):
-        json_data = {'sys_code':"404","sys_msg":"user not found"}
-        return json_data
+    if user_id != "Guest":
+        if(user.chk_once(user_id,channel_id) == False):
+            json_data = {'sys_code':"404","sys_msg":"user not found"}
+            return json_data
     # 設定 tag
     # tags = Tags()
-    
-
-    # # 如果是在追蹤清單中
-    # if tags.chk_once(channel_id,tag) == True:
-    #     tag_limit = tags.chk_limit(channel_id,user_id,tag)
-    #     # 如果額度還夠
-    #     if tag_limit == True:
-    #         # 動作
-    #         tag_data = tags.get_once(channel_id,tag);
-    #         print(tag_data)
-    #         # tags.do_tag_act(channel_id,user_id,tag)
-    #         if "act" in tag_data:
-    #             for a in tag_data["act"]:
-    #                 print(a)
-    #                 if a["act_key"] == "add_user_point":
-    #                     user.add_point(user_id,channel_id,a["act_value"],tag_data["tag_desc"])
-
-            
-
-    # print("Hello")
     user.set_user_tag(user_id,channel_id,tag)
     json_data = {'sys_code':"200","sys_msg":"success"}
     return json_data
