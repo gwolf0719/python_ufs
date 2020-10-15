@@ -140,12 +140,15 @@ class Tags:
 
     # 取得標籤所有不重複使用者
     def tag_users(self, channel_id,tag):
+        print(tag)
+        print(channel_id)
         pipeline = [
             {'$match':{'channel_id':channel_id,'tag':tag}},
             {'$group':{'_id':"$user_id"}}
         ]
         users = []
         for i in self.col_tag_log.aggregate(pipeline):
+            # print('hello')
             users.append(i['_id'])
         return users
 
