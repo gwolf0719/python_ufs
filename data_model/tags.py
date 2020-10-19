@@ -39,6 +39,11 @@ class Tags:
         datalist = []
         for row in self.col_tag_main.find(find):
             del row["_id"]
+            find = {
+                "channel_id": channel_id,
+                "tag":row['tag']
+            }
+            row['count'] = self.col_tag_log.find(find).count()
             datalist.append(row)
         return list(datalist)
     # 確認 tag 要被追縱處理
