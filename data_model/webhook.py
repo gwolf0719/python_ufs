@@ -23,10 +23,10 @@ class Webhook:
         df = pd.DataFrame(jsondata, index=[0])
         webhook_log.insert_many(df.to_dict('records'))
         return True
-    def setfollow(self,jsondata):
+    def setfollow(self,channel_id,jsondata):
         event = jsondata["events"][0]
         user_id = event["source"]["userId"]
-        jsondata["channel_id"] = channel_id
+        
         
         if event['type'] == 'follow':
             print('follow')
