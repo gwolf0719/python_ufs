@@ -26,13 +26,19 @@ class Webhook:
     def setfollow(self,channel_id,jsondata):
         event = jsondata["events"][0]
         user_id = event["source"]["userId"]
-        
-        
+        follow_status = ''
         if event['type'] == 'follow':
-            print('follow')
+            follow_status = "follow"
         elif event['type'] == 'unfollow':
-            print('unfollow')
+            follow_status = "unfollow"
         else:
-            print('----')
+            follow_status = ''
+
+        if follow_status != '':
+            # 更新會員資料
+            data = {
+                "follow":follow_status
+            }
+            User().update_user_main(user_id,channel_id,data)
 
 
