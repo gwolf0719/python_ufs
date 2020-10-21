@@ -487,6 +487,8 @@ def webhook(channel_id):
     print(jsondata)
     webhook.add_log(jsondata)
 
+    # 設定用戶追蹤狀態
+    webhook.setfollow(jsondata)
 
     # 使用者紀錄
     if(user.chk_once(user_id,channel_id) == True):
