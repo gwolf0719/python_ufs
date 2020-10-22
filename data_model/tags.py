@@ -13,16 +13,19 @@ from data_model.webhook import *
 from data_model.user import *
 from data_model.tags import *
 
+
 # line bot 相關元件
 from linebot import LineBotApi
 from linebot.models import *
 from linebot.exceptions import LineBotApiError
+
 
 class Tags:
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
         self.col_tag_main = self.client.ufs.tag_main
         self.col_tag_log = self.client.ufs.tag_log
+        self.col_user = self.client.ufs.users
         
 
     # 新增標籤主表資料
@@ -33,6 +36,7 @@ class Tags:
         return True
     # 取得所有追縱標籤資料
     def get_tag_list(self,channel_id):
+        
         find = {
             "channel_id": channel_id
         }
@@ -43,9 +47,13 @@ class Tags:
                 "channel_id": channel_id,
                 "tag":row['tag']
             }
-            row['count'] = self.col_tag_log.find(find).count()
+            # row['count'] = self.col_tag_log.find(find).count()
+            row['count'] = len(Tags().tag_users(channel_id,row['tag']))
+            row['follow_count'] = len(Tags().tag_users(channel_id,row['tag'],"true"))
             datalist.append(row)
         return list(datalist)
+    
+   
     # 確認 tag 要被追縱處理
     def chk_once(self,channel_id,tag):
         find = {
@@ -144,16 +152,19 @@ class Tags:
         return self.col_tag_log.find(find).count()
 
     # 取得標籤所有不重複使用者
-    def tag_users(self, channel_id,tag):
-        print(tag)
-        print(channel_id)
-        pipeline = [
-            {'$match':{'channel_id':channel_id,'tag':tag}},
-            {'$group':{'_id':"$user_id"}}
-        ]
+    def tag_users(self, channel_id,tag,follow="false"):
+        if follow == "true": 
+            pipeline = [
+                {'$match':{'channel_id':channel_id,'tag':tag,'follow':{'$ne':'unfollow'}}},
+                {'$group':{'_id':"$user_id"}}
+            ]
+        else:
+           pipeline = [
+                {'$match':{'channel_id':channel_id,'tag':tag}},
+                {'$group':{'_id':"$user_id"}}
+            ] 
         users = []
         for i in self.col_tag_log.aggregate(pipeline):
-            # print('hello')
             users.append(i['_id'])
         return users
 

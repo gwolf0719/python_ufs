@@ -103,6 +103,10 @@ class User:
         
         return list(datalist)
     
+    
+        
+
+    
 
 
     # 取得單一帳號資料
@@ -135,7 +139,8 @@ class User:
             "point":0,
             "created_datetime":datetime.datetime.now(),
             "last_datetime":datetime.datetime.now(),
-            "block":block
+            "block":block,
+            "follow":"follow"
         }
         
         line_bot_api = LineBotApi(channel_access_token)
