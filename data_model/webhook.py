@@ -44,10 +44,10 @@ class Webhook:
                 "follow":follow_status
             }
             User().update_user_main(user_id,channel_id,data)
-            # {"channel_id":"1654478468","user_id":"U5cf4ced528d4274f11a84514e67b6bc4"},,false,true
+            # 更新 tag_log    
             find = {"channel_id":channel_id,"user_id":user_id}
             setdata = {'$set':{"follow":follow_status}}
-            self.col_tag_log.update(find,setdata,false,true)
+            self.col_tag_log.update_many(find,setdata)
 
         return True
 
