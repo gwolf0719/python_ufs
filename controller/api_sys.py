@@ -68,16 +68,18 @@ def set_channel(channel_id):
 @api_sys.route('/api_sys/users/<channel_id>', methods=["GET", "POST"])
 def users(channel_id):
     user = User()
-    draw = request.values['draw']
+    # draw = request.values['draw']
+    draw = 1
+    
     order_column = request.values.get('search[value]')
     # order_column = request.values['order']
     # order_dir = request.values['order'][0]['dir']
     # print(order_column)
     # print(order_dir)
-    search = request.values.get('search[value]')
-    start = request.values['start'] 
-    length = request.values['length']
-    datalist = user.find_list(channel_id,start,length,search)
+    # search = request.values.get('search[value]')
+    # start = request.values['start'] 
+    # length = request.values['length']
+    datalist = user.find_list(channel_id,1,10,'')
 
     json_data = {
         "draw":int(draw),

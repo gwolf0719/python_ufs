@@ -95,6 +95,7 @@ class User:
         datas = self.col_user.find(find).limit(int(length)).skip(int(start))
         datalist = []
         for row in datas:
+            data = []
             data['user_id'] = row['user_id']
             data['avator'] = row['avator']
             data['name'] = row['name']

@@ -156,14 +156,14 @@ class Tags:
             ] 
         users = []
         for i in self.col_tag_log.aggregate(pipeline):
-            print(i)
             users.append(i['_id'])
         return users
     # 取得所有正常追蹤的 tag 人數
     def all_tags_users(self,channel_id):
         pipeline = [
                 {'$match':{'channel_id':channel_id,'follow':{'$ne':'unfollow'}}},
-                {'$group':{'_id':{"tag":"$tag"},"count": { "$sum": 1 }}}
+                {'$group':{'_id':{"tag":"$tag"},"count": { "$sum": 1 }}},
+                {'$sort':{'_id.tag':-1}}
             ] 
         datalist = []
         for i in self.col_tag_log.aggregate(pipeline):
