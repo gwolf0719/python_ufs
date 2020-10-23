@@ -156,7 +156,7 @@ class Tags:
             ] 
         users = []
         for i in self.col_tag_log.aggregate(pipeline):
-            users.append(i['_id'])
+            users.append(i['_id']['user_id'])
         return users
     # 取得所有正常追蹤的 tag 人數
     def all_tags_users(self,channel_id):
@@ -182,7 +182,7 @@ class Tags:
         datalist = []
         for i in self.col_tag_log.aggregate(pipeline):
             return i['count']
-        
+        return datalis
 
 
 

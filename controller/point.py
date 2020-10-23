@@ -157,9 +157,8 @@ def send_multicast_msg_by_tag():
         return json_data
     tags = Tags()
     msg = Msg()
-    users = []
-    for u in tags.tag_users(data['channel_id'],data['tag']):
-        users.append(u['user_id'])
+    users = tags.tag_users(data['channel_id'],data['tag'])
+   
     if len(users) > 0:
         msg.send_multicast_msg(data['channel_id'],users,data['message'])
     json_data = {'sys_code':"200","sys_msg":"success","message":data['message'],"users":users}

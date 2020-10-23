@@ -291,7 +291,7 @@ def get_tag_users(channel_id, tag):
 @api.route('/api/v0/get_tag_qty/<channel_id>/<tag>')
 def get_tag_qty(channel_id, tag):
     tags = Tags()
-    qty = tags.tag_user_count(channel_id,tag)
+    qty = len(tags.tag_users(channel_id,tag))
     return {'sys_code':"200","sys_msg":"success","qty":qty}
 
 # 取得所有的標籤
