@@ -173,17 +173,16 @@ class Tags:
             }
             datalist.append(data)
         return datalist
+    def tag_user_count(self,channel_id,tag):
+        pipeline = [
+                {'$match':{'channel_id':channel_id,'tag':tag,'follow':{'$ne':'unfollow'}}},
+                {'$group':{'_id':{"tag":"$tag"},"count": { "$sum": 1 }}},
+                {'$sort':{'_id.tag':-1}}
+            ] 
+        datalist = []
+        for i in self.col_tag_log.aggregate(pipeline):
+            return i['count']
+        
 
 
-    # # 2020-03-26 修補任務
-    # # 取得今日遊戲次數
-    # def get_game_today_count(self,user_id):
-    #     find = {
-    #         "channel_id": '1653459101',
-    #         "tag":'2020q1_game',
-    #         "datetime":'2020-3-26',
-    #         "user_id":user_id
-    #     }
-    #     print(find)
-    #     return self.col_tag_log.find(find).count()
 

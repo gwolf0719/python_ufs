@@ -287,6 +287,12 @@ def get_tag_users(channel_id, tag):
     tags = Tags()
     users = tags.tag_users(channel_id,tag)
     return {'sys_code':"200","sys_msg":"success","users":users}
+# 取得單一標籤追蹤中的會員數量
+@api.route('/api/v0/get_tag_qty/<channel_id>/<tag>')
+def get_tag_qty(channel_id, tag):
+    tags = Tags()
+    qty = tags.tag_user_count(channel_id,tag)
+    return {'sys_code':"200","sys_msg":"success","qty":qty}
 
 # 取得所有的標籤
 @api.route('/api/v0/get_tag_list/<channel_id>')
