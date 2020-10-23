@@ -27,6 +27,8 @@ class Msg:
         line_bot_api = LineBotApi(channel_access_token)
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
         return True
+    # 發送群發訊息
+    # TODO 發送群發單次上限 500 人需要分組處理
     def send_multicast_msg(self,channel_id,users,message):
         channel = Channel()
         channel_info = channel.get_channel(channel_id)
