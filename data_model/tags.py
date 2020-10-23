@@ -163,7 +163,7 @@ class Tags:
     def all_tags_users(self,channel_id):
         pipeline = [
                 {'$match':{'channel_id':channel_id,'follow':{'$ne':'unfollow'}}},
-                {'$group':{'_id':{"user_id":"$user_id","tag":"$tag"},"count": { "$sum": 1 }}}
+                {'$group':{'_id':{"tag":"$tag"},"count": { "$sum": 1 }}}
             ] 
         datalist = []
         for i in self.col_tag_log.aggregate(pipeline):
