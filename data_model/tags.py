@@ -36,21 +36,12 @@ class Tags:
         return True
     # 取得所有追縱標籤資料
     def get_tag_list(self,channel_id):
+        Tags().all_tags_users(channel_id)
         
-        find = {
-            "channel_id": channel_id
-        }
         datalist = []
-        for row in self.col_tag_main.find(find):
-            del row["_id"]
-            find = {
-                "channel_id": channel_id,
-                "tag":row['tag']
-            }
-            # row['count'] = self.col_tag_log.find(find).count()
-            row['count'] = len(Tags().tag_users(channel_id,row['tag']))
-            row['follow_count'] = len(Tags().tag_users(channel_id,row['tag'],"true"))
+        for row in Tags().all_tags_users(channel_id):
             datalist.append(row)
+
         return list(datalist)
     
    
@@ -161,12 +152,27 @@ class Tags:
         else:
            pipeline = [
                 {'$match':{'channel_id':channel_id,'tag':tag}},
-                {'$group':{'_id':"$user_id"}}
+                {'$group':{'_id':{"user_id":"$user_id"},"count": { "$sum": 1 }}}
             ] 
         users = []
         for i in self.col_tag_log.aggregate(pipeline):
+            print(i)
             users.append(i['_id'])
         return users
+    # 取得所有正常追蹤的 tag 人數
+    def all_tags_users(self,channel_id):
+        pipeline = [
+                {'$match':{'channel_id':channel_id,'follow':{'$ne':'unfollow'}}},
+                {'$group':{'_id':{"user_id":"$user_id","tag":"$tag"},"count": { "$sum": 1 }}}
+            ] 
+        datalist = []
+        for i in self.col_tag_log.aggregate(pipeline):
+            data = {
+                "tag":i['_id']['tag'],
+                "count":i['count']
+            }
+            datalist.append(data)
+        return datalist
 
 
     # # 2020-03-26 修補任務

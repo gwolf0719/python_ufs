@@ -177,7 +177,6 @@ def re_url():
                 subject = request.values['subject']
                 target_url = request.values['target_url']
                 tags = request.values['tags']
-                
                 # 先將資料編碼，再更新 MD5 雜湊值
                 m = hashlib.md5()
                 m.update(str(time.time()).encode("utf-8"))
