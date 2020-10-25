@@ -5,6 +5,7 @@ import pandas as pd
 import datetime 
 import time
 import numpy as np
+from pandas.core.frame import DataFrame
 
 # Model
 from data_model.manager import *
@@ -36,13 +37,8 @@ class Tags:
         return True
     # 取得所有追縱標籤資料
     def get_tag_list(self,channel_id):
-        Tags().all_tags_users(channel_id)
-        
-        datalist = []
-        for row in Tags().all_tags_users(channel_id):
-            datalist.append(row)
-
-        return list(datalist)
+        # 2020-10-25 已經整併 all_tags_users
+        return Tags().all_tags_users(channel_id)
     
    
     # 確認 tag 要被追縱處理
@@ -147,7 +143,7 @@ class Tags:
         if follow == "true": 
             pipeline = [
                 {'$match':{'channel_id':channel_id,'tag':tag,'follow':{'$ne':'unfollow'}}},
-                {'$group':{'_id':"$user_id"}}
+                {'$group':{'_id':{"user_id":"$user_id"},"count": { "$sum": 1 }}}
             ]
         else:
            pipeline = [
@@ -162,17 +158,26 @@ class Tags:
     def all_tags_users(self,channel_id):
         pipeline = [
                 {'$match':{'channel_id':channel_id,'follow':{'$ne':'unfollow'}}},
-                {'$group':{'_id':{"tag":"$tag"},"count": { "$sum": 1 }}},
+                {'$group':{'_id':{"user_id":"$user_id","tag":"$tag"}}},
                 {'$sort':{'_id.tag':-1}}
             ] 
         datalist = []
         for i in self.col_tag_log.aggregate(pipeline):
-            data = {
-                "tag":i['_id']['tag'],
-                "count":i['count']
-            }
-            datalist.append(data)
-        return datalist
+            datalist.append({
+                'tag':i['_id']['tag'],
+                'item':1
+            })
+        # 將資料整理 DataFrame
+        p = pd.DataFrame(datalist,columns=['tag','item'])
+        res = []
+        # 設定 tag 群組 groupby
+        for i2 in p.groupby('tag', as_index=False)['item'].count().values.tolist():
+            res.append({
+                'tag':i2[0],
+                'count':i2[1],
+            })
+        
+        return res
     def tag_user_count(self,channel_id,tag):
         pipeline = [
                 {'$match':{'channel_id':channel_id,'tag':tag,'follow':{'$ne':'unfollow'}}},
