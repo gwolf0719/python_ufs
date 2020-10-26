@@ -56,9 +56,8 @@ class Tags:
             "channel_id":channel_id,
             "tag":tag
         }
-        # print(find)
         tag_info = self.col_tag_main.find_one(find)
-        # print(tag_info)
+        
         del tag_info["_id"]
         return tag_info
 

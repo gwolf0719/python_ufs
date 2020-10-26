@@ -85,6 +85,35 @@ class User:
             return False
 
 
+    def find_user_list(self,channel_id,find={},skip=0,limit=100):
+        if 'name' in find:
+            find['name'] = {"$regex": find['name']}
+            
+        find['channel_id'] = channel_id
+        datalist = []
+        for d in self.col_user.find(find).limit(limit).skip(skip):
+            if "follow" not in d:
+                d['follow'] = "follow"
+            if "ltp" not in d:
+                d['ltp'] = 0
+            if "point" not in d:
+                d['point'] = 0
+            append_data = {
+                "avator":d['avator'],
+                "follow":d['follow'],
+                'ltp':d['ltp'],
+                'name':d['name'],
+                'point':d['point'],
+                'user_id':d['user_id'],
+            }
+            datalist.append(append_data)
+        return list(datalist)
+    def find_user_list_count(self,channel_id,find={}):
+        
+            
+        find['channel_id'] = channel_id
+        return self.col_user.find(find).count()
+
     def find_list(self,channel_id,start,length,keyword=""):
         find = {}
         if keyword == "":
@@ -128,7 +157,7 @@ class User:
             "user_id": user_id,
             "channel_id": channel_id
         }
-        print(find)
+        
         cursor = self.col_user.find(find) 
         if(cursor.count() == 0):
             return False
@@ -338,17 +367,14 @@ class User:
             "channel_id":channel_id,
             "act":"add"
         }
-        pipeline = [
-            {'$match':find},
-            {'$group': {'_id': "$user_id", 'point': {'$sum': '$point'}}},
-        ]
         if self.col_point_logs.find(find).count() == 0:
             return 0
         else :
-            res = self.col_point_logs.aggregate(pipeline)
+            res = self.col_point_logs.find(find)
+            count_data = 0
             for data in res:
-                print(data)
-        return data['point']
+                count_data = count_data + data['point']
+        return count_data
 
 
     def set_user_log(self, user_id,channel_id,log_msg):
