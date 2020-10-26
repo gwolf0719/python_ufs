@@ -123,18 +123,30 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
 
 <script>
     $(function () {
-        $('.datalist').DataTable({
-            processing: true,
-            serverSide: true, 
-            ajax:"./api_sys/users/{{session.get('channel_id')}}",
-            orderings:false,
-            iDisplayLength:50,
-        });
-
+        var channel_id = "{{session.get('channel_id')}}";
+        var _needObj = {
+            "limit" : 100,
+            "now_page": 1 ,
+            "find": {
+                "name":"",
+                "user_id":""
+            }
+        }
+        callUser(_needObj)
+        function callUser(needData){
+            $.ajax({
+                url : "./api/v2/channel_users/" + channel_id,
+                type : 'post',
+                dataType : 'json',
+                data : needData
+            }).done(function(data){
+                console.log(data)
+            })
+        }
         $("body").on("click", "#save", function () {
             $("form").submit();
         })
