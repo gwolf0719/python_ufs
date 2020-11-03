@@ -14,13 +14,13 @@
 </form> -->
 <table class="table table-border table-hover mt-4">
     <tr>
-        <th>標籤標題</th>
+        <!-- <th>標籤標題</th> -->
         <th>標籤</th>
         <th></th>
     </tr>
     {% for data in datalist %}
     <tr>
-        <td><span class="badge badge-pill badge-outline-primary">{{ data.tag_desc }}</span></td>
+        <!-- <td><span class="badge badge-pill badge-outline-primary">{{ data.tag_desc }}</span></td> -->
         <td>{{ data.tag }}</td>
         <td>
             <a href="/tags/analysis/{{data.tag}}" class="btn btn-primary btn-sm">詳細報告</a>

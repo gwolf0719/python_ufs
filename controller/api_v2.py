@@ -27,7 +27,8 @@ ltp_product = Ltp_product()
 @api_v2.route('/api/v2/channel_users/<channel_id>', methods=["POST"])
 def users(channel_id):
     user = User()
-    get_post_data= request.get_json()
+    get_post_data = request.get_json()
+    
     if "find" in get_post_data:
         find = get_post_data['find']
     else:
@@ -43,7 +44,6 @@ def users(channel_id):
         now_page = 1;
     skip = (int(now_page)-1)*limit
 
-    
     datalist = user.find_user_list(channel_id,find,skip,limit)
     date_count = user.find_user_list_count(channel_id,find)
     if date_count % limit == 0:
@@ -51,19 +51,7 @@ def users(channel_id):
     else:
         page_items = math.floor(date_count / limit) + 1
     
-    # # draw = request.values['draw']
-    # draw = 1
-    
-    # order_column = request.values.get('search[value]')
-    # # order_column = request.values['order']
-    # # order_dir = request.values['order'][0]['dir']
-    # # print(order_column)
-    # # print(order_dir)
-    # # search = request.values.get('search[value]')
-    # # start = request.values['start'] 
-    # # length = request.values['length']
-    # datalist = user.find_list(channel_id,1,10,'')
-
+  
     json_data = {
         "now_page":now_page,
         "skip":skip,

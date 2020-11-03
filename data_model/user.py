@@ -88,7 +88,6 @@ class User:
     def find_user_list(self,channel_id,find={},skip=0,limit=100):
         if 'name' in find:
             find['name'] = {"$regex": find['name']}
-            
         find['channel_id'] = channel_id
         datalist = []
         for d in self.col_user.find(find).limit(limit).skip(skip):

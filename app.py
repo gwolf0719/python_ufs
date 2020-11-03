@@ -295,6 +295,7 @@ def tags():
             tags = Tags()
             # 取得需要追蹤的 tag 
             tag_list = tags.get_tag_list(channel_id)
+            print(tag_list)
         return render_template("tags.html",datalist=tag_list,channel_id=channel_id)
     else:
         return redirect(url_for("login"))
