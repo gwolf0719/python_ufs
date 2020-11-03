@@ -7,6 +7,7 @@ import time
 import numpy as np
 import random
 import requests
+import arrow
 
 # Model
 from data_model.manager import *
@@ -104,6 +105,7 @@ class User:
                 'name':d['name'],
                 'point':d['point'],
                 'user_id':d['user_id'],
+                'created_datetime':d['created_datetime'].strftime('%Y/%m/%d %H:%M:%S')
             }
             datalist.append(append_data)
         return list(datalist)

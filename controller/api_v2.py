@@ -28,20 +28,24 @@ ltp_product = Ltp_product()
 def users(channel_id):
     user = User()
     get_post_data = request.get_json()
-    
-    if "find" in get_post_data:
-        find = get_post_data['find']
-    else:
-        find = {}
-    if "limit" in get_post_data:
-        limit = get_post_data['limit']
-    else:
-        limit = 100
-    
-    if "now_page" in get_post_data:
-        now_page = get_post_data['now_page']
-    else:
-        now_page = 1;
+    find = {}
+    limit = 100
+    now_page = 1;
+    print(get_post_data)
+    if get_post_data != None:
+        
+        if "find" in get_post_data:
+            find = get_post_data['find']
+            
+        if "limit" in get_post_data:
+            
+            limit = get_post_data['limit']
+            print(limit)
+        
+        if "now_page" in get_post_data:
+            now_page = get_post_data['now_page']
+            
+    print(limit)
     skip = (int(now_page)-1)*limit
 
     datalist = user.find_user_list(channel_id,find,skip,limit)

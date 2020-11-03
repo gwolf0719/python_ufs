@@ -4,7 +4,17 @@
 {% endblock title%}
 
 {% block content %}
-<table class="table table-hover datalist">
+<div id="app">
+
+<form class="form-inline my-2 my-lg-0">
+    <select class="form-control mr-sm-2" v-model="search_key.selected">
+        <option v-for="option in search_key.options" :value="option.value">${option.text}</option>
+    </select>
+    <input class="form-control mr-sm-2" type="search" placeholder="搜尋會員" aria-label="Search" v-model="search_value">
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" @click="setFind()" >Search</button>
+</form>
+
+<table class="table table-hover datalist" id="mylist">
     <thead>
         <tr>
             <th>暱稱</th>
@@ -15,166 +25,170 @@
             <th>控制</th>
         </tr>
     </thead>
-    <tbody>
-        
+    <tbody >
+        <tr v-for="(member,index) in datalist">
+            <td>${ member.name }</td>
+            <td>${ member.point }</td>
+            <td>${ member.user_id }</td>
+            <td>${ member.created_datetime }</td>
+            <td>${ member.created_datetime }</td>
+            <td>
+                <a :href="'./user_info/{{session.get('channel_id')}}/'+member.user_id" class="btn btn-primary btn-sm">詳細</a>
+            </td>
+        </tr>
     </tbody>
 </table>
 
-{# 燈箱組件 #}
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">新增訊息 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="post">
-                <div class="modal-body">
-                    <div class="tool-list-width">
-
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">Channel ID<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-10"> <input type="text" name="channel_id" class="form-control"
-                                    placeholder="請輸入" required value="{{ session.get('channel_id')}}" readonly></div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">必要包含標籤<span class="text-danger"></span></label>
-                            <div class="col-10">
-                                <input type="text" name="need_tags" class="form-control" placeholder="如果沒有填寫就是不篩選成員">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">標題<span class="text-danger">*</span></label>
-                            <div class="col-10"> <input type="text" name="subject" class="form-control"
-                                    placeholder="請輸入" required></div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label" for="">訊息種類<span class="text-danger">*</span></label>
-                            <div class="col-10">
-                                <div class="form-group">
-                                    <select class="form-control" name="type" id="msg_type">
-                                        <option value="text">純文字</option>
-                                        <option value="image">純圖片</option>
-                                        <option value="imagemap">影像地圖</option>
-                                        <option value="flex">flex</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="msg_type_box text_box">
-
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label" for="">內文<span class="text-danger">*</span></label>
-                                <div class="col-10">
-                                    <textarea class="form-control" name="desc"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="msg_type_box image_box">
-
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label" for="">圖片路徑<span
-                                        class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control"
-                                        placeholder="請輸入" required></div>
-                            </div>
-                        </div>
-
-                        <div class="msg_type_box imagemap_box">
-
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label" for="">圖片路徑<span
-                                        class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control"
-                                        placeholder="請輸入" required></div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label" for="">目標路徑<span
-                                        class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control"
-                                        placeholder="請輸入" required></div>
-                            </div>
-                        </div>
-
-                        <div class="msg_type_box flex_box">
-
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label" for="">flex json<span
-                                        class="text-danger">*</span></label>
-                                <div class="col-10"> <input type="text" name="desc"" class=" form-control"
-                                        placeholder="請輸入" required></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="save">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<nav aria-label="Page navigation ">
+    <ul class="pagination">
+        <li class="page-item" v-if="pagination.now_page > 1"><a class="page-link" @click="getlist(1)"> << </a></li>
+        <li class="page-item" v-if="pagination.now_page > 1"><a class="page-link" @click="getlist(pagination.now_page-1)"> < </a></li>        
+        <li v-else class="page-item" :class="{'active':pageNumber == pagination.now_page}" v-for="pageNumber in pagination.page_array.slice(pagination.now_page-1,pagination.now_page+9)"><a class="page-link" @click="getlist(pageNumber)">${ pageNumber }</a></li>
+        <li class="page-item" v-if="pagination.now_page != pagination.page_items"><a class="page-link" @click="getlist(pagination.now_page+1)"> > </a></li>
+        <li class="page-item" v-if="pagination.now_page != pagination.page_items"><a class="page-link" @click="getlist(pagination.page_items)"> >> </a></li> 
+    </ul>
+</nav>
 </div>
-<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
+
+
+{# 燈箱組件 #}
+
+{# 燈箱組建結束#}
+
+{# JS START #}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
-    $(function () {
-        var channel_id = "{{session.get('channel_id')}}";
-        var _needObj = {
-            "limit" : 100,
-            "now_page": 1 ,
-            "find": {
-                "name":"",
-                "user_id":""
+    var mylist = new Vue({
+        el:"#app",
+        delimiters: ['${', '}'],
+        data:{
+            channel_id:"{{session.get('channel_id')}}",
+            datalist:[
+            ],
+            find:{},
+            pagination:{
+                page_array:[],
+                date_count:0,
+                now_page:3,
+                limit:10
+            },
+            search_value:"",
+            search_key:{
+                selected:'name',
+                options:[
+                    {text:'暱稱搜尋','value':'name'},
+                    {text:'user_id 搜尋','value':'user_id'}
+                ]
+            }
+            
+        },
+        mounted(){
+            var _this = this;
+            _this.getlist(1);
+        },
+        methods:{
+            getlist:function(now_page){  // 取得列表
+                var _this = this;
+                ajaxdata = {
+                    find:this.find,
+                    limit:this.pagination.limit,
+                    now_page: now_page
+                }
+                console.log(ajaxdata)
+                axios({
+                    method: 'post',
+                    url: "./api/v2/channel_users/" + _this.channel_id,
+                    responseType: 'json',
+                    data:ajaxdata
+                })
+                .then(function (data) {
+                    datalist = data.data.datalist
+                    _this.datalist = datalist
+                    _this.pagination.now_page = data.data.now_page
+                    _this.pagination.page_items = data.data.page_items
+                    _this.getPageItems();
+                })
+            },
+            getPageItems:function(){ //取得頁碼清單陣列
+                var _this = this;
+                page_array = [];
+                for (var i = 1; i <= _this.pagination.page_items;i++){
+                    page_array.push(i)
+                }
+                console.log(page_array);
+                _this.pagination.page_array = page_array;
+            },
+            setFind:function(){//設定搜尋條件
+                var _this = this;
+                _this.find = {}
+                if(_this.search_key.selected == 'name'){
+                    _this.find.name = _this.search_value
+                }
+                if (_this.search_key.selected == 'user_id') {
+                    _this.find.user_id = _this.search_value
+                }
+                console.log(_this.find);
+                _this.getlist(1);
             }
         }
-        callUser(_needObj)
-        function callUser(needData){
-            $.ajax({
-                url : "./api/v2/channel_users/" + channel_id,
-                type : 'post',
-                dataType : 'json',
-                data : needData
-            }).done(function(data){
-                console.log(data)
-            })
-        }
-        $("body").on("click", "#save", function () {
-            $("form").submit();
-        })
-
-        $(".msg_type_box").hide();
-        $(".text_box").show();
-
-        $("body").on("change", "#msg_type", function () {
-            $(".msg_type_box").hide();
-            $("." + $(this).val() + "_box").show();
-        })
-
-        $("body").on("click", ".user-info", function () {
-            user_id = $(this).attr("user_id");
-            location.href = "./user_info/{{session.get('channel_id')}}/"+user_id
-        })
-
-        $("body").on("click",'.user-chat',function(){
-            user_id = $(this).attr("user_id");
-            $.getJSON("./api_sys/open_chat_room/{{session.get('channel_id')}}/"+user_id,function(data){
-                if(confirm("請問要直接前往私訊頁面嗎？")){
-                    location.href = "./chat?user_id=" + user_id
-                }
-            })
-        })
-
     })
+    // $(function () {
+    //     var channel_id = "{{session.get('channel_id')}}";
+    //     var _needObj = {
+    //         "limit": 10,
+    //         "now_page": 1,
+    //         "find": {
+    //             "name": "",
+    //             "user_id": ""
+    //         }
+    //     }
+    //     callUser(_needObj)
+    //     function callUser(needData) {
+    //         $.ajax({
+    //             url: "./api/v2/channel_users/" + channel_id,
+    //             type: 'POST',
+    //             dataType: 'json',
+    //             contentType: "application/json;charset=utf-8",
+    //             data: needData
+    //         }).done(function (data) {
+    //             $("#datalist-tbody").html('');
+    //             $.each(data.datalist, function (k, v) {
+    //                 var html = '<tr><td>' + v.name + '</td><td>' + v.point + '</td><td>' + v.user_id + '</td><td>' + v.created_datetime + '</td><td>' + v.created_datetime + '</td><td><button type="button" class="btn btn-primary btn-sm user-info" user_id="'+v.user_id+'">詳情</button></td></tr>';
+    //                 $("#datalist-tbody").append(html);
+    //             })
+
+    //         })
+    //     }
+    //     $("body").on("click", "#save", function () {
+    //         $("form").submit();
+    //     })
+
+    //     $(".msg_type_box").hide();
+    //     $(".text_box").show();
+
+    //     $("body").on("change", "#msg_type", function () {
+    //         $(".msg_type_box").hide();
+    //         $("." + $(this).val() + "_box").show();
+    //     })
+
+    //     $("body").on("click", ".user-info", function () {
+    //         user_id = $(this).attr("user_id");
+    //         location.href = "./user_info/{{session.get('channel_id')}}/" + user_id
+    //     })
+
+    //     $("body").on("click", '.user-chat', function () {
+    //         user_id = $(this).attr("user_id");
+    //         $.getJSON("./api_sys/open_chat_room/{{session.get('channel_id')}}/" + user_id, function (data) {
+    //             if (confirm("請問要直接前往私訊頁面嗎？")) {
+    //                 location.href = "./chat?user_id=" + user_id
+    //             }
+    //         })
+    //     })
+
+    // })
 </script>
-{# 燈箱組建結束#}
+{# JS END #}
 
 {% endblock content %}
