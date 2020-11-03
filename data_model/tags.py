@@ -35,10 +35,19 @@ class Tags:
     def set_tag_main(self,tag_data):
         self.col_tag_main.insert_one(tag_data)
         return True
-    # 取得所有追縱標籤資料
-    def get_tag_list(self,channel_id):
-        # 2020-10-25 已經整併 all_tags_users
-        return Tags().all_tags_users(channel_id)
+    # 取得所有追縱標籤資料 used=None 表示不用篩選已經用過的
+    def get_tag_list(self,channel_id,used=None):
+        if used is None:
+            # tag_list = self.col_tag_main.find({"channel_id":channel_id})
+            tag_list = []
+            for tag in self.col_tag_main.find({"channel_id":channel_id}):
+                del(tag['_id'])
+                tag_list.append(tag)
+            
+            return list(tag_list)
+        else:
+            # 2020-10-25 已經整併 all_tags_users
+            return Tags().all_tags_users(channel_id)
     
    
     # 確認 tag 要被追縱處理
