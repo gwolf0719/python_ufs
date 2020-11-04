@@ -43,7 +43,7 @@
     <ul class="pagination">
         <li class="page-item" v-if="pagination.now_page > 1"><a class="page-link" @click="getlist(1)"> << </a></li>
         <li class="page-item" v-if="pagination.now_page > 1"><a class="page-link" @click="getlist(pagination.now_page-1)"> < </a></li>        
-        <li v-else class="page-item" :class="{'active':pageNumber == pagination.now_page}" v-for="pageNumber in pagination.page_array.slice(pagination.now_page-1,pagination.now_page+9)"><a class="page-link" @click="getlist(pageNumber)">${ pageNumber }</a></li>
+        <li class="page-item" :class="{'active':pageNumber == pagination.now_page}" v-for="pageNumber in pagination.page_array"><a class="page-link" @click="getlist(pageNumber)">${ pageNumber }</a></li>
         <li class="page-item" v-if="pagination.now_page != pagination.page_items"><a class="page-link" @click="getlist(pagination.now_page+1)"> > </a></li>
         <li class="page-item" v-if="pagination.now_page != pagination.page_items"><a class="page-link" @click="getlist(pagination.page_items)"> >> </a></li> 
     </ul>
@@ -72,7 +72,7 @@
                 page_array:[],
                 date_count:0,
                 now_page:3,
-                limit:10
+                limit:25
             },
             search_value:"",
             search_key:{
@@ -114,10 +114,25 @@
             getPageItems:function(){ //取得頁碼清單陣列
                 var _this = this;
                 page_array = [];
-                for (var i = 1; i <= _this.pagination.page_items;i++){
-                    page_array.push(i)
+                var now_page = _this.pagination.now_page
+                var page_items = _this.pagination.page_items
+                if(now_page == 1){
+                    for(var i =1;i<=10;i++){
+                        if(i == page_items){
+                            break;
+                        }else{
+                            page_array.push(i)
+                        }
+                    }
+                }else if(now_page <= page_items - 10){
+                    for(var i=(now_page-1);i<now_page+9;i++){
+                        page_array.push(i)
+                    }
+                }else{
+                    for(var i=(page_items-10) ; i<=page_items;i++){
+                        page_array.push(i)
+                    }
                 }
-                console.log(page_array);
                 _this.pagination.page_array = page_array;
             },
             setFind:function(){//設定搜尋條件
