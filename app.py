@@ -497,8 +497,10 @@ def webhook(channel_id):
         if jsondata["channel_id"]  == "1654006407":
             print('1654006407.....break')
             return '1654006407.....break'
-        else:
-            print(jsondata)
+    else:
+        if jsondata["channel_id"]  == "1654006407":
+            print('1654006407.....message')
+            return '1654006407.....message'
         
 
 
