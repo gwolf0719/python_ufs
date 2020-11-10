@@ -22,8 +22,10 @@ class Webhook:
     def add_log(self,jsondata):
         
         webhook_log = self.client.ufs.webhook_log
-        df = pd.DataFrame(jsondata, index=[0])
-        webhook_log.insert_many(df.to_dict('records'))
+        
+        webhook_log.insert_one(jsondata)
+        # df = pd.DataFrame(jsondata, index=[0])
+        # webhook_log.insert_many(df.to_dict('records'))
         return True
 
     # 設定這個使用者的追蹤狀態
