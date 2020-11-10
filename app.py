@@ -493,8 +493,9 @@ def webhook(channel_id):
     # 連線 2
     webhook.add_log(jsondata)
 
-    if jsondata["channel_id"]  == "Ued57a1d16d297c1e560cb83d5f768783":
-        return 'Ued57a1d16d297c1e560cb83d5f768783.....break'
+    if jsondata["channel_id"]  == "1654006407":
+        return '1654006407.....break'
+        
 
 
     # 設定用戶追蹤狀態
