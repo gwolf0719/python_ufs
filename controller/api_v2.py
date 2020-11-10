@@ -61,30 +61,30 @@ def users(channel_id):
 
 
 # 點數異動
-@point.route('/api/v2/ch_point/<channel_id>/<user_id>', methods=['GET','POST'])
-def ch_point(channel_id, user_id):
-    # 確認 channel_id
-    if(channel.chk_once(channel_id) == False):
-        json_data = {'sys_code':"404","sys_msg":"channel not found"}
-        return json_data
-    # 確認 user_id
-    if(user.chk_once(user_id,channel_id) == False):
-        json_data = {'sys_code':"404","sys_msg":"user not found"}
-        return json_data
-    r = request.get_json()
-    # 設定點數到期日
-    limit = ''
-    if 'limit' in r:
-        limit = r['limit']
-    else :
-        if r['act'] == 'add':
-            limit = arrow.now().shift(years=+1).format("YYYY-MM")
-    # 寫入點數
-    ltp.ch_point(channel_id,user_id,r['point'],r['note'],r['act'],limit)
-    # 取回資料
-    json_data = {
-        'sys_code':'200',
-        'sys_msg':'success',
-        'data':ltp.user_point_info(channel_id, user_id)
-    }
-    return json_data
+# @point.route('/api/v2/ch_point/<channel_id>/<user_id>', methods=['GET','POST'])
+# def ch_point(channel_id, user_id):
+#     # 確認 channel_id
+#     if(channel.chk_once(channel_id) == False):
+#         json_data = {'sys_code':"404","sys_msg":"channel not found"}
+#         return json_data
+#     # 確認 user_id
+#     if(user.chk_once(user_id,channel_id) == False):
+#         json_data = {'sys_code':"404","sys_msg":"user not found"}
+#         return json_data
+#     r = request.get_json()
+#     # 設定點數到期日
+#     limit = ''
+#     if 'limit' in r:
+#         limit = r['limit']
+#     else :
+#         if r['act'] == 'add':
+#             limit = arrow.now().shift(years=+1).format("YYYY-MM")
+#     # 寫入點數
+#     ltp.ch_point(channel_id,user_id,r['point'],r['note'],r['act'],limit)
+#     # 取回資料
+#     json_data = {
+#         'sys_code':'200',
+#         'sys_msg':'success',
+#         'data':ltp.user_point_info(channel_id, user_id)
+#     }
+#     return json_data
