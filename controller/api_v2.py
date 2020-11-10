@@ -61,7 +61,7 @@ def users(channel_id):
 
 
 # 點數異動
-@point.route('/api/v1/ch_point/<channel_id>/<user_id>', methods=['GET','POST'])
+@point.route('/api/v2/ch_point/<channel_id>/<user_id>', methods=['GET','POST'])
 def ch_point(channel_id, user_id):
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
