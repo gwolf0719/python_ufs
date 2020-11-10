@@ -480,17 +480,25 @@ def webhook(channel_id):
     msg = Msg()
     chat = Chat()
     jsondata = request.get_json()
-    print("Webhook")
+    # print("Webhook")
     jsondata["channel_id"] = channel_id
+
+    # 連線 1
     channel_data = channel.get_channel(channel_id)
     channel_access_token = channel_data["channel_access_token"]
     event = jsondata["events"][0]
     user_id = event["source"]["userId"]
     jsondata["user_id"] = user_id
     print(jsondata)
+    # 連線 2
     webhook.add_log(jsondata)
 
+    if jsondata["channel_id"]  == "Ued57a1d16d297c1e560cb83d5f768783":
+        return 'Ued57a1d16d297c1e560cb83d5f768783.....break'
+
+
     # 設定用戶追蹤狀態
+    # 連線 3
     webhook.setfollow(channel_id,jsondata)
 
     # 使用者紀錄
