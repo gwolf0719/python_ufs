@@ -298,7 +298,7 @@ def get_tag_qty(channel_id, tag):
 @api.route('/api/v0/get_tag_list/<channel_id>')
 def get_tag_list(channel_id):
     tags = Tags()
-    tags = tags.get_tag_list(channel_id)
+    tags = tags.all_tags_users(channel_id)
     return {'sys_code':"200","sys_msg":"success","tags":tags}
 
 # 取得須要被統計的標籤使用次數
