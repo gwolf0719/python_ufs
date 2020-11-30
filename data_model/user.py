@@ -65,7 +65,10 @@ class User:
         data['user_id'] = user_id
         self.sms_log.insert_one(data)
 
-        api_link = "https://oms.every8d.com/API21/HTTP/sendSMS.ashx?UID=0919636153&PWD=a8mvQKuSzScbcWX&MSG="+msg+"&DEST="+mobile
+        if channel_id == "1654799325":
+            api_link = "https://oms.every8d.com/API21/HTTP/sendSMS.ashx?UID=0932014383&PWD=qv2m&MSG="+msg+"&DEST="+mobile
+        else:
+            api_link = "https://oms.every8d.com/API21/HTTP/sendSMS.ashx?UID=0919636153&PWD=a8mvQKuSzScbcWX&MSG="+msg+"&DEST="+mobile
         response = requests.get(api_link)
         return True
     
