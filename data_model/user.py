@@ -180,25 +180,25 @@ class User:
         }
         
         line_bot_api = LineBotApi(channel_access_token)
-        print(jsondata)
+        # print(jsondata)
         
-        try:
+        # try:
            
-            profile = line_bot_api.get_profile(user_id)
-            print("profile")
-            print(profile)
-            jsondata['name'] = profile.display_name
-            jsondata['avator'] = profile.picture_url
-            jsondata['status_message'] = profile.status_message
-            
-            self.col_user.insert_one(jsondata)
+        profile = line_bot_api.get_profile(user_id)
+        print("profile")
+        print(profile)
+        jsondata['name'] = profile.display_name
+        jsondata['avator'] = profile.picture_url
+        jsondata['status_message'] = profile.status_message
+        
+        self.col_user.insert_one(jsondata)
 
-            # 新增LOG
-            User().set_user_log(user_id,channel_id,"新增帳號")
-            return True
-        except BaseException:
-            print("ERROR")
-            return False
+        # 新增LOG
+        User().set_user_log(user_id,channel_id,"新增帳號")
+            # return True
+        # except BaseException:
+        #     print("ERROR")
+        #     return False
         
 
         
