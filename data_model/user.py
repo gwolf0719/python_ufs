@@ -184,6 +184,7 @@ class User:
         try:
            
             profile = line_bot_api.get_profile(user_id)
+            print(profile);
             jsondata['name'] = profile.display_name
             jsondata['avator'] = profile.picture_url
             jsondata['status_message'] = profile.status_message
