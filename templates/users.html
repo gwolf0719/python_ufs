@@ -34,6 +34,7 @@
             <td>${ member.created_datetime }</td>
             <td>
                 <a :href="'./user_info/{{session.get('channel_id')}}/'+member.user_id" class="btn btn-primary btn-sm">詳細</a>
+                <button class="btn btn-primary btn-sm" @click="toChat(member.user_id)">傳訊</button>
             </td>
         </tr>
     </tbody>
@@ -89,6 +90,13 @@
             _this.getlist(1);
         },
         methods:{
+            toChat:function(user_id){
+                $.getJSON("./api_sys/open_chat_room/{{session.get('channel_id')}}/" + user_id, function (data) {
+                    if (confirm("請問要直接前往私訊頁面嗎？")) {
+                        location.href = "./chat?user_id=" + user_id
+                    }
+                })
+            },
             getlist:function(now_page){  // 取得列表
                 var _this = this;
                 ajaxdata = {
