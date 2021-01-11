@@ -268,6 +268,7 @@ def v1_set_user_tag():
 # # 取回會員標籤清單
 @api.route('/api/v0/get_user_tags/<channel_id>/<user_id>/')
 def get_user_tags(channel_id, user_id):
+    tags = Tags()
     # 確認 channel_id
     if(channel.chk_once(channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"channel not found"}
@@ -276,8 +277,8 @@ def get_user_tags(channel_id, user_id):
     if(user.chk_once(user_id,channel_id) == False):
         json_data = {'sys_code':"404","sys_msg":"user not found"}
         return json_data
-    tags = user.get_user_tags(user_id,channel_id )
-    json_data = {'sys_code':"200","sys_msg":"success","tags":tags}
+    tag_list = tags.user_tags(channel_id,user_id )
+    json_data = {'sys_code':"200","sys_msg":"success","tags":tag_list}
 
     return json_data
 

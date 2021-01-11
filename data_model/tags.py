@@ -196,6 +196,17 @@ class Tags:
         for i in self.col_tag_log.aggregate(pipeline):
             return i['count']
         return datalis
+    # 取得單一使用者標籤
+    def user_tags(self,channel_id,user_id):
+        find = {
+            "channel_id": channel_id,
+            "user_id": user_id
+        }
+        datalist = []
+        for tag in self.col_tag_log.find(find):
+            datalist.append(tag['tag'])
+        return datalist
+
 
 
 

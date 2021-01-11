@@ -259,8 +259,10 @@ class User:
         if "tags" in user_data:
             for t in user_data["tags"]:
                 if t['tag'] not in res:
+                    
                     res.append(t['tag'])
         return res
+    
     
     # 取得所有人
     def get_all_users(self,channel_id,keyword=''):
