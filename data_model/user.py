@@ -169,10 +169,8 @@ class User:
             return True
     def chk_line_user_profile(self,channel_id,user_id,channel_access_token):
         line_bot_api = LineBotApi(channel_access_token)
-        profile = line_bot_api.get_profile(user_id)
         try:
             profile = line_bot_api.get_profile(user_id)
-            
             return True
         except BaseException:
             print("chk_line_user_profile ERROR")
