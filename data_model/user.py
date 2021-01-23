@@ -169,8 +169,10 @@ class User:
             return True
     def chk_line_user_profile(self,channel_id,user_id,channel_access_token):
         line_bot_api = LineBotApi(channel_access_token)
+        profile = line_bot_api.get_profile(user_id)
         try:
             profile = line_bot_api.get_profile(user_id)
+            print(profile)
             jsondata['name'] = profile.display_name
             jsondata['avator'] = profile.picture_url
             jsondata['status_message'] = profile.status_message
