@@ -133,7 +133,7 @@ def v1_chk_line_user_profile(channel_id, user_id):
     # chk_line_user_profile(self,channel_id,user_id,channel_access_token)
     channel_info = channel.get_channel(channel_id)
     channel_access_token = channel_info['channel_access_token']
-    if(user.chk_line_user_profile(channel_id,user_id,channel_access_token)):
+    if(user.chk_line_user_profile(channel_id,user_id,channel_access_token) == True):
         json_data = {'sys_code':"200","sys_msg":"line user success"}
     else:
         json_data = {'sys_code':"404","sys_msg":"line user not found"}

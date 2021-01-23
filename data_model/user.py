@@ -172,10 +172,7 @@ class User:
         profile = line_bot_api.get_profile(user_id)
         try:
             profile = line_bot_api.get_profile(user_id)
-            print(profile)
-            jsondata['name'] = profile.display_name
-            jsondata['avator'] = profile.picture_url
-            jsondata['status_message'] = profile.status_message
+            
             return True
         except BaseException:
             print("chk_line_user_profile ERROR")
