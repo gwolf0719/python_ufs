@@ -167,6 +167,18 @@ class User:
             return False
         else:
             return True
+    def chk_line_user_profile(self,channel_id,user_id,channel_access_token):
+        line_bot_api = LineBotApi(channel_access_token)
+        try:
+            profile = line_bot_api.get_profile(user_id)
+            jsondata['name'] = profile.display_name
+            jsondata['avator'] = profile.picture_url
+            jsondata['status_message'] = profile.status_message
+            return True
+        except BaseException:
+            print("chk_line_user_profile ERROR")
+            return False
+
     # 新增使用者
     def add_once(self,user_id,block,channel_id,channel_access_token):
         jsondata = {
