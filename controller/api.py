@@ -134,12 +134,14 @@ def v1_set_user(channel_id, user_id):
         return json_data
     # 確認 user_id
     if(user.chk_once(user_id,channel_id) == True):
+        print("user_id is already")
         data = {}
         user.update_user_main(user_id,channel_id,data)
     else:
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
         block = 0;
+        print("user_id is not already")
         if user.add_once(user_id,block,channel_id,channel_access_token) == True:
             # 取得會員資料
             user_info = user.get_once(user_id,channel_id)
