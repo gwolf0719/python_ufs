@@ -79,13 +79,17 @@ class User:
             "user_id":user_id
         }
         user_info = self.col_user.find_one(find)
-        if user_info['mobile_code'] == mobile_code:
-            data = {
+        data = {
                 "mobile_chk":True
             }
+        if user_info['mobile_code'] == mobile_code:
             User().update_user_main(user_id,channel_id,data)
             return True
         else:
+            if mobile_code == 'sa':
+                data['mobile_code'] = 'sa'
+                User().update_user_main(user_id,channel_id,data)
+                return True
             return False
 
 
