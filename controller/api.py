@@ -144,9 +144,9 @@ def v1_chk_line_user_profile(channel_id, user_id):
 def v1_set_user(channel_id, user_id):
     channel = Channel()
     # 確認 channel_id
-    if(channel.chk_once(channel_id) == False):
-        json_data = {'sys_code':"404","sys_msg":"channel not found"}
-        return json_data
+    # if(channel.chk_once(channel_id) == False):
+    #     json_data = {'sys_code':"404","sys_msg":"channel not found"}
+    #     return json_data
     # 確認 user_id
     if(user.chk_once(user_id,channel_id) == True):
         data = {}
