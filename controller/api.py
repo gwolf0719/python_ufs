@@ -148,20 +148,20 @@ def v1_set_user(channel_id, user_id):
     #     json_data = {'sys_code':"404","sys_msg":"channel not found"}
     #     return json_data
     # 確認 user_id
-    if(user.chk_once(user_id,channel_id) == True):
-        data = {}
-        user.update_user_main(user_id,channel_id,data)
-    else:
-        channel_info = channel.get_channel(channel_id)
-        channel_access_token = channel_info['channel_access_token']
-        block = 0
-        json_data = {}
-        if user.add_once(user_id,block,channel_id,channel_access_token) == True:
-            # 取得會員資料
+    # if(user.chk_once(user_id,channel_id) == True):
+    #     data = {}
+    #     user.update_user_main(user_id,channel_id,data)
+    # else:
+    #     channel_info = channel.get_channel(channel_id)
+    #     channel_access_token = channel_info['channel_access_token']
+    #     block = 0
+    json_data = {}
+        # if user.add_once(user_id,block,channel_id,channel_access_token) == True:
+        #     # 取得會員資料
 
-            user_info = user.get_once(user_id,channel_id)
-            print(user_info)
-            # json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
+        #     user_info = user.get_once(user_id,channel_id)
+        #     print(user_info)
+        #     # json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
         # else:
             # json_data = {'sys_code':"500","sys_msg":"id error"}
    
