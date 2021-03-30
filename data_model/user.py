@@ -207,8 +207,7 @@ class User:
             User().set_user_log(user_id,channel_id,"新增帳號")
             return True
         except BaseException:
-            profile = line_bot_api.get_profile(user_id)
-            print(profile)
+            
             print("ERROR")
             return False
         
