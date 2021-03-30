@@ -152,6 +152,9 @@ def v1_set_user(channel_id, user_id):
     if(user.chk_once(user_id,channel_id) == True):
         data = {}
         user.update_user_main(user_id,channel_id,data)
+        user_info = user.get_once(user_id,channel_id)
+        print(user_info)
+        json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
     else:
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
