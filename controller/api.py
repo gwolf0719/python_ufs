@@ -154,7 +154,8 @@ def v1_set_user(channel_id, user_id):
     else:
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
-        block = 0;
+        block = 0
+        json_data = {}
         if user.add_once(user_id,block,channel_id,channel_access_token) == True:
             # 取得會員資料
             user_info = user.get_once(user_id,channel_id)
