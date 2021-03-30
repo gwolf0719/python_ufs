@@ -156,7 +156,7 @@ def v1_set_user(channel_id, user_id):
         channel_info = channel.get_channel(channel_id)
         channel_access_token = channel_info['channel_access_token']
         
-    
+        
         if user.add_once(user_id,0,channel_id,channel_access_token) == True:
             # 取得會員資料
 
@@ -164,6 +164,9 @@ def v1_set_user(channel_id, user_id):
             print(user_info)
             json_data = {'sys_code':"200","sys_msg":"success","data":user_info}
         else:
+            print(channel_access_token)
+            print(channel_id)
+            print(user_id)
             json_data = {'sys_code':"500","sys_msg":"id error"}
    
     return json_data
