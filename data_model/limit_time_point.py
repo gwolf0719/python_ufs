@@ -11,17 +11,23 @@ from data_model.database import *
 
 class Limit_time_point:
     def __init__(self):
-        self.database = Database();
+        self.database = Database()
         self.db = self.database.set_db()
         self.limit_time_point_log = self.db.limit_time_point_log
         self.users = self.db.users
     
     def user_point_log(self,channel_id,user_id,act):
-        find = {
-            "channel_id":channel_id,
-            "user_id":user_id,
-            "act":act
-        }
+        if act == 'all':
+            find = {
+                "channel_id":channel_id,
+                "user_id":user_id,
+            }
+        else:
+            find = {
+                "channel_id":channel_id,
+                "user_id":user_id,
+                "act":act
+            }
         datalist = []
         for d in self.limit_time_point_log.find(find).sort('created_datetime',-1):
             del d['_id']
