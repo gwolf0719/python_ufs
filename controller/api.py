@@ -154,6 +154,7 @@ def v1_set_user(channel_id, user_id):
         user.update_user_main(user_id,channel_id,data)
     else:
         channel_info = channel.get_channel(channel_id)
+        print(channel_info)
         channel_access_token = channel_info['channel_access_token']
         
     
