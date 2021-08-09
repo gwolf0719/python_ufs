@@ -35,7 +35,7 @@ conda-build==3.18.9
 conda-package-handling==1.6.0
 conda-verify==3.4.2
 contextlib2==0.6.0
-cryptography==2.7
+cryptography==3.2
 cycler==0.10.0
 Cython==0.29.13
 cytoolz==0.10.0
@@ -127,7 +127,7 @@ prometheus-client==0.7.1
 prompt-toolkit==2.0.10
 psutil==5.6.6
 ptyprocess==0.6.0
-py==1.8.0
+py>=1.10.0
 pycodestyle==2.5.0
 pycosat==0.6.3
 pycparser==2.19
