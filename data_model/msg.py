@@ -17,7 +17,7 @@ from data_model.tags import *
 class Msg:
     def __init__(self):
         # self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
-        self.client = MongoClient('127.0.0.1', 27017)
+        self.client = pymongo.MongoClient('127.0.0.1', 27017)
         self.client.admin.authenticate('james', 'wolf0719')
         self.col_msg = self.client.ufs.msgs
 
