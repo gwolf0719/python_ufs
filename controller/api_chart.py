@@ -12,6 +12,10 @@ api_chart = Blueprint('api_chart', __name__)
 
 
 db = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+# self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+db = pymongo.MongoClient('127.0.0.1', 27017)
+db.admin.authenticate('james', 'wolf0719')
+
 
 # 交集查詢
 @api_chart.route('/api_chart/tag_set/<channel_id>/<tags>')

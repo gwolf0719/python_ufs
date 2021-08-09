@@ -16,7 +16,9 @@ from data_model.tags import *
 
 class Msg:
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+        # self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+        self.client = MongoClient('127.0.0.1', 27017)
+        self.client.admin.authenticate('james', 'wolf0719')
         self.col_msg = self.client.ufs.msgs
 
     
@@ -28,7 +30,7 @@ class Msg:
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
         return True
     # 發送群發訊息
-    # TODO 發送群發單次上限 500 人需要分組處理
+    
     def send_multicast_msg(self,channel_id,users,message):
         channel = Channel()
         channel_info = channel.get_channel(channel_id)

@@ -24,7 +24,9 @@ from linebot.exceptions import LineBotApiError
 
 class User:
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+        # self.client = pymongo.MongoClient("mongodb+srv://james:wolf0719@cluster0-oiynz.azure.mongodb.net/test?retryWrites=true&w=majority")
+        self.client = MongoClient('127.0.0.1', 27017)
+        self.client.admin.authenticate('james', 'wolf0719')
         self.col_user = self.client.ufs.users
         self.col_point_logs = self.client.ufs.point_logs
         self.col_user_log = self.client.ufs.user_log
