@@ -71,7 +71,7 @@ class User:
             # QV專屬簡訊發送通道
             # api_link = "https://api.e8d.tw/66580556/API21/HTTP/sendSMS.ashx?UID=JJQV0518userflow&PWD=RYZe6sPU&MSG="+msg+"&DEST="+mobile
             # 2021-12-20 遷移到 三竹
-            api_link = "https://smsapi.mitake.com.tw/api/mtk/SmSend?username=54673518SMS&password=SMS54673518&dstaddr="+mobile+"&smbody="+msg
+            api_link = "https://smsapi.mitake.com.tw/api/mtk/SmSend?CharsetURL=UTF-8&username=54673518SMS&password=SMS54673518&dstaddr="+mobile+"&smbody="+msg
         else:
             api_link = "https://api.e8d.tw/66580556/API21/HTTP/sendSMS.ashx?UID=fofo4foso&PWD=qQmdmKvp&MSG="+msg+"&DEST="+mobile
         response = requests.get(api_link)
